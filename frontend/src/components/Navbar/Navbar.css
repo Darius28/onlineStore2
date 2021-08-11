@@ -1,0 +1,24 @@
+.navbar-search {
+  width: 200px;
+}
+
+@media (min-width: 48rem) {
+  .navbar-search {
+    width: 300px;
+  }
+}
+
+.navbar-profile-image {
+  width: 3rem;
+  height: 3rem;
+}
+
+.navbar-profile-icon {
+  color: rgba(255, 255, 255, 0.55);
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.navbar-right-nav-container {
+  align-items: center;
+}

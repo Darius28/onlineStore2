@@ -1,0 +1,1 @@
+export const randomImg1 = "https://pixabay.com/get/ge4dfd88a132c49d367861e730caf1b04e7293aaecb00ab3eaf714e54f1f1dba3fccaefe40b93f486c1fa364d24c3204d19886c6effa0221cb7971fd82616e8a0_640.jpg"
