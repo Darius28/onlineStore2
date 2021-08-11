@@ -1,7 +1,8 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext, useEffect } from "react";
 
 const initialState = {
   showModal: null,
+  user: null,
 };
 
 const Context = createContext();
@@ -10,7 +11,6 @@ const rootReducer = (state, action) => {
   switch (action.type) {
     case "MODAL_STATUS": {
       let value;
-      console.log(state.showModal);
       if (state.showModal === null) {
         value = action.payload;
       } else {
@@ -18,7 +18,13 @@ const rootReducer = (state, action) => {
       }
       return { ...state, showModal: value };
     }
+    case "LOGIN": {
+      console.log(action.payload);
+      return { ...state, user: action.payload };
+    }
 
+    case "LOGOUT":
+      return { ...state, user: null };
     default:
       return state;
   }
@@ -26,6 +32,12 @@ const rootReducer = (state, action) => {
 
 const Provider = (props) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
+  useEffect(() => {
+    dispatch({
+      type: "LOGIN",
+      payload: JSON.parse(localStorage.getItem("user")),
+    });
+  }, []);
   return (
     <Context.Provider value={{ state, dispatch }}>
       {props.children}

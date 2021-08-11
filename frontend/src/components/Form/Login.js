@@ -10,6 +10,7 @@ export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const {
+    state,
     state: { showModal },
     dispatch,
   } = useContext(Context);
@@ -28,7 +29,6 @@ export default function Login() {
     try {
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
-      console.log(email, password);
       const { data } = await axios.post(`${BackendUrl}/login`, {
         email,
         password,
@@ -36,6 +36,11 @@ export default function Login() {
       dispatch({
         type: "MODAL_STATUS",
       });
+      dispatch({
+        type: "LOGIN",
+        payload: data.user,
+      });
+      localStorage.setItem("user", JSON.stringify(data.user));
       toast.success("Welcome to Store!");
     } catch (err) {
       console.log(err);

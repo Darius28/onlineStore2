@@ -13,13 +13,15 @@ import {
 import { PersonCircle } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import { randomImg1 } from "../../utils/RandomImages";
 import UserModal from "../UI/UserModal/UserModal";
 import { Context } from "../../context";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { BackendUrl } from "../../utils/BackendUrl";
 
 const HeaderBar = () => {
   const { state, dispatch } = useContext(Context);
-  const { showModal } = state;
+  const { user, showModal } = state;
 
   const showLoginModalHandler = () => {
     dispatch({
@@ -33,6 +35,20 @@ const HeaderBar = () => {
       type: "MODAL_STATUS",
       payload: "signup",
     });
+  };
+
+  const logoutHandler = async () => {
+    try {
+      dispatch({
+        type: "LOGOUT",
+      });
+      localStorage.removeItem("user");
+      const { data } = await axios.post(`${BackendUrl}/logout`);
+      toast.success("Logout Successful.");
+    } catch (err) {
+      console.log(err);
+      toast(err.response.data);
+    }
   };
 
   return (
@@ -65,15 +81,32 @@ const HeaderBar = () => {
                 title={<PersonCircle size={32} />}
                 id="basic-nav-dropdown"
               >
-                <NavDropdown.Item onClick={showLoginModalHandler}>
-                  Login
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={showSignupModalHandler}>
-                  Signup
-                </NavDropdown.Item>
-                <NavDropdown.Item>My Profile</NavDropdown.Item>
-                <NavDropdown.Item>Orders</NavDropdown.Item>
-                <NavDropdown.Item>Wishlist</NavDropdown.Item>
+                {user ? (
+                  <>
+                    <NavDropdown.Item>
+                      <span className="navbar-username">{user.name}</span>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <Button variant="danger" onClick={logoutHandler}>
+                        Logout
+                      </Button>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <Link to="" className="navbar-link">Become a Seller</Link>
+                    </NavDropdown.Item>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                    <NavDropdown.Item>Wishlist</NavDropdown.Item>
+                  </>
+                ) : (
+                  <>
+                    <NavDropdown.Item onClick={showLoginModalHandler}>
+                      Login
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={showSignupModalHandler}>
+                      Signup
+                    </NavDropdown.Item>
+                  </>
+                )}
               </NavDropdown>
               {/* <Image
                 src={randomImg1}

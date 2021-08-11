@@ -22,3 +22,12 @@
 .navbar-right-nav-container {
   align-items: center;
 }
+
+.navbar-username {
+  color: green;
+}
+
+.navbar-link {
+  color: black;
+  text-decoration: none;
+}
