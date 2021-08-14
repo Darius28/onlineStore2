@@ -6,6 +6,7 @@ import { Context } from "../../context";
 export default function BecomeSeller() {
   const { state, dispatch } = useContext(Context);
   const [details, setDetails] = useState();
+  const [userAge, setUserAge] = useState();
   const { user } = state;
 
   useEffect(() => {
@@ -16,8 +17,29 @@ export default function BecomeSeller() {
       } else {
         document.getElementById("female-radio").checked = true;
       }
+      const today = new Date();
+      const date = today.getDate();
+      const month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      const dobUser = user.dob.split("-", 3);
+      const dobYear = +dobUser[0];
+      const dobMonth = +dobUser[1];
+      const dobDate = +dobUser[2].split("T", 1)[0];
+
+      let age = year - dobYear;
+      if (age !== 0) {
+        if (dobMonth === month) {
+          if (date < dobDate) {
+            age = age - 1;
+          }
+        }
+        if (dobMonth > month) {
+          age = age - 1;
+        }
+      }
+      setUserAge(age);
     }
-  }, [user]);
+  }, [user, userAge]);
 
   return (
     <div className="seller-container">
@@ -26,7 +48,7 @@ export default function BecomeSeller() {
         <div className="become-seller-form">
           <Form>
             <Row>
-              <Col>
+              <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Name: </Form.Label>
                 <Form.Control
                   autoFocus
@@ -34,14 +56,18 @@ export default function BecomeSeller() {
                   value={details ? details.name : null}
                   disabled
                 />
-              </Col>
-              <Col>
-                <Form.Label>DOB: </Form.Label>
-                <Form.Control type="date"></Form.Control>
-              </Col>
+              </Form.Group>
+              <Form.Group as={Col} md="6" className="mb-3">
+                <Form.Label>Age: </Form.Label>
+                <Form.Control
+                  type="number"
+                  value={userAge !== undefined ? userAge : null}
+                  disabled
+                ></Form.Control>
+              </Form.Group>
             </Row>
             <Row>
-              <Col>
+              <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Gender: </Form.Label>
                 <div className="seller-gender-radio">
                   <Form.Check
@@ -61,22 +87,21 @@ export default function BecomeSeller() {
                     value="female"
                   />
                 </div>
-              </Col>
-              <Col>
+              </Form.Group>
+              <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Email: </Form.Label>
                 <Form.Control
                   type="email"
                   value={details ? details.email : null}
                   disabled
                 />
-              </Col>
+              </Form.Group>
             </Row>
           </Form>
         </div>
-        <div className="center">
+        <div className="center mb-3">
           <Button variant="success">Continue</Button>
         </div>
-
         <h2 className="center">Why become a seller? </h2>
       </div>
       <div className="seller-cards">
