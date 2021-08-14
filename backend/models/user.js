@@ -20,6 +20,13 @@ const userSchema = new Schema(
       max: 64,
       required: true,
     },
+    age: {
+      type: Number,
+    },
+    gender: {
+      type: [String],
+      enum: ["male", "female"],
+    },
   },
   { timestamps: true }
 );

@@ -84,7 +84,9 @@ const HeaderBar = () => {
                 {user ? (
                   <>
                     <NavDropdown.Item>
-                      <span className="navbar-username">{user.name}</span>
+                      <Link to="/user/profile" className="navbar-link">
+                        My Profile
+                      </Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item>
                       <Button variant="danger" onClick={logoutHandler}>
@@ -92,7 +94,9 @@ const HeaderBar = () => {
                       </Button>
                     </NavDropdown.Item>
                     <NavDropdown.Item>
-                      <Link to="" className="navbar-link">Become a Seller</Link>
+                      <Link to="/become-seller" className="navbar-link">
+                        Become a Seller
+                      </Link>
                     </NavDropdown.Item>
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                     <NavDropdown.Item>Wishlist</NavDropdown.Item>

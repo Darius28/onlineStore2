@@ -19,7 +19,6 @@ const rootReducer = (state, action) => {
       return { ...state, showModal: value };
     }
     case "LOGIN": {
-      console.log(action.payload);
       return { ...state, user: action.payload };
     }
 

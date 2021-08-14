@@ -1,0 +1,50 @@
+.seller-header {
+  margin-top: 0.6rem;
+}
+
+.seller-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.card-body {
+  height: 20rem;
+}
+
+@media (max-width: 62rem) {
+  .seller-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .card-body {
+    height: 12rem;
+  }
+}
+
+@media (max-width: 50rem) {
+  .seller-cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .card-body {
+    height: 14rem;
+  }
+}
+
+.become-seller-form {
+  margin: 1.5rem;
+}
+
+.seller-gender-radio {
+  display: flex;
+  width: 30%;
+  justify-content: space-between;
+}

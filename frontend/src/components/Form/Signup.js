@@ -1,6 +1,7 @@
 import React, { useContext, useRef } from "react";
 import { Context } from "../../context";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
+import FloatingLabel from "react-bootstrap-floating-label";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BackendUrl } from "../../utils/BackendUrl";
@@ -10,6 +11,8 @@ export default function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const cpasswordRef = useRef();
+  const dobRef = useRef();
+  const genderRef = useRef();
   const { dispatch } = useContext(Context);
   const navToLoginHandler = () => {
     dispatch({
@@ -48,39 +51,86 @@ export default function Signup() {
 
   return (
     <Form>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control
-          required
-          ref={nameRef}
-          autoFocus
-          type="text"
-          placeholder="Name"
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control
-          required
-          ref={emailRef}
-          type="email"
-          placeholder="Email Address"
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control
-          required
-          ref={passwordRef}
-          type="password"
-          placeholder="Password"
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control
-          required
-          ref={cpasswordRef}
-          type="password"
-          placeholder="Confirm Password"
-        />
-      </Form.Group>
+      <Row>
+        <Col>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Name"
+            className="mb-3"
+          >
+            <Form.Control type="text" ref={nameRef} required />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Email"
+            className="mb-3"
+          >
+            <Form.Control required ref={emailRef} type="email" />
+          </FloatingLabel>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Password"
+            className="mb-3"
+          >
+            <Form.Control required ref={passwordRef} type="password" />
+          </FloatingLabel>
+        </Col>
+        <Col>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Confirm Password"
+            className="mb-3"
+          >
+            <Form.Control required="true" ref={cpasswordRef} type="password" />
+          </FloatingLabel>
+        </Col>
+      </Row>
+
+      <Row>
+        <Col>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Date of Birth: </Form.Label>
+            <Form.Control
+              required
+              ref={dobRef}
+              type="date"
+              placeholder="Date of Birth"
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Gender: </Form.Label>
+            <div className="seller-gender-radio">
+              <Form.Check
+                required
+                type="radio"
+                id="default-radio"
+                name="gender"
+                label="Male"
+                value="male"
+                ref={genderRef}
+              />
+              <Form.Check
+                required
+                type="radio"
+                id="default-radio"
+                name="gender"
+                label="Female"
+                value="female"
+                ref={genderRef}
+              />
+            </div>
+          </Form.Group>
+        </Col>
+      </Row>
+
       <div className="center">
         <p>
           Already a registered user?{" "}
