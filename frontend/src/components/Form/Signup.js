@@ -1,6 +1,6 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Context } from "../../context";
-import { Form, Button, Row, Col } from "react-bootstrap";
+import { Form, Button, Row, Col, InputGroup } from "react-bootstrap";
 import FloatingLabel from "react-bootstrap-floating-label";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -13,6 +13,7 @@ export default function Signup() {
   const cpasswordRef = useRef();
   const dobRef = useRef();
   const genderRef = useRef();
+  const [validated, setValidated] = useState(false);
   const { dispatch } = useContext(Context);
   const navToLoginHandler = () => {
     dispatch({
@@ -26,11 +27,24 @@ export default function Signup() {
 
   const signupHandler = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    setValidated(true);
     try {
+      let gender;
+      if (document.getElementById("male-radio").checked) {
+        gender = "male";
+      } else {
+        gender = "female";
+      }
       const name = nameRef.current.value;
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
       const cpassword = cpasswordRef.current.value;
+      const dob = dobRef.current.value;
       if (password !== cpassword) {
         toast.error("Passwords don't match.");
         return;
@@ -39,6 +53,8 @@ export default function Signup() {
         name,
         email,
         password,
+        dob,
+        gender,
       });
       if (data.ok) {
         toast.success("Signup successful. Login to proceed");
@@ -50,87 +66,102 @@ export default function Signup() {
   };
 
   return (
-    <Form>
-      <Row>
-        <Col>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Name"
-            className="mb-3"
-          >
-            <Form.Control type="text" ref={nameRef} required />
-          </FloatingLabel>
-        </Col>
-        <Col>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Email"
-            className="mb-3"
-          >
-            <Form.Control required ref={emailRef} type="email" />
-          </FloatingLabel>
-        </Col>
+    <Form noValidate validated={validated} onSubmit={signupHandler}>
+      <Row className="mb-3">
+        <Form.Group as={Col} md="6" controlId="validationCustom01">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            autoFocus
+            required
+            ref={nameRef}
+            type="text"
+            placeholder="Name"
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter your name.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Col} md="6" controlId="validationCustom02">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            required
+            ref={emailRef}
+            type="email"
+            placeholder="Email"
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter your email.
+          </Form.Control.Feedback>
+        </Form.Group>
       </Row>
-      <Row>
-        <Col>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Password"
-            className="mb-3"
-          >
-            <Form.Control required ref={passwordRef} type="password" />
-          </FloatingLabel>
-        </Col>
-        <Col>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Confirm Password"
-            className="mb-3"
-          >
-            <Form.Control required="true" ref={cpasswordRef} type="password" />
-          </FloatingLabel>
-        </Col>
+      <Row className="mb-3">
+        <Form.Group as={Col} md="6" controlId="validationCustom03">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            ref={passwordRef}
+            placeholder="Password"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please provide a password.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group as={Col} md="6" controlId="validationCustom03">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            ref={cpasswordRef}
+            type="password"
+            placeholder="Confirm Password"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Please confirm password.
+          </Form.Control.Feedback>
+        </Form.Group>
       </Row>
-
-      <Row>
-        <Col>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Date of Birth: </Form.Label>
-            <Form.Control
-              required
-              ref={dobRef}
-              type="date"
-              placeholder="Date of Birth"
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Gender: </Form.Label>
-            <div className="seller-gender-radio">
-              <Form.Check
-                required
-                type="radio"
-                id="default-radio"
-                name="gender"
-                label="Male"
-                value="male"
-                ref={genderRef}
-              />
-              <Form.Check
-                required
-                type="radio"
-                id="default-radio"
-                name="gender"
-                label="Female"
-                value="female"
-                ref={genderRef}
-              />
-            </div>
-          </Form.Group>
-        </Col>
+      <Row className="mb-3">
+        <Form.Group as={Col} md="6" controlId="validationCustom05">
+          <Form.Label>Date of Birth</Form.Label>
+          <Form.Control ref={dobRef} type="date" required />
+          <Form.Control.Feedback type="invalid">
+            Please provide your date of birth.
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group
+          as={Col}
+          md="6"
+          controlId="validationCustom06"
+          key={`inline-radio`}
+        >
+          <Form.Label>Gender </Form.Label>
+          <br />
+          <Form.Check
+            inline
+            label="Male"
+            name="gender"
+            type="radio"
+            value="male"
+            id="male-radio"
+            required
+          />
+          <Form.Check
+            required
+            inline
+            label="Female"
+            name="gender"
+            type="radio"
+            value="female"
+            id="female-radio"
+          />
+          <Form.Control.Feedback type="invalid">
+            Please enter your gender.
+          </Form.Control.Feedback>
+        </Form.Group>
       </Row>
-
+      <div className="center mb-3">
+        <Button type="submit">Sign Up</Button>
+      </div>
       <div className="center">
         <p>
           Already a registered user?{" "}
@@ -138,11 +169,6 @@ export default function Signup() {
             Login
           </span>
         </p>
-      </div>
-      <div className="center">
-        <Button variant="primary" type="submit" onClick={signupHandler}>
-          Sign Up
-        </Button>
       </div>
     </Form>
   );

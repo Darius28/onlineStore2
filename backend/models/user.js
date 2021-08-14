@@ -20,8 +20,8 @@ const userSchema = new Schema(
       max: 64,
       required: true,
     },
-    age: {
-      type: Number,
+    dob: {
+      type: Date,
     },
     gender: {
       type: [String],

@@ -4,7 +4,7 @@ import { comparePassword, hashPassword } from "../utils";
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, dob, gender } = req.body;
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).send("User already exists.");
@@ -16,6 +16,8 @@ export const signup = async (req, res) => {
       name,
       email,
       password: hashedPassword,
+      dob,
+      gender,
     }).save();
 
     return res.json({ ok: true });
@@ -30,7 +32,7 @@ export const login = async (req, res) => {
 
     const user = await User.findOne(
       { email },
-      { _id: 1, name: 1, password: 1, email: 1 }
+      { _id: 1, name: 1, password: 1, email: 1, dob: 1, gender: 1 }
     );
     if (!user) {
       return res.status(400).send("User not found!");

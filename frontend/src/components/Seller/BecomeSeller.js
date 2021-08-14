@@ -11,6 +11,11 @@ export default function BecomeSeller() {
   useEffect(() => {
     if (user) {
       setDetails(user);
+      if (user.gender[0] === "male") {
+        document.getElementById("male-radio").checked = true;
+      } else {
+        document.getElementById("female-radio").checked = true;
+      }
     }
   }, [user]);
 
@@ -40,17 +45,17 @@ export default function BecomeSeller() {
                 <Form.Label>Gender: </Form.Label>
                 <div className="seller-gender-radio">
                   <Form.Check
-                  
                     type="radio"
-                    id="default-radio"
+                    id="male-radio"
                     name="gender"
                     label="Male"
                     value="male"
+                    disabled
                   />
                   <Form.Check
-                
+                    disabled
                     type="radio"
-                    id="default-radio"
+                    id="female-radio"
                     name="gender"
                     label="Female"
                     value="female"
