@@ -2,17 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import "./BecomeSeller.css";
 import { Card, Button, Form, Row, Col } from "react-bootstrap";
 import { Context } from "../../context";
+import { useHistory } from "react-router-dom";
 
 export default function BecomeSeller() {
   const { state, dispatch } = useContext(Context);
   const [details, setDetails] = useState();
   const [userAge, setUserAge] = useState();
   const { user } = state;
+  const history = useHistory();
 
   useEffect(() => {
     if (user) {
       setDetails(user);
-      if (user.gender[0] === "male") {
+      if (user.gender === "male") {
         document.getElementById("male-radio").checked = true;
       } else {
         document.getElementById("female-radio").checked = true;
@@ -40,6 +42,17 @@ export default function BecomeSeller() {
       setUserAge(age);
     }
   }, [user, userAge]);
+
+  const becomeSellerHandler = () => {
+    const oldLSData = JSON.parse(localStorage.getItem("user"));
+    const newLSData = { ...oldLSData, seller: true };
+    console.log(state)
+    localStorage.setItem("user", JSON.stringify(newLSData));
+    dispatch({
+      type: "BECOME_SELLER"
+    })
+    history.replace("/add-items");
+  };
 
   return (
     <div className="seller-container">
@@ -100,7 +113,9 @@ export default function BecomeSeller() {
           </Form>
         </div>
         <div className="center mb-3">
-          <Button variant="success">Continue</Button>
+          <Button variant="success" onClick={becomeSellerHandler}>
+            Continue
+          </Button>
         </div>
         <h2 className="center">Why become a seller? </h2>
       </div>
@@ -158,9 +173,6 @@ export default function BecomeSeller() {
             </Card.Body>
           </Card>
         </div>
-      </div>
-      <div className="center">
-        <Button variant="primary">Click to become a seller</Button>
       </div>
     </div>
   );

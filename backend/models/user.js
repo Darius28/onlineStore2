@@ -24,8 +24,11 @@ const userSchema = new Schema(
       type: Date,
     },
     gender: {
-      type: [String],
-      enum: ["male", "female"],
+      type: String,
+    },
+    seller: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

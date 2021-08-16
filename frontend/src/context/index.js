@@ -21,7 +21,9 @@ const rootReducer = (state, action) => {
     case "LOGIN": {
       return { ...state, user: action.payload };
     }
-
+    case "BECOME_SELLER": {
+      return { ...state, user: { ...state.user, seller: true } };
+    }
     case "LOGOUT":
       return { ...state, user: null };
     default:

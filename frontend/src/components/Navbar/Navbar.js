@@ -11,7 +11,7 @@ import {
   Image,
 } from "react-bootstrap";
 import { PersonCircle } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Navbar.css";
 import UserModal from "../UI/UserModal/UserModal";
 import { Context } from "../../context";
@@ -22,6 +22,7 @@ import { BackendUrl } from "../../utils/BackendUrl";
 const HeaderBar = () => {
   const { state, dispatch } = useContext(Context);
   const { user, showModal } = state;
+  const history = useHistory();
 
   const showLoginModalHandler = () => {
     dispatch({
@@ -44,6 +45,7 @@ const HeaderBar = () => {
       });
       localStorage.removeItem("user");
       const { data } = await axios.post(`${BackendUrl}/logout`);
+      history.replace("/");
       toast.success("Logout Successful.");
     } catch (err) {
       console.log(err);
@@ -94,9 +96,15 @@ const HeaderBar = () => {
                       </Button>
                     </NavDropdown.Item>
                     <NavDropdown.Item>
-                      <Link to="/become-seller" className="navbar-link">
-                        Become a Seller
-                      </Link>
+                      {user.seller === false ? (
+                        <Link to="/become-seller" className="navbar-link">
+                          Become a Seller
+                        </Link>
+                      ) : (
+                        <Link to="/add-items" className="navbar-link">
+                          Your Items
+                        </Link>
+                      )}
                     </NavDropdown.Item>
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                     <NavDropdown.Item>Wishlist</NavDropdown.Item>
