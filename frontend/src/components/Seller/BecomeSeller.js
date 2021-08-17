@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./BecomeSeller.css";
-import { Card, Button, Form, Row, Col, Toast } from "react-bootstrap";
+import { Card, Button, Form, Row, Col } from "react-bootstrap";
 import { Context } from "../../context";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
