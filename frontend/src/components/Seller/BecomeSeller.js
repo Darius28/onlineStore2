@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./BecomeSeller.css";
-import { Card, Button, Form, Row, Col } from "react-bootstrap";
+import { Card, Button, Form, Row, Col, Toast } from "react-bootstrap";
 import { Context } from "../../context";
 import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { BackendUrl } from "../../utils/BackendUrl";
 
 export default function BecomeSeller() {
   const { state, dispatch } = useContext(Context);
@@ -43,17 +46,24 @@ export default function BecomeSeller() {
     }
   }, [user, userAge]);
 
-  const becomeSellerHandler = () => {
-    const oldLSData = JSON.parse(localStorage.getItem("user"));
-    const newLSData = { ...oldLSData, seller: true };
-    console.log(state)
-    localStorage.setItem("user", JSON.stringify(newLSData));
-    dispatch({
-      type: "BECOME_SELLER"
-    })
-    history.replace("/add-items");
+  const becomeSellerHandler = async () => {
+    try {
+      const { data } = await axios.post(`${BackendUrl}/become-seller`, {
+        email: user.email,
+      });
+      const oldLSData = JSON.parse(localStorage.getItem("user"));
+      const newLSData = { ...oldLSData, seller: true };
+      console.log(state);
+      localStorage.setItem("user", JSON.stringify(newLSData));
+      dispatch({
+        type: "BECOME_SELLER",
+      });
+      history.replace("/add-items");
+    } catch (err) {
+      console.log(err);
+      toast.error(err.response.data);
+    }
   };
-
   return (
     <div className="seller-container">
       <div className="seller-header">
