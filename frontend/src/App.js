@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import HeaderBar from "./components/Navbar/Navbar";
 import { Route, Switch, useParams, useLocation } from "react-router-dom";
 import Home from "./components/Home/Home";

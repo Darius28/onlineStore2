@@ -30,6 +30,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    shop_name: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
