@@ -33,16 +33,23 @@ export default function AddItems() {
   };
 
   const addCategoryHandler = (e) => {
-    console.log(e.target.value);
+    const selectedValue = e.target.value;
     setItemCategory((prevState) => {
       let array;
       array = prevState;
-      array.push(e.target.value);
+      const itemExists = array.findIndex((item) => {
+        return item === selectedValue;
+      });
+      if (itemExists !== -1) {
+        return array;
+      }
+      console.log("itemExists: ", itemExists);
+      array.push(selectedValue);
       return array;
     });
     setAdded((prevState) => prevState + 1);
-    console.log(itemCategory);
-    console.log(itemCategory.length);
+    const selectCategory = document.getElementById("select-category");
+    selectCategory.selectedIndex = 0;
   };
 
   useEffect(() => {
@@ -98,8 +105,13 @@ export default function AddItems() {
             <Row>
               <Form.Group as={Col} md="2" className="mb-3">
                 <Form.Label>Choose Category (max 3): </Form.Label>
-                <select onChange={addCategoryHandler} className="form-control">
-                  <option>---Select Category---</option>
+                <select
+                  onChange={addCategoryHandler}
+                  disabled={itemCategory.length === 3}
+                  className="form-control"
+                  id="select-category"
+                >
+                  <option value="">---Select Category---</option>
                   {optionsList}
                 </select>
               </Form.Group>
@@ -109,17 +121,17 @@ export default function AddItems() {
                 <ButtonGroup>
                   {itemCategory.map((category) => {
                     return (
-                      <div>
+                      <div className="button-container">
                         <div className="category-button-container">
                           <button className="category-button">
                             {category}
                           </button>
-                        </div>
-                        <div
-                          className="cancel-button-container"
-                          onClick={removeCategoryHandler.bind(null, category)}
-                        >
-                          <p className="cancel-button-text">x</p>
+                          <div
+                            className="cancel-button-container"
+                            onClick={removeCategoryHandler.bind(null, category)}
+                          >
+                            <p className="cancel-button-text">x</p>
+                          </div>
                         </div>
                       </div>
                     );

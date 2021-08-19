@@ -3,6 +3,11 @@
   margin-right: 2rem;
 }
 
+.button-container {
+    display: flex;
+    margin-right: 0.7rem;
+}
+
 .category-button-container {
   position: relative;
 }
@@ -31,6 +36,6 @@
   margin-bottom: 0;
 }
 
-.category-button-container:hover {
+.category-button:hover {
   opacity: 0.8;
 }
