@@ -7,6 +7,7 @@ import { CATEGORIES } from "../../utils/Categories";
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
   const [itemImg, setItemImg] = useState([]);
+  const [amtImages, setAmtImages] = useState(0);
   const [itemCategory, setItemCategory] = useState([]);
   const [added, setAdded] = useState(0);
 
@@ -24,11 +25,12 @@ export default function AddItems() {
       array.push(e.target.files[0]);
       return array;
     });
+    setAmtImages((prevState) => prevState + 1);
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(itemImg);
+    console.log(itemImg.length);
     console.log(itemCategory);
   };
 
@@ -100,6 +102,11 @@ export default function AddItems() {
                   onChange={addImageHandler}
                   name="imgCollection"
                 />
+                {amtImages === 0 ? (
+                  <span className="red">Images Added: 0</span>
+                ) : (
+                  <span className="green">Images Added: {amtImages}</span>
+                )}
               </Form.Group>
             </Row>
             <Row>
@@ -118,25 +125,34 @@ export default function AddItems() {
               <Form.Group as={Col} md="2">
                 <Form.Label>Added Categories: </Form.Label>
                 <br />
-                <ButtonGroup>
-                  {itemCategory.map((category) => {
-                    return (
-                      <div className="button-container">
-                        <div className="category-button-container">
-                          <button className="category-button">
-                            {category}
-                          </button>
-                          <div
-                            className="cancel-button-container"
-                            onClick={removeCategoryHandler.bind(null, category)}
-                          >
-                            <p className="cancel-button-text">x</p>
+                {itemCategory.length === 0 ? (
+                  <p className="no-category-added-text">
+                    You haven't added categories yet.
+                  </p>
+                ) : (
+                  <ButtonGroup>
+                    {itemCategory.map((category) => {
+                      return (
+                        <div className="button-container">
+                          <div className="category-button-container">
+                            <button className="category-button">
+                              {category}
+                            </button>
+                            <div
+                              className="cancel-button-container"
+                              onClick={removeCategoryHandler.bind(
+                                null,
+                                category
+                              )}
+                            >
+                              <p className="cancel-button-text">x</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </ButtonGroup>
+                      );
+                    })}
+                  </ButtonGroup>
+                )}
               </Form.Group>
             </Row>
             <div className="center">
