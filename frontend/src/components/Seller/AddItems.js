@@ -30,7 +30,7 @@ export default function AddItems() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(itemImg.length);
+    console.log(itemImg);
     console.log(itemCategory);
   };
 
@@ -95,18 +95,23 @@ export default function AddItems() {
               </Form.Group>
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Images: </Form.Label> <br />
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={addImageHandler}
-                  name="imgCollection"
-                />
-                {amtImages === 0 ? (
-                  <span className="red">Images Added: 0</span>
-                ) : (
-                  <span className="green">Images Added: {amtImages}</span>
-                )}
+                <div className="input-file-container">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={addImageHandler}
+                    name="imgCollection"
+                  />
+                  {amtImages === 0 ? (
+                    <span className="red">Images Added: 0</span>
+                  ) : (
+                    <>
+                      <span className="green">Images Added: {amtImages}</span>
+                      <span className="link">Click to Preview</span>
+                    </>
+                  )}
+                </div>
               </Form.Group>
             </Row>
             <Row>
