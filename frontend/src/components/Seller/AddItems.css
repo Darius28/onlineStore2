@@ -52,3 +52,18 @@
 .green {
   color: green;
 }
+
+.input-file-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.link {
+  color: rgb(13, 110, 253);
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
