@@ -3,6 +3,7 @@ import { Button, Form, Row, Col, ButtonGroup } from "react-bootstrap";
 import CloseButton from "react-bootstrap/CloseButton";
 import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
+import ImagePreview from "../UI/ImagePreviewModal/ImagePreview";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
@@ -10,6 +11,7 @@ export default function AddItems() {
   const [amtImages, setAmtImages] = useState(0);
   const [itemCategory, setItemCategory] = useState([]);
   const [added, setAdded] = useState(0);
+  const [showImgPreview, setShowImgPreview] = useState(false);
 
   const optionsList = CATEGORIES.map((category) => (
     <option value={category}>{category}</option>
@@ -22,7 +24,7 @@ export default function AddItems() {
   const addImageHandler = (e) => {
     setItemImg((prevState) => {
       let array = prevState;
-      array.push(e.target.files[0]);
+      array.push(window.URL.createObjectURL(e.target.files[0]));
       return array;
     });
     setAmtImages((prevState) => prevState + 1);
@@ -69,6 +71,14 @@ export default function AddItems() {
     setAdded((prevState) => prevState - 1);
   };
 
+  const showImgPreviewHandler = () => {
+    setShowImgPreview(true);
+  };
+
+  const closeImgPreviewHandler = () => {
+    setShowImgPreview(false);
+  };
+
   return (
     <div>
       <h1 className="center mt-3 mb-3">Your Inventory</h1>
@@ -108,7 +118,15 @@ export default function AddItems() {
                   ) : (
                     <>
                       <span className="green">Images Added: {amtImages}</span>
-                      <span className="link">Click to Preview</span>
+                      <span className="link" onClick={showImgPreviewHandler}>
+                        Click to Preview
+                      </span>
+                      {showImgPreview ? (
+                        <ImagePreview
+                          onCloseModal={closeImgPreviewHandler}
+                          images={itemImg}
+                        />
+                      ) : null}
                     </>
                   )}
                 </div>
