@@ -16,3 +16,26 @@
   z-index: 100;
   overflow: scroll;
 }
+
+.image-preview-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.image-dimensions {
+  width: 25rem;
+  height: auto;
+  width: 100%;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-name {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}

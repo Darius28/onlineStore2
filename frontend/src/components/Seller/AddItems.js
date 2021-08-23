@@ -4,6 +4,7 @@ import CloseButton from "react-bootstrap/CloseButton";
 import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
 import ImagePreview from "../UI/ImagePreviewModal/ImagePreview";
+import CancelButton from "../UI/Button/CancelButton";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
@@ -22,9 +23,13 @@ export default function AddItems() {
   };
 
   const addImageHandler = (e) => {
+    console.log(e.target.files[0].name);
     setItemImg((prevState) => {
       let array = prevState;
-      array.push(window.URL.createObjectURL(e.target.files[0]));
+      array.push({
+        name: e.target.files[0].name,
+        url: window.URL.createObjectURL(e.target.files[0]),
+      });
       return array;
     });
     setAmtImages((prevState) => prevState + 1);
@@ -161,15 +166,12 @@ export default function AddItems() {
                             <button className="category-button">
                               {category}
                             </button>
-                            <div
-                              className="cancel-button-container"
+                            <CancelButton
                               onClick={removeCategoryHandler.bind(
                                 null,
                                 category
                               )}
-                            >
-                              <p className="cancel-button-text">x</p>
-                            </div>
+                            />
                           </div>
                         </div>
                       );

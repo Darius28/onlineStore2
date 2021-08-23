@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Card from "../Card/Card";
 import ReactDOM from "react-dom";
 import "./ImagePreview.css";
-import Carousel from "react-bootstrap/Carousel";
-import ImageContainer from "../ImageContainer/ImageContainer";
+import CancelButton from "../Button/CancelButton";
 
 const Backdrop = (props) => {
   return <div className="backdrop" onClick={props.onCloseModal}></div>;
@@ -13,23 +12,26 @@ const Modal = (props) => {
   const [displayImgUrl, setDisplayImgUrl] = useState(props.images);
 
   const imageContainer = displayImgUrl.map((image) => {
+    console.log(image);
     return (
-      <Carousel.Item>
-        <img
-          className="d-block"
-          height={250}
-          width={600}
-          src={image}
-          alt="First slide"
-        />
-      </Carousel.Item>
+      <>
+        <div className="image-container">
+          <img className="image-dimensions" src={image.url} />
+          <div className="image-delete">
+            <CancelButton />
+          </div>
+          <div className="image-name">
+            <span>{image.name}</span>
+          </div>
+        </div>
+      </>
     );
   });
 
   return (
     <Card className="modal">
-      <h1 className="center">Added Images</h1>
-      <Carousel>{imageContainer}</Carousel>
+      <h1 className="center mt-2">Added Images</h1>
+      <div className="image-preview-container">{imageContainer}</div>
     </Card>
   );
 };
