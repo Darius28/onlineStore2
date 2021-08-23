@@ -84,6 +84,11 @@ export default function AddItems() {
     setShowImgPreview(false);
   };
 
+  const removePictureHandler = (url) => {
+    console.log(url);
+    console.log("clicked")
+  };
+
   return (
     <div>
       <h1 className="center mt-3 mb-3">Your Inventory</h1>
@@ -130,6 +135,7 @@ export default function AddItems() {
                         <ImagePreview
                           onCloseModal={closeImgPreviewHandler}
                           images={itemImg}
+                          onRemovePicture={removePictureHandler}
                         />
                       ) : null}
                     </>

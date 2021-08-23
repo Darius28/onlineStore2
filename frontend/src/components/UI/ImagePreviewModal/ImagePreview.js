@@ -9,16 +9,15 @@ const Backdrop = (props) => {
 };
 
 const Modal = (props) => {
-  const [displayImgUrl, setDisplayImgUrl] = useState(props.images);
-
-  const imageContainer = displayImgUrl.map((image) => {
-    console.log(image);
+  const imageContainer = props.images.map((image) => {
     return (
       <>
         <div className="image-container">
           <img className="image-dimensions" src={image.url} />
           <div className="image-delete">
-            <CancelButton />
+            <CancelButton
+              onClick={props.onRemovePicture.bind(null, image.url)}
+            />
           </div>
           <div className="image-name">
             <span>{image.name}</span>
@@ -44,7 +43,11 @@ export default function ImagePreview(props) {
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
-        <Modal onCloseModal={props.onCloseModal} images={props.images} />,
+        <Modal
+          onCloseModal={props.onCloseModal}
+          images={props.images}
+          onRemovePicture={props.onRemovePicture}
+        />,
         document.getElementById("modal-root")
       )}
     </>
