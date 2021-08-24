@@ -61,11 +61,6 @@ export default function AddItems() {
     selectCategory.selectedIndex = 0;
   };
 
-  useEffect(() => {
-    console.log(itemCategory);
-    console.log("changed!!!");
-  }, [added]);
-
   const removeCategoryHandler = (cat) => {
     setItemCategory((prevState) => {
       let array;
@@ -85,8 +80,19 @@ export default function AddItems() {
   };
 
   const removePictureHandler = (url) => {
-    console.log(url);
-    console.log("clicked")
+    setItemImg((prevState) => {
+      let array2 = prevState.filter((item) => item.url !== url);
+      return array2;
+    });
+
+    setAmtImages((prevState) => {
+      if (prevState === 1) {
+        closeImgPreviewHandler();
+        return 0;
+      } else {
+        return prevState - 1;
+      }
+    });
   };
 
   return (

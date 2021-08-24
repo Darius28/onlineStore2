@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import HeaderBar from "./components/Navbar/Navbar";
 import { Route, Switch, useParams, useLocation } from "react-router-dom";
 import Home from "./components/Home/Home";
@@ -12,7 +12,6 @@ import { Context } from "./context";
 
 function App() {
   const { state } = useContext(Context);
-  console.log(state);
   return (
     <>
       <ToastContainer position="top-center" />
