@@ -23,7 +23,7 @@ const itemSchema = new Schema(
         "fitness",
       ],
     },
-    picture: {},
+    pictures: {},
   },
   { timestamps: true }
 );

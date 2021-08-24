@@ -20,7 +20,7 @@ const Modal = (props) => {
             />
           </div>
           <div className="image-name">
-            <span>{image.name}</span>
+            <span>{image.imageObj.name}</span>
           </div>
         </div>
       </>

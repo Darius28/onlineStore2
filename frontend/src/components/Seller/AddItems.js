@@ -4,6 +4,8 @@ import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
 import ImagePreview from "../UI/ImagePreviewModal/ImagePreview";
 import CancelButton from "../UI/Button/CancelButton";
+import axios from "axios";
+import { BackendUrl } from "../../utils/BackendUrl";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
@@ -22,11 +24,10 @@ export default function AddItems() {
   };
 
   const addImageHandler = (e) => {
-    console.log(e.target.files[0].name);
     setItemImg((prevState) => {
       let array = prevState;
       array.push({
-        name: e.target.files[0].name,
+        imageObj: e.target.files[0],
         url: window.URL.createObjectURL(e.target.files[0]),
       });
       return array;
@@ -34,10 +35,14 @@ export default function AddItems() {
     setAmtImages((prevState) => prevState + 1);
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
     console.log(itemImg);
     console.log(itemCategory);
+    const { data } = await axios.post(`${BackendUrl}/add-item`, {
+      itemImg: itemImg,
+      itemCategory,
+    });
   };
 
   const addCategoryHandler = (e) => {
