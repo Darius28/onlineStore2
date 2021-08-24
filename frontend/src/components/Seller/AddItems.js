@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col, ButtonGroup } from "react-bootstrap";
-import CloseButton from "react-bootstrap/CloseButton";
 import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
 import ImagePreview from "../UI/ImagePreviewModal/ImagePreview";
