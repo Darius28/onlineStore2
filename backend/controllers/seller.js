@@ -27,43 +27,53 @@ export const becomeSeller = async (req, res) => {
 export const addItem = async (req, res) => {
   try {
     const { itemCategory, imagesBase64 } = req.body;
-    console.log(itemCategory.length);
-    console.log(imagesBase64.length);
 
-    // let postPic = imagesBase64[0];
-    // console.log(postPic);
-    // return;
+    let awsImageObj = [];
 
-    imagesBase64.map((item) => {
-      let postPic = item.b64Uri;
-      console.log(item.url);
-      const base64Data = new Buffer.from(
-        postPic.replace(/^data:image\/\w+;base64,/, ""),
-        "base64"
-      );
-      const type = postPic.split(";")[0].split("/")[1];
-      const params = {
-        Bucket: "onlinestore2",
-        Key: `${nanoid()}.${type}`,
-        Body: base64Data,
-        ACL: "public-read",
-        ContentEncoding: "base64",
-        ContentType: `image/${type}`,
-      };
+    const uploadImages = () => {
+      return new Promise((resolve, reject) => {
+        imagesBase64.map((item) => {
+          let postPic = item.b64Uri;
+          const base64Data = new Buffer.from(
+            postPic.replace(/^data:image\/\w+;base64,/, ""),
+            "base64"
+          );
+          const type = postPic.split(";")[0].split("/")[1];
+          const params = {
+            Bucket: "onlinestore2",
+            Key: `${nanoid()}.${type}`,
+            Body: base64Data,
+            ACL: "public-read",
+            ContentEncoding: "base64",
+            ContentType: `image/${type}`,
+          };
 
-      S3.upload(params, async (err, data) => {
-        console.log("S3 upload func");
-        if (err) {
-          console.log("AWS ERROR: ", err);
-          return res.sendStatus(400);
-        }
-        console.log("datadata", data);
-        if (data) {
-          console.log("data to be sent: ", data);
-          res.send({ ok: true });
-        }
+          S3.upload(params, async (err, data) => {
+            console.log("S3 upload func");
+            if (err) {
+              console.log("AWS ERROR: ", err);
+              reject(err);
+              return res.sendStatus(400);
+            }
+            // console.log("data", data);
+            if (data) {
+              console.log("DATA RETREIVED!!!!!");
+              // console.log("data to be sent: ", data);
+              awsImageObj.push(data);
+              if (awsImageObj.length === imagesBase64.length) {
+                resolve();
+              }
+            }
+          });
+        });
       });
-    });
+    };
+
+    uploadImages()
+      .then(() => {
+        res.send({ awsImageObj });
+      })
+      .catch((err) => console.log("promise error: ", err));
   } catch (err) {
     console.log(err);
   }
