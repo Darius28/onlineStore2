@@ -59,6 +59,7 @@ export default function AddItems() {
   };
 
   const onSubmitHandler = async (e) => {
+    e.preventDefault()
     try {
       const { data } = await axios.post(`${BackendUrl}/add-item`, {
         imagesBase64: itemImgB64,
