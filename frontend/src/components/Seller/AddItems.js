@@ -6,10 +6,12 @@ import ImagePreview from "../UI/ImagePreviewModal/ImagePreview";
 import CancelButton from "../UI/Button/CancelButton";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
+import Resizer from "react-image-file-resizer";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
   const [itemImg, setItemImg] = useState([]);
+  const [itemImgB64, setItemImgB64] = useState([]);
   const [amtImages, setAmtImages] = useState(0);
   const [itemCategory, setItemCategory] = useState([]);
   const [added, setAdded] = useState(0);
@@ -24,11 +26,32 @@ export default function AddItems() {
   };
 
   const addImageHandler = (e) => {
+    console.log(e.target.files[0]);
+    const previewUrl = window.URL.createObjectURL(e.target.files[0]);
+    Resizer.imageFileResizer(
+      e.target.files[0],
+      720,
+      500,
+      "JPEG",
+      100,
+      0,
+      async (uri) => {
+        setItemImgB64((prevState) => {
+          let array = prevState;
+          array.push({
+            b64Uri: uri,
+            url: previewUrl,
+          });
+          return array;
+        });
+      }
+    );
+
     setItemImg((prevState) => {
       let array = prevState;
       array.push({
         imageObj: e.target.files[0],
-        url: window.URL.createObjectURL(e.target.files[0]),
+        url: previewUrl,
       });
       return array;
     });
@@ -36,13 +59,14 @@ export default function AddItems() {
   };
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    console.log(itemImg);
-    console.log(itemCategory);
-    const { data } = await axios.post(`${BackendUrl}/add-item`, {
-      itemImg: itemImg,
-      itemCategory,
-    });
+    try {
+      const { data } = await axios.post(`${BackendUrl}/add-item`, {
+        imagesBase64: itemImgB64,
+        itemCategory,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const addCategoryHandler = (e) => {
@@ -87,6 +111,11 @@ export default function AddItems() {
     setItemImg((prevState) => {
       let array2 = prevState.filter((item) => item.url !== url);
       return array2;
+    });
+
+    setItemImgB64((prevState) => {
+      let array = prevState.filter((item) => item.url !== url);
+      return array;
     });
 
     setAmtImages((prevState) => {

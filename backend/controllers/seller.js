@@ -25,7 +25,9 @@ export const becomeSeller = async (req, res) => {
 
 export const addItem = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log("itemCategory: ", req.body.itemCategory.length);
+    console.log("imagesBase64: ", req.body.imagesBase64.length);
+    res.json({ ok: true });
   } catch (err) {
     console.log(err);
   }
