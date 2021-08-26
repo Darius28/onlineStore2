@@ -42,13 +42,14 @@ const Provider = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-    const getCsrfToken = async () => {
-      const { data } = await axios.get(`${BackendUrl}/get-csrf-token`);
-      axios.defaults.headers["X-CSRF-Token"] = data.csrfToken;
-    };
-    getCsrfToken();
-  }, []);
+  // useEffect(() => {
+  //   const getCsrfToken = async () => {
+  //     const { data } = await axios.get(`${BackendUrl}/get-csrf-token`);
+  //     console.log(data.csrfToken);
+  //     axios.defaults.headers["X-CSRF-Token"] = data.csrfToken;
+  //   };
+  //   getCsrfToken();
+  // }, []);
 
   return (
     <Context.Provider value={{ state, dispatch }}>
