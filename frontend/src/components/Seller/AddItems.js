@@ -7,6 +7,7 @@ import CancelButton from "../UI/Button/CancelButton";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
 import Resizer from "react-image-file-resizer";
+import { toast } from "react-toastify";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(true);
@@ -76,6 +77,16 @@ export default function AddItems() {
         imagesBase64: itemImgB64,
         itemCategory,
       });
+
+      nameRef.current.value = "";
+      priceRef.current.value = "";
+      descriptionRef.current.value = "";
+      setItemCategory([]);
+      setItemImg([]);
+      setAdded(0);
+      setAmtImages(0);
+      setItemImgB64([]);
+      toast.success("Item added successfully!");
     } catch (err) {
       console.log(err);
     }

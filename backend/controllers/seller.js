@@ -73,7 +73,7 @@ export const addItem = async (req, res) => {
         const { data } = await User.findOneAndUpdate(
           { email },
           {
-            $set: {
+            $push: {
               items: {
                 name,
                 price,
