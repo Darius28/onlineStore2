@@ -55,7 +55,7 @@ export default function BecomeSeller() {
         shop,
       });
       const oldLSData = JSON.parse(localStorage.getItem("user"));
-      const newLSData = { ...oldLSData, seller: true };
+      const newLSData = { ...oldLSData, seller: true, shop_name: shop };
       console.log(state);
       localStorage.setItem("user", JSON.stringify(newLSData));
       dispatch({

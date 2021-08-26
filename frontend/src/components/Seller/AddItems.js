@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Form, Row, Col, ButtonGroup } from "react-bootstrap";
 import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
@@ -16,6 +16,9 @@ export default function AddItems() {
   const [itemCategory, setItemCategory] = useState([]);
   const [added, setAdded] = useState(0);
   const [showImgPreview, setShowImgPreview] = useState(false);
+  const nameRef = useRef();
+  const priceRef = useRef();
+  const descriptionRef = useRef();
 
   const optionsList = CATEGORIES.map((category) => (
     <option value={category}>{category}</option>
@@ -59,9 +62,17 @@ export default function AddItems() {
   };
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
+      const email = JSON.parse(localStorage.getItem("user")).email;
+      const name = nameRef.current.value;
+      const price = priceRef.current.value;
+      const description = descriptionRef.current.value;
       const { data } = await axios.post(`${BackendUrl}/add-item`, {
+        email,
+        name,
+        price,
+        description,
         imagesBase64: itemImgB64,
         itemCategory,
       });
@@ -143,15 +154,15 @@ export default function AddItems() {
             <Row>
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Name: </Form.Label>
-                <Form.Control type="text" required autoFocus value={2} />
+                <Form.Control type="text" required autoFocus ref={nameRef} />
               </Form.Group>
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Price: </Form.Label>
-                <Form.Control type="number" required value={2} />
+                <Form.Control type="number" required ref={priceRef} />
               </Form.Group>
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Description: </Form.Label>
-                <Form.Control as="textarea" required value={2} />
+                <Form.Control as="textarea" required ref={descriptionRef} />
               </Form.Group>
               <Form.Group as={Col} md="6" className="mb-3">
                 <Form.Label>Images: </Form.Label> <br />

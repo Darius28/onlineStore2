@@ -26,7 +26,8 @@ export const becomeSeller = async (req, res) => {
 
 export const addItem = async (req, res) => {
   try {
-    const { itemCategory, imagesBase64 } = req.body;
+    const { email, name, price, description, itemCategory, imagesBase64 } =
+      req.body;
 
     let awsImageObj = [];
 
@@ -70,8 +71,8 @@ export const addItem = async (req, res) => {
     };
 
     uploadImages()
-      .then(() => {
-        res.send({ awsImageObj });
+      .then(async () => {
+        const { data } = await User.findOneAndUpdate({ email }, { $set: {} });
       })
       .catch((err) => console.log("promise error: ", err));
   } catch (err) {

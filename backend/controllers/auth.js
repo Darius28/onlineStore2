@@ -32,7 +32,16 @@ export const login = async (req, res) => {
 
     const user = await User.findOne(
       { email },
-      { _id: 1, name: 1, password: 1, email: 1, dob: 1, gender: 1, seller: 1 }
+      {
+        _id: 1,
+        name: 1,
+        password: 1,
+        email: 1,
+        dob: 1,
+        gender: 1,
+        seller: 1,
+        shop_name: 1,
+      }
     );
     if (!user) {
       return res.status(400).send("User not found!");
