@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import "./BecomeSeller.css";
 import { Card, Button, Form, Row, Col } from "react-bootstrap";
 import { Context } from "../../context";
@@ -13,6 +13,7 @@ export default function BecomeSeller() {
   const [userAge, setUserAge] = useState();
   const { user } = state;
   const history = useHistory();
+  const shopNameRef = useRef();
 
   useEffect(() => {
     if (user) {
@@ -48,8 +49,10 @@ export default function BecomeSeller() {
 
   const becomeSellerHandler = async () => {
     try {
+      const shop = shopNameRef.current.value;
       const { data } = await axios.post(`${BackendUrl}/become-seller`, {
         email: user.email,
+        shop,
       });
       const oldLSData = JSON.parse(localStorage.getItem("user"));
       const newLSData = { ...oldLSData, seller: true };
@@ -59,6 +62,7 @@ export default function BecomeSeller() {
         type: "BECOME_SELLER",
       });
       history.replace("/add-items");
+      toast.success("Congrats! You can start adding items to sell now.");
     } catch (err) {
       console.log(err);
       toast.error(err.response.data);
@@ -120,11 +124,21 @@ export default function BecomeSeller() {
                 />
               </Form.Group>
             </Row>
+            <Row>
+              <Form.Group as={Col} className="mb-3">
+                <Form.Label>Shop Name: </Form.Label>
+                <Form.Control
+                  ref={shopNameRef}
+                  required
+                  type="text"
+                ></Form.Control>
+              </Form.Group>
+            </Row>
           </Form>
         </div>
         <div className="center mb-3">
           <Button variant="success" onClick={becomeSellerHandler}>
-            Continue
+            Become a Seller
           </Button>
         </div>
         <h2 className="center">Why become a seller? </h2>

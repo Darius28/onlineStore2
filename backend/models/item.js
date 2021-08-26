@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const itemSchema = new Schema(
+export const itemSchema = new Schema(
   {
     name: {
       type: String,
@@ -23,7 +23,7 @@ const itemSchema = new Schema(
         "fitness",
       ],
     },
-    pictures: {},
+    pictures: [],
   },
   { timestamps: true }
 );

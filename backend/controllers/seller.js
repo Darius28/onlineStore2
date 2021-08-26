@@ -13,10 +13,10 @@ const S3 = new AWS.S3(awsConfig);
 
 export const becomeSeller = async (req, res) => {
   try {
-    console.log(req.body.email);
+    const { shop } = req.body;
     const user = await User.findOneAndUpdate(
       { email: req.body.email },
-      { $set: { seller: true } }
+      { $set: { seller: true, shop_name: shop } }
     ).exec();
     return res.json({ ok: true });
   } catch (err) {

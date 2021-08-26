@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
+import {itemSchema} from "./item";
 
 const userSchema = new Schema(
   {
@@ -33,6 +34,7 @@ const userSchema = new Schema(
     shop_name: {
       type: String,
     },
+    items: [itemSchema],
   },
   { timestamps: true }
 );
