@@ -56,10 +56,8 @@ export const addItem = async (req, res) => {
               reject(err);
               return res.sendStatus(400);
             }
-            // console.log("data", data);
             if (data) {
               console.log("DATA RETREIVED!!!!!");
-              // console.log("data to be sent: ", data);
               awsImageObj.push(data);
               if (awsImageObj.length === imagesBase64.length) {
                 resolve();
@@ -72,7 +70,21 @@ export const addItem = async (req, res) => {
 
     uploadImages()
       .then(async () => {
-        const { data } = await User.findOneAndUpdate({ email }, { $set: {} });
+        const { data } = await User.findOneAndUpdate(
+          { email },
+          {
+            $set: {
+              items: {
+                name,
+                price,
+                category: itemCategory,
+                description,
+                pictures: awsImageObj,
+              },
+            },
+          }
+        );
+        res.json({ ok: true });
       })
       .catch((err) => console.log("promise error: ", err));
   } catch (err) {
