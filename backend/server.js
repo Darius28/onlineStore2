@@ -8,7 +8,7 @@ import csrf from "csurf";
 require("dotenv").config();
 
 const app = express();
-// const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({ cookie: true });
 
 mongoose
   .connect(process.env.DATABASE, {
@@ -24,9 +24,13 @@ app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));
-// app.use(csrfProtection);
+app.use(csrfProtection);
 
 readdirSync("./routes").map((r) => app.use("/api", require(`./routes/${r}`)));
+
+app.get("/api/get-csrf-token", (req, res) => {
+  return res.json({ csrfToken: req.csrfToken() });
+});
 
 const port = process.env.PORT || 8000;
 

@@ -10,7 +10,7 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 
 export default function AddItems() {
-  const [addItem, setAddItem] = useState(true);
+  const [addItem, setAddItem] = useState(false);
   const [itemImg, setItemImg] = useState([]);
   const [itemImgB64, setItemImgB64] = useState([]);
   const [amtImages, setAmtImages] = useState(0);
@@ -153,7 +153,9 @@ export default function AddItems() {
 
   return (
     <div>
-      <h1 className="center mt-3 mb-3">Your Inventory</h1>
+      <h1 className="center mt-3 mb-3">
+        {JSON.parse(localStorage.getItem("user")).shop_name}
+      </h1>
       <div className="center">
         <Button variant="success" className="mb-3" onClick={showAddItemHandler}>
           Click to add Items
@@ -256,6 +258,7 @@ export default function AddItems() {
           </Form>
         </div>
       ) : null}
+
     </div>
   );
 }

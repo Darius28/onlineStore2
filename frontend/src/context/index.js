@@ -1,4 +1,6 @@
 import { useReducer, createContext, useEffect } from "react";
+import axios from "axios";
+import { BackendUrl } from "../utils/BackendUrl";
 
 const initialState = {
   showModal: null,
@@ -39,6 +41,15 @@ const Provider = (props) => {
       payload: JSON.parse(localStorage.getItem("user")),
     });
   }, []);
+
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const { data } = await axios.get(`${BackendUrl}/get-csrf-token`);
+      axios.defaults.headers["X-CSRF-Token"] = data.csrfToken;
+    };
+    getCsrfToken();
+  }, []);
+
   return (
     <Context.Provider value={{ state, dispatch }}>
       {props.children}
