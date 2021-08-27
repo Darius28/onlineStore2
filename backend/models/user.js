@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
+const { ObjectId } = mongoose;
 const { Schema } = mongoose;
-import {itemSchema} from "./item";
 
 const userSchema = new Schema(
   {
@@ -31,10 +31,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    shop_name: {
-      type: String,
+    shop_id: {
+      type: ObjectId,
     },
-    items: [itemSchema],
   },
   { timestamps: true }
 );

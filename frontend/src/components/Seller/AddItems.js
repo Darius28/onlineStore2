@@ -70,14 +70,19 @@ export default function AddItems() {
       const name = nameRef.current.value;
       const price = priceRef.current.value;
       const description = descriptionRef.current.value;
-      const { data } = await axios.post(`${BackendUrl}/add-item`, {
-        email,
-        name,
-        price,
-        description,
-        imagesBase64: itemImgB64,
-        itemCategory,
-      });
+      const { data } = await axios.post(
+        `${BackendUrl}/add-item`,
+        {
+          name,
+          price,
+          description,
+          imagesBase64: itemImgB64,
+          itemCategory,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       nameRef.current.value = "";
       priceRef.current.value = "";

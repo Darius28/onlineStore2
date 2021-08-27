@@ -38,11 +38,9 @@ export const login = async (req, res) => {
         _id: 1,
         name: 1,
         password: 1,
-        email: 1,
         dob: 1,
         gender: 1,
         seller: 1,
-        shop_name: 1,
       }
     );
     if (!user) {

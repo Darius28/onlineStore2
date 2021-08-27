@@ -1,5 +1,6 @@
 import User from "../models/user";
 import Item from "../models/item";
+import Shop from "../models/shop";
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 
@@ -13,12 +14,21 @@ const awsConfig = {
 const S3 = new AWS.S3(awsConfig);
 
 export const becomeSeller = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const { shop } = req.body;
+    const userId = req.user.id;
+    const shopName = await new Shop({
+      shop_owner: userId,
+      shop_name: shop,
+    }).save();
+    const shopId = shopName._id;
     const user = await User.findOneAndUpdate(
-      { email: req.body.email },
-      { $set: { seller: true, shop_name: shop } }
+      { _id: userId },
+      { $set: { seller: true, shop_id: shopId } }
     ).exec();
+    console.log(user);
     return res.json({ ok: true });
   } catch (err) {
     console.log(err);
@@ -26,11 +36,12 @@ export const becomeSeller = async (req, res) => {
 };
 
 export const addItem = async (req, res) => {
-  console.log(req.user);
-  return;
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  const userId = req.user.id;
+  console.log(userId);
   try {
-    const { email, name, price, description, itemCategory, imagesBase64 } =
-      req.body;
+    const { name, price, description, itemCategory, imagesBase64 } = req.body;
 
     let awsImageObj = [];
 
@@ -73,15 +84,15 @@ export const addItem = async (req, res) => {
 
     uploadImages()
       .then(async () => {
-        const { data } = await User.findOneAndUpdate(
-          { email },
+        const newItem = await Shop.findOneAndUpdate(
+          { shop_owner: userId },
           {
             $push: {
               items: {
-                name,
-                price,
+                name: name,
+                price: price,
                 category: itemCategory,
-                description,
+                description: description,
                 pictures: awsImageObj,
               },
             },

@@ -50,12 +50,18 @@ export default function BecomeSeller() {
   const becomeSellerHandler = async () => {
     try {
       const shop = shopNameRef.current.value;
-      const { data } = await axios.post(`${BackendUrl}/become-seller`, {
-        email: user.email,
-        shop,
-      });
+      const { data } = await axios.post(
+        `${BackendUrl}/become-seller`,
+        {
+          email: user.email,
+          shop,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       const oldLSData = JSON.parse(localStorage.getItem("user"));
-      const newLSData = { ...oldLSData, seller: true, shop_name: shop };
+      const newLSData = { ...oldLSData, seller: true };
       console.log(state);
       localStorage.setItem("user", JSON.stringify(newLSData));
       dispatch({
