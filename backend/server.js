@@ -20,7 +20,17 @@ mongoose
   .then(() => console.log("**DB CONNECTED**"))
   .catch((err) => console.log("DB CONNECTION ERR => ", err));
 
-app.use(cors());
+const whitelist = ["http://localhost:3000"];
+const corsOptions = {
+  credentials: true, 
+  origin: (origin, callback) => {
+    if (whitelist.includes(origin)) return callback(null, true);
+
+    callback(new Error("Not allowed by CORS"));
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(morgan("dev"));

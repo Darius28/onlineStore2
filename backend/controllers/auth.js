@@ -27,6 +27,8 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const { email, password } = req.body;
 
@@ -56,6 +58,7 @@ export const login = async (req, res) => {
       expiresIn: "7d",
     });
     res.cookie("token", token, { httpOnly: true });
+    console.log(token);
     user.password = undefined;
     res.send({ user });
   } catch (err) {

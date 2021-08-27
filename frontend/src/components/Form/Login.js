@@ -29,10 +29,16 @@ export default function Login() {
     try {
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
-      const { data } = await axios.post(`${BackendUrl}/login`, {
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${BackendUrl}/login`,
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       dispatch({
         type: "MODAL_STATUS",
       });

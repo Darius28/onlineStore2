@@ -1,4 +1,5 @@
 import User from "../models/user";
+import Item from "../models/item";
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
 
@@ -25,6 +26,8 @@ export const becomeSeller = async (req, res) => {
 };
 
 export const addItem = async (req, res) => {
+  console.log(req.user);
+  return;
   try {
     const { email, name, price, description, itemCategory, imagesBase64 } =
       req.body;

@@ -8,6 +8,7 @@ import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
+import Inventory from "./Inventory";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(false);
@@ -158,7 +159,7 @@ export default function AddItems() {
       </h1>
       <div className="center">
         <Button variant="success" className="mb-3" onClick={showAddItemHandler}>
-          Click to add Items
+          {addItem ? "Hide Add Items" : "Click to Add Items"}
         </Button>
       </div>
       {addItem ? (
@@ -258,7 +259,7 @@ export default function AddItems() {
           </Form>
         </div>
       ) : null}
-
+      <Inventory />
     </div>
   );
 }
