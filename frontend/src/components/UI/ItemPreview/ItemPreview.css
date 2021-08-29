@@ -1,0 +1,13 @@
+.title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-link {
+  color: blue;
+  cursor: pointer;
+}
+
+.edit-link:hover {
+  text-decoration: underline;
+}

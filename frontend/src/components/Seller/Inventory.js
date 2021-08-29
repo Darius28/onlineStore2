@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Inventory.css";
 import { BackendUrl } from "../../utils/BackendUrl";
+import ItemPreview from "../UI/ItemPreview/ItemPreview";
 
 export default function Inventory() {
   const [itemsData, setItemsData] = useState();
@@ -21,7 +22,12 @@ export default function Inventory() {
     <div>
       <h1 className="center mb-3 mt-3">Your Inventory: </h1>
       <div className="items-container">
-        <div></div>
+        {itemsData
+          ? itemsData.map((item) => {
+              console.log(item);
+              return <ItemPreview data={item} />;
+            })
+          : null}
       </div>
     </div>
   );

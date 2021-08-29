@@ -1,0 +1,12 @@
+.badge {
+  color: white;
+  margin: 0.3rem;
+}
+
+.category {
+  background-color: blueviolet;
+}
+
+.price {
+  background-color: green;
+}
