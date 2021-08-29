@@ -35,8 +35,8 @@ export default function AddItems() {
     const previewUrl = window.URL.createObjectURL(e.target.files[0]);
     Resizer.imageFileResizer(
       e.target.files[0],
-      720,
-      500,
+      858,
+      432,
       "JPEG",
       100,
       0,

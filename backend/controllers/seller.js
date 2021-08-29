@@ -1,5 +1,4 @@
 import User from "../models/user";
-import Item from "../models/item";
 import Shop from "../models/shop";
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
@@ -117,6 +116,18 @@ export const getSellerItems = async (req, res) => {
 
     const itemsData = await Shop.findOne({ shop_owner: userId });
     console.log(itemsData);
+    res.send({ items: itemsData });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getStoreItems = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    console.log("get store items");
+    const itemsData = await Shop.find({});
     res.send({ items: itemsData });
   } catch (err) {
     console.log(err);

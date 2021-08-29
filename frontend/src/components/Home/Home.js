@@ -2,6 +2,7 @@ import React from "react";
 import { Carousel, Button } from "react-bootstrap";
 import "./Home.css";
 import { Link } from "react-router-dom";
+import AllItems from "../Store/AllItems";
 
 export default function Home() {
   return (
@@ -38,6 +39,9 @@ export default function Home() {
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
+      <div>
+        <AllItems />
+      </div>
     </div>
   );
 }
