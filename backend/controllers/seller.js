@@ -1,7 +1,9 @@
 import User from "../models/user";
 import Shop from "../models/shop";
+import Item from "../models/item";
 import AWS from "aws-sdk";
 import { nanoid } from "nanoid";
+import mongoose from "mongoose";
 
 const awsConfig = {
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -84,20 +86,29 @@ export const addItem = async (req, res) => {
 
     uploadImages()
       .then(async () => {
-        const newItem = await Shop.findOneAndUpdate(
+        var uploaderObjectId = mongoose.Types.ObjectId(userId);
+        const newItem = await new Item({
+          name: name,
+          price: price,
+          category: itemCategory,
+          description: description,
+          pictures: awsImageObj,
+          shop_owner_id: uploaderObjectId,
+        }).save();
+
+        var newItemObjectId = mongoose.Types.ObjectId(newItem._id);
+
+        const shopUpdate = await Shop.findOneAndUpdate(
           { shop_owner: userId },
           {
             $push: {
-              items: {
-                name: name,
-                price: price,
-                category: itemCategory,
-                description: description,
-                pictures: awsImageObj,
-              },
+              items: newItemObjectId,
             },
           }
         );
+
+        console.log(shopUpdate);
+
         res.json({ ok: true });
       })
       .catch((err) => console.log("promise error: ", err));

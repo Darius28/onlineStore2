@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
+const { ObjectId } = mongoose;
 const { Schema } = mongoose;
 
 export const itemSchema = new Schema({
+  shop_owner_id: {
+    type: ObjectId,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

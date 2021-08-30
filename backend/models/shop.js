@@ -5,14 +5,16 @@ import { itemSchema } from "./item";
 
 export const shopSchema = new Schema({
   shop_owner: {
-    type: String,
+    type: ObjectId,
     required: true,
   },
   shop_name: {
     type: String,
     required: true,
   },
-  items: [itemSchema],
+  items: {
+    type: [ObjectId],
+  },
 });
 
 export default mongoose.model("Shop", shopSchema);

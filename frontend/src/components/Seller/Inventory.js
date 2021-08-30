@@ -15,6 +15,7 @@ export default function Inventory() {
         withCredentials: true,
       });
       setItemsData(data.items.items);
+      console.log(data.items);
     };
     getData();
   }, []);
@@ -25,6 +26,7 @@ export default function Inventory() {
       <div className="items-container">
         {itemsData
           ? itemsData.map((item) => {
+              console.log("inventory item: ", item);
               return (
                 <div className="item-div">
                   <ItemPreview data={item} />

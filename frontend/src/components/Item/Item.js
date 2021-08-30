@@ -10,7 +10,7 @@ export default function Item() {
   useEffect(() => {
     const getItemData = async () => {
       const { data } = await axios.get(
-        `${BackendUrl}/${history.location.pathname}`
+        `${BackendUrl}${history.location.pathname}`
       );
     };
     getItemData();
