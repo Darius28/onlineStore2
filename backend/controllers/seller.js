@@ -124,8 +124,9 @@ export const getSellerItems = async (req, res) => {
   try {
     const userId = req.user.id;
     console.log("userID from getseller: ", userId);
+    var sellerObjectId = mongoose.Types.ObjectId(userId);
 
-    const itemsData = await Shop.findOne({ shop_owner: userId });
+    const itemsData = await Item.find({ shop_owner_id: sellerObjectId });
     console.log(itemsData);
     res.send({ items: itemsData });
   } catch (err) {
@@ -138,7 +139,7 @@ export const getStoreItems = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     console.log("get store items");
-    const itemsData = await Shop.find({});
+    const itemsData = await Item.find({});
     res.send({ items: itemsData });
   } catch (err) {
     console.log(err);

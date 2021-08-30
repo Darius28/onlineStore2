@@ -14,11 +14,14 @@ export default function Inventory() {
       const { data } = await axios.get(`${BackendUrl}/get-seller-items`, {
         withCredentials: true,
       });
-      setItemsData(data.items.items);
+      setItemsData(data.items);
       console.log(data.items);
+      
     };
     getData();
   }, []);
+
+  console.log(itemsData)
 
   return (
     <div>
