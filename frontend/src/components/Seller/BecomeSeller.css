@@ -9,7 +9,7 @@
   padding: 1rem;
 }
 
-.card-body {
+.card-bod {
   height: 20rem;
 }
 
@@ -21,7 +21,7 @@
     padding: 1rem;
   }
 
-  .card-body {
+  .card-bod {
     height: 12rem;
   }
 }
@@ -34,7 +34,7 @@
     padding: 1rem;
   }
 
-  .card-body {
+  .card-bod {
     height: 14rem;
   }
 }

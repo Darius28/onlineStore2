@@ -9,6 +9,7 @@ import BecomeSeller from "./components/Seller/BecomeSeller";
 import PageNotFound from "./components/UI/PageNotFound/PageNotFound";
 import AddItems from "./components/Seller/AddItems";
 import { Context } from "./context";
+import Item from "./components/Item/Item";
 
 function App() {
   const { state } = useContext(Context);
@@ -18,6 +19,7 @@ function App() {
       <HeaderBar />
       <Switch>
         <Route path="/" component={Home} exact />
+        <Route path="/item" component={Item} exact />
         {state.user ? (
           <>
             <Route path="/become-seller" component={BecomeSeller} exact />

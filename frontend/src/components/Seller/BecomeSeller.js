@@ -151,7 +151,7 @@ export default function BecomeSeller() {
       </div>
       <div className="seller-cards">
         <div>
-          <Card className="card-body">
+          <Card className="card-bod">
             <Card.Header as="h5">Online is the future.</Card.Header>
             <Card.Body>
               <Card.Title>
@@ -164,7 +164,7 @@ export default function BecomeSeller() {
           </Card>
         </div>
         <div>
-          <Card className="card-body">
+          <Card className="card-bod">
             <Card.Header as="h5">PAN India Orders</Card.Header>
             <Card.Body>
               <Card.Title>
@@ -178,7 +178,7 @@ export default function BecomeSeller() {
           </Card>
         </div>
         <div>
-          <Card className="card-body">
+          <Card className="card-bod">
             <Card.Header as="h5">Packaging Support</Card.Header>
             <Card.Body>
               <Card.Title>
@@ -192,7 +192,7 @@ export default function BecomeSeller() {
           </Card>
         </div>
         <div>
-          <Card className="card-body">
+          <Card className="card-bod">
             <Card.Header as="h5">No cap on earning!</Card.Header>
             <Card.Body>
               <Card.Title>The more you sell, the more you make!</Card.Title>

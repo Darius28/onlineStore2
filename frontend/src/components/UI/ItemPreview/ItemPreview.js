@@ -2,6 +2,7 @@ import React from "react";
 import "./ItemPreview.css";
 import { Card } from "react-bootstrap";
 import Badge from "../Badge/Badge";
+import { Link } from "react-router-dom";
 
 export default function ItemPreview({ data }) {
   return (
@@ -12,15 +13,13 @@ export default function ItemPreview({ data }) {
         height={144}
         src={data.pictures[0].Location}
       />
+
       <Card.Body>
         <div className="title-container">
           <Card.Title>{data.name}</Card.Title>
-          <div>
-            <span className="edit-link">Edit</span>
-          </div>
         </div>
 
-        <Card.Text>{data.description}</Card.Text>
+        <Card.Text className="item-desc">{data.description}</Card.Text>
         <Card.Text>
           {data.category.map((item) => {
             return <Badge className="category">{item}</Badge>;

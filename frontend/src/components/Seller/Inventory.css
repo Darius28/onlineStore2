@@ -1,6 +1,35 @@
 .items-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 1.5rem;
-    padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.item-link {
+  text-decoration: none;
+  color: black;
+}
+
+.item-link:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.item-link-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 10rem;
+  margin-right: 1rem;
+  z-index: 1000;
+  color: blue;
+}
+
+.item-div {
+  position: relative;
+}
+
+.item-link-edit:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

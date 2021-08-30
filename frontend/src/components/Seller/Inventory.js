@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./Inventory.css";
 import { BackendUrl } from "../../utils/BackendUrl";
 import ItemPreview from "../UI/ItemPreview/ItemPreview";
+import { Link } from "react-router-dom";
 
 export default function Inventory() {
   const [itemsData, setItemsData] = useState();
@@ -25,7 +27,16 @@ export default function Inventory() {
         {itemsData
           ? itemsData.map((item) => {
               console.log(item);
-              return <ItemPreview data={item} />;
+              return (
+                <div className="item-div">
+                  <Link className="item-link" to="/item">
+                    <ItemPreview data={item} />
+                  </Link>
+                  <div className="item-link-edit">
+                    <span>Edit</span>
+                  </div>
+                </div>
+              );
             })
           : null}
       </div>
