@@ -5,15 +5,7 @@
   padding: 1.5rem;
 }
 
-.item-link {
-  text-decoration: none;
-  color: black;
-}
 
-.item-link:hover {
-  text-decoration: none;
-  color: black;
-}
 
 .item-link-edit {
   position: absolute;

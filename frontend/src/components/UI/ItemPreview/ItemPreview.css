@@ -19,5 +19,12 @@
   -webkit-line-clamp: 1;
 }
 
+.item-link {
+  text-decoration: none;
+  color: black;
+}
 
-
+.item-link:hover {
+  text-decoration: none;
+  color: black;
+}

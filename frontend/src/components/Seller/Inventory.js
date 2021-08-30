@@ -14,7 +14,6 @@ export default function Inventory() {
       const { data } = await axios.get(`${BackendUrl}/get-seller-items`, {
         withCredentials: true,
       });
-      console.log(data.items.items);
       setItemsData(data.items.items);
     };
     getData();
@@ -26,12 +25,9 @@ export default function Inventory() {
       <div className="items-container">
         {itemsData
           ? itemsData.map((item) => {
-              console.log(item);
               return (
                 <div className="item-div">
-                  <Link className="item-link" to="/item">
-                    <ItemPreview data={item} />
-                  </Link>
+                  <ItemPreview data={item} />
                   <div className="item-link-edit">
                     <span>Edit</span>
                   </div>

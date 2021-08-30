@@ -19,7 +19,7 @@ function App() {
       <HeaderBar />
       <Switch>
         <Route path="/" component={Home} exact />
-        <Route path="/item" component={Item} exact />
+        <Route path="/item/:itemId" component={Item} exact />
         {state.user ? (
           <>
             <Route path="/become-seller" component={BecomeSeller} exact />
