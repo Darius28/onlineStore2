@@ -17,3 +17,40 @@
 .image-border {
   border: 3px solid black;
 }
+
+.item-data-container {
+  display: flex;
+  width: 100%;
+  margin-left: 2rem;
+  flex-direction: column;
+}
+
+.item-description-container {
+  display: flex;
+}
+
+.item-description-container > p {
+  margin: 0;
+}
+
+.item-description-heading {
+  font-weight: 600;
+}
+
+.item-description {
+  margin-left: 1rem !important;
+}
+
+.item-rating-container {
+  display: flex;
+}
+
+.item-rating-container > p {
+  margin: 0;
+  color: #878787;
+}
+
+.item-review-container {
+  display: flex;
+  justify-content: space-between;
+}

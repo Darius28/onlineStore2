@@ -3,6 +3,8 @@ import { useHistory } from "react-router-dom";
 import "./Item.css";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
+import Badge from "../UI/Badge/Badge";
+import { Button } from "react-bootstrap";
 
 export default function Item() {
   const history = useHistory();
@@ -22,7 +24,6 @@ export default function Item() {
       const firstImg = document.getElementById(
         `${data.item.pictures[0].Location}`
       );
-      console.log(firstImg);
       firstImg.classList.add("image-border");
       setPrevHoverImg(() => {
         return firstImg;
@@ -78,8 +79,27 @@ export default function Item() {
           ) : null}
         </div>
       </div>
-      <div>
-        <span>{itemData ? itemData.name : null}</span>
+      <div className="item-data-container">
+        <h4 className="item-heading">{itemData ? itemData.name : null}</h4>
+        <div className="item-rating-container">
+          <Badge className="green">Nil</Badge>
+          <p>0 ratings</p>
+        </div>
+        <h1 className="item-price">
+          &#x20B9; {itemData ? itemData.price : null}
+        </h1>
+        <hr />
+        <div className="item-description-container">
+          <p className="item-description-heading">Description: </p>
+          <p className="item-description">
+            {itemData ? itemData.description : null}
+          </p>
+        </div>
+        <hr />
+        <div className="item-review-container">
+          <h4>Ratings and Reviews</h4>
+          <Button variant="primary">Write a Review</Button>
+        </div>
       </div>
     </div>
   );
