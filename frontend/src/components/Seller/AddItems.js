@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button, Form, Row, Col, ButtonGroup } from "react-bootstrap";
 import "./AddItems.css";
 import { CATEGORIES } from "../../utils/Categories";
@@ -21,6 +21,7 @@ export default function AddItems() {
   const nameRef = useRef();
   const priceRef = useRef();
   const descriptionRef = useRef();
+  const [itemsData, setItemsData] = useState();
 
   const optionsList = CATEGORIES.map((category) => (
     <option value={category}>{category}</option>
@@ -28,6 +29,14 @@ export default function AddItems() {
 
   const showAddItemHandler = () => {
     setAddItem((prevState) => !prevState);
+  };
+
+  const getData = async () => {
+    const { data } = await axios.get(`${BackendUrl}/get-seller-items`, {
+      withCredentials: true,
+    });
+    setItemsData(data.items);
+    console.log(data.items);
   };
 
   const addImageHandler = (e) => {
@@ -93,6 +102,7 @@ export default function AddItems() {
       setAmtImages(0);
       setItemImgB64([]);
       toast.success("Item added successfully!");
+      getData();
     } catch (err) {
       console.log(err);
     }
@@ -156,6 +166,10 @@ export default function AddItems() {
       }
     });
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <div>
@@ -264,7 +278,7 @@ export default function AddItems() {
           </Form>
         </div>
       ) : null}
-      <Inventory />
+      <Inventory itemsData={itemsData} />
     </div>
   );
 }

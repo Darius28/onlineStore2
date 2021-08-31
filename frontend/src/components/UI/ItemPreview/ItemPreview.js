@@ -25,7 +25,7 @@ export default function ItemPreview({ data }) {
             })}
           </Card.Text>
           <Card.Text className="center">
-            <Badge className="price">&#8377; {data.price}</Badge>
+            <Badge className="bg-green">&#8377; {data.price}</Badge>
           </Card.Text>
         </Card.Body>
       </Card>

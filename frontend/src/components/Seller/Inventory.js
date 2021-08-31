@@ -6,22 +6,8 @@ import { BackendUrl } from "../../utils/BackendUrl";
 import ItemPreview from "../UI/ItemPreview/ItemPreview";
 import { Link } from "react-router-dom";
 
-export default function Inventory() {
-  const [itemsData, setItemsData] = useState();
-
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await axios.get(`${BackendUrl}/get-seller-items`, {
-        withCredentials: true,
-      });
-      setItemsData(data.items);
-      console.log(data.items);
-      
-    };
-    getData();
-  }, []);
-
-  console.log(itemsData)
+export default function Inventory({ itemsData }) {
+  console.log(itemsData);
 
   return (
     <div>
@@ -29,7 +15,6 @@ export default function Inventory() {
       <div className="items-container">
         {itemsData
           ? itemsData.map((item) => {
-              console.log("inventory item: ", item);
               return (
                 <div className="item-div">
                   <ItemPreview data={item} />
