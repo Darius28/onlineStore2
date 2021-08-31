@@ -1,5 +1,6 @@
 .item-container {
   margin: 2rem;
+  display: flex;
 }
 
 .item-image-container {

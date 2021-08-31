@@ -16,9 +16,17 @@ export default function Item() {
       const { data } = await axios.get(
         `${BackendUrl}${history.location.pathname}`
       );
-      console.log(data.item);
+      // console.log(data.item);
       setItemData(data.item);
       setSelectedImage(data.item.pictures[0].Location);
+      const firstImg = document.getElementById(
+        `${data.item.pictures[0].Location}`
+      );
+      console.log(firstImg);
+      firstImg.classList.add("image-border");
+      setPrevHoverImg(() => {
+        return firstImg;
+      });
     };
     if (history) {
       getItemData();
@@ -30,17 +38,19 @@ export default function Item() {
       return picture;
     });
     if (prevHoverImg !== undefined) {
-      console.log("lolol")
+      prevHoverImg.classList.remove("image-border");
     }
     const hoveredImg = document.getElementById(`${picture}`);
-    console.log(hoveredImg);
     hoveredImg.classList.add("image-border");
-    setHoverImg(hoveredImg);
+    setHoverImg(() => {
+      return hoveredImg;
+    });
   };
 
   const removeBorderHandler = () => {
-    console.log("hoverImg on mouse remove: ", hoverImg);
-    setPrevHoverImg(hoverImg);
+    setPrevHoverImg(() => {
+      return hoverImg;
+    });
   };
 
   return (
@@ -67,6 +77,9 @@ export default function Item() {
             <img width={486} height={243} src={selectedImage} />
           ) : null}
         </div>
+      </div>
+      <div>
+        <span>{itemData ? itemData.name : null}</span>
       </div>
     </div>
   );
