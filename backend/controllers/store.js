@@ -13,3 +13,33 @@ export const selectedItem = async (req, res) => {
     console.log(err);
   }
 };
+
+export const reviewItem = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const { review, rating } = req.body;
+    const userId = req.user.id;
+    const { itemId } = req.params;
+
+    const itemObjectId = mongoose.Types.ObjectId(itemId);
+    const userObjectId = mongoose.Types.ObjectId(userId);
+
+    const addReview = await Item.updateOne(
+      { _id: itemObjectId },
+      {
+        $push: {
+          reviews: {
+            reviewer_id: userObjectId,
+            rating: rating,
+            description: review,
+          },
+        },
+      }
+    );
+    res.json({ ok: true });
+    console.log(addReview);
+  } catch (err) {
+    console.log(err);
+  }
+};

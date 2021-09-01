@@ -21,7 +21,7 @@ export default function Item() {
       const { data } = await axios.get(
         `${BackendUrl}${history.location.pathname}`
       );
-      // console.log(data.item);
+      console.log("itemData", data.item);
       setItemData(data.item);
       setSelectedImage(data.item.pictures[0].Location);
       const firstImg = document.getElementById(
@@ -71,6 +71,7 @@ export default function Item() {
         <ReviewModal
           onCloseModal={closeReviewModalHandler}
           name={itemData.name}
+          itemId={itemData._id}
         />
       ) : null}
       <div className="item-container">

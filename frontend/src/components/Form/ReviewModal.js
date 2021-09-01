@@ -4,6 +4,8 @@ import "./ReviewModal.css";
 import Card from "../UI/Card/Card";
 import ReactStars from "react-rating-stars-component";
 import { Form, Col, Button } from "react-bootstrap";
+import axios from "axios";
+import { BackendUrl } from "../../utils/BackendUrl";
 
 const Backdrop = (props) => {
   return <div className="backdrop" onClick={props.onCloseModal}></div>;
@@ -17,11 +19,19 @@ const Modal = (props) => {
     setRating(newRating);
   };
 
-  const submitRatingHandler = (e) => {
+  const submitRatingHandler = async (e) => {
     e.preventDefault();
     try {
       const review = reviewRef.current.value;
       console.log(review, rating);
+      const { data } = await axios.post(
+        `${BackendUrl}/item/${props.itemId}/review-item`,
+        {
+          review,
+          rating,
+        },
+        { withCredentials: true }
+      );
     } catch (err) {
       console.log(err);
     }
@@ -64,7 +74,7 @@ export default function ReviewModal(props) {
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
-        <Modal name={props.name} />,
+        <Modal name={props.name} itemId={props.itemId} />,
         document.getElementById("modal-root")
       )}
     </>

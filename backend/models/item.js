@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 const { ObjectId } = mongoose;
 const { Schema } = mongoose;
+import { reviewSchema } from "./review";
 
 export const itemSchema = new Schema({
   shop_owner_id: {
@@ -32,6 +33,7 @@ export const itemSchema = new Schema({
     type: String,
   },
   pictures: [],
+  reviews: [reviewSchema],
 });
 
 export default mongoose.model("Item", itemSchema);
