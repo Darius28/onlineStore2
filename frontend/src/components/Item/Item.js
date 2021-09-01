@@ -68,7 +68,10 @@ export default function Item() {
   return (
     <>
       {reviewModal ? (
-        <ReviewModal onCloseModal={closeReviewModalHandler} />
+        <ReviewModal
+          onCloseModal={closeReviewModalHandler}
+          name={itemData.name}
+        />
       ) : null}
       <div className="item-container">
         <div className="item-image-container">
