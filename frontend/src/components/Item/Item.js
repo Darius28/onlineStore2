@@ -16,6 +16,7 @@ export default function Item() {
   const [prevHoverImg, setPrevHoverImg] = useState();
   const [hoverImg, setHoverImg] = useState();
   const [reviewModal, setReviewModal] = useState(false);
+  const [amtRatings, setAmtRatings] = useState();
 
   useEffect(() => {
     const getItemData = async () => {
@@ -24,6 +25,18 @@ export default function Item() {
       );
       console.log("itemData", data.item);
       setItemData(data.item);
+
+      let amtReviews = data.item.reviews.length;
+      if (amtReviews === 0) {
+        setAmtRatings("Nil");
+      } else {
+        let score = 0;
+        for (let i in data.item.reviews) {
+          score += data.item.reviews[i].rating;
+        }
+        setAmtRatings(score / amtReviews);
+      }
+
       setSelectedImage(data.item.pictures[0].Location);
       const firstImg = document.getElementById(
         `${data.item.pictures[0].Location}`
@@ -33,9 +46,7 @@ export default function Item() {
         return firstImg;
       });
     };
-    if (history) {
-      getItemData();
-    }
+    getItemData();
   }, [history]);
 
   const selectedImageHandler = (picture) => {
@@ -110,8 +121,8 @@ export default function Item() {
         <div className="item-data-container">
           <h4 className="item-heading">{itemData ? itemData.name : null}</h4>
           <div className="item-rating-container">
-            <Badge className="bg-green">Nil</Badge>
-            <p>0 ratings</p>
+            <Badge className="bg-green">{amtRatings ? amtRatings : null}</Badge>
+            <p>{itemData ? itemData.reviews.length : null} ratings</p>
           </div>
           <h1 className="item-price">
             &#x20B9; {itemData ? itemData.price : null}
