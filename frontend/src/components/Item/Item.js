@@ -7,6 +7,7 @@ import Badge from "../UI/Badge/Badge";
 import { Button } from "react-bootstrap";
 import { StarFill } from "react-bootstrap-icons";
 import ReviewModal from "../Form/ReviewModal";
+import ReviewContainer from "../UI/ReviewContainer/ReviewContainer";
 
 export default function Item() {
   const history = useHistory();
@@ -97,7 +98,12 @@ export default function Item() {
           </div>
           <div className="item-images-container">
             {selectedImage ? (
-              <img width={486} height={243} src={selectedImage} />
+              <img
+                className="item-image"
+                width={486}
+                height={243}
+                src={selectedImage}
+              />
             ) : null}
           </div>
         </div>
@@ -129,6 +135,16 @@ export default function Item() {
               <h4>
                 Nil <StarFill />
               </h4>
+            </div>
+            <hr />
+            <div>
+              {itemData
+                ? itemData.reviews.length > 0
+                  ? itemData.reviews.map((item) => {
+                      return <ReviewContainer review={item} />;
+                    })
+                  : null
+                : null}
             </div>
           </div>
         </div>

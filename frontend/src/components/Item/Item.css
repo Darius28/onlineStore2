@@ -6,6 +6,9 @@
 .item-image-container {
   display: flex;
   gap: 2rem;
+  border: 1px solid #878787;
+  border-radius: 0.5rem;
+  padding: 1rem;
 }
 
 .item-preview-container {
@@ -14,8 +17,12 @@
   gap: 1rem;
 }
 
+.item-image {
+  border: 1px solid black;
+}
+
 .image-border {
-  border: 3px solid black;
+  border: 2px solid black;
 }
 
 .item-data-container {
@@ -23,6 +30,9 @@
   width: 100%;
   margin-left: 2rem;
   flex-direction: column;
+  border: 1px solid #878787;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 .item-description-container {

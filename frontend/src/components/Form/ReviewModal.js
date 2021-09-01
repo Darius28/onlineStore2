@@ -32,6 +32,7 @@ const Modal = (props) => {
         },
         { withCredentials: true }
       );
+      props.onCloseModal();
     } catch (err) {
       console.log(err);
     }
@@ -74,7 +75,11 @@ export default function ReviewModal(props) {
         document.getElementById("backdrop-root")
       )}
       {ReactDOM.createPortal(
-        <Modal name={props.name} itemId={props.itemId} />,
+        <Modal
+          name={props.name}
+          itemId={props.itemId}
+          onCloseModal={props.onCloseModal}
+        />,
         document.getElementById("modal-root")
       )}
     </>
