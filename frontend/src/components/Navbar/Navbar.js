@@ -18,6 +18,7 @@ import { Context } from "../../context";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
+import { Cart3 } from "react-bootstrap-icons";
 
 const HeaderBar = () => {
   const { state, dispatch } = useContext(Context);
@@ -75,9 +76,14 @@ const HeaderBar = () => {
             className="justify-content-center flex-grow-0"
           >
             <Nav className="d-flex navbar-right-nav-container">
-              <Link to="/" className="text-decoration-none">
-                <Nav.Link>Home</Nav.Link>
-              </Link>
+              <Nav.Link className="navbar-cart-posn">
+                <Link to="/cart" className="text-decoration-none navbar-cart">
+                  <Cart3 size={24} /> Cart
+                  <div className="navbar-cart-items-amt">
+                    <span style={{ color: "white" }}>1</span>
+                  </div>
+                </Link>
+              </Nav.Link>
               <Nav.Link>Link</Nav.Link>
               <NavDropdown
                 title={<PersonCircle size={32} />}
@@ -120,11 +126,6 @@ const HeaderBar = () => {
                   </>
                 )}
               </NavDropdown>
-              {/* <Image
-                src={randomImg1}
-                className="navbar-profile-image"
-                roundedCircle
-              /> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

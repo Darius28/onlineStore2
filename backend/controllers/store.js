@@ -43,3 +43,12 @@ export const reviewItem = async (req, res) => {
     console.log(err);
   }
 };
+
+export const getStoreItems = async (req, res) => {
+  try {
+    const allItems = await Item.find({});
+    res.send({ items: allItems });
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -7,38 +7,7 @@ import AllItems from "../Store/AllItems";
 export default function Home() {
   return (
     <div>
-      <Carousel className="carousel-container">
-        <Carousel.Item>
-          <div className="d-block w-100 home-image" alt="First slide" />
-          <Carousel.Caption>
-            <h3>First slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            <Link to="/product">
-              <Button variant="info">Check it out!</Button>
-            </Link>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <div className="d-block w-100 home-image" alt="First slide" />
-          <Carousel.Caption>
-            <h3>Second slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            <Link to="/product">
-              <Button variant="info">Check it out!</Button>
-            </Link>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <div className="d-block w-100 home-image" alt="First slide" />
-          <Carousel.Caption>
-            <h3>Third slide label</h3>
-            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            <Link to="/product">
-              <Button variant="info">Check it out!</Button>
-            </Link>
-          </Carousel.Caption>
-        </Carousel.Item>
-      </Carousel>
+      <h1 className="center mt-2">Welcome to store!</h1>
       <div>
         <AllItems />
       </div>

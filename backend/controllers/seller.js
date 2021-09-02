@@ -133,15 +133,3 @@ export const getSellerItems = async (req, res) => {
     console.log(err);
   }
 };
-
-export const getStoreItems = async (req, res) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  try {
-    console.log("get store items");
-    const itemsData = await Item.find({});
-    res.send({ items: itemsData });
-  } catch (err) {
-    console.log(err);
-  }
-};

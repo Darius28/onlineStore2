@@ -120,8 +120,15 @@ export default function Item() {
             </div>
           </div>
           <div className="item-image-container-3">
-            <Button variant="info" size="lg">Add to Cart</Button>
-            <Button variant="success" size="lg">Buy Now</Button>
+            <Button variant="info" size="lg">
+              Add to Cart
+            </Button>
+            <Button variant="success" size="lg">
+              Buy Now
+            </Button>
+          </div>
+          <div className="add-to-wishlist-container">
+            <StarFill color="#878787" />
           </div>
         </div>
         <div className="item-data-container">

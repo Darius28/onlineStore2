@@ -36,7 +36,7 @@ export default function AddItems() {
       withCredentials: true,
     });
     setItemsData(data.items);
-    console.log(data.items);
+    // console.log(data.items);
   };
 
   const addImageHandler = (e) => {
@@ -278,7 +278,8 @@ export default function AddItems() {
           </Form>
         </div>
       ) : null}
-      <Inventory itemsData={itemsData} />
+      <h1 className="center mb-3 mt-3">Your Inventory: </h1>
+      <Inventory itemsData={itemsData} edit={true} />
     </div>
   );
 }
