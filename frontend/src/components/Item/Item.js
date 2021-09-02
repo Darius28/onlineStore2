@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import "./Item.css";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
 import Badge from "../UI/Badge/Badge";
 import { Button } from "react-bootstrap";
-import { StarFill } from "react-bootstrap-icons";
+import { ArrowReturnLeft, StarFill } from "react-bootstrap-icons";
 import ReviewModal from "../Form/ReviewModal";
 import ReviewContainer from "../UI/ReviewContainer/ReviewContainer";
+import { Context } from "../../context/index";
+import { nanoid } from "nanoid";
 
 export default function Item() {
+  const { state, dispatch } = useContext(Context);
   const history = useHistory();
   const [itemData, setItemData] = useState();
   const [selectedImage, setSelectedImage] = useState();
@@ -49,6 +52,12 @@ export default function Item() {
     getItemData();
   }, [history]);
 
+  useEffect(() => {
+    if (state) {
+      // console.log("state: ", state.user);
+    }
+  }, [state]);
+
   const selectedImageHandler = (picture) => {
     setSelectedImage(() => {
       return picture;
@@ -76,6 +85,41 @@ export default function Item() {
   const closeReviewModalHandler = () => {
     setReviewModal(false);
   };
+
+  const addToCartHandler = async () => {
+    try {
+      const cartItemExists = state.user.cart.findIndex((item) => {
+        item.item_id === itemData._id;
+      });
+      console.log(cartItemExists);
+      if (cartItemExists === -1) {
+        const oldLS = JSON.parse(localStorage.getItem("user"));
+        const cartObjId = nanoid();
+        const newLS = {
+          ...oldLS,
+          cart: [...oldLS.cart, { _id: cartObjId, qty: 1 }],
+        };
+        // console.log(newLS);
+        localStorage.setItem("user", JSON.stringify(newLS));
+        dispatch({
+          type: "ADD_CART_ITEM",
+          payload: newLS,
+        });
+      }
+      return;
+      const { data } = await axios.post(
+        `${BackendUrl}/${itemData._id}/add-to-cart`,
+        {},
+        { withCredentials: true }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const buyNowHandler = () => {
+    console.log(state)
+  }
 
   return (
     <>
@@ -120,10 +164,10 @@ export default function Item() {
             </div>
           </div>
           <div className="item-image-container-3">
-            <Button variant="info" size="lg">
+            <Button variant="info" size="lg" onClick={addToCartHandler}>
               Add to Cart
             </Button>
-            <Button variant="success" size="lg">
+            <Button variant="success" size="lg" onClick={buyNowHandler}>
               Buy Now
             </Button>
           </div>

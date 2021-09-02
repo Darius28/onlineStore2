@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.1.0",
     "cropperjs": "^1.5.12",
+    "nanoid": "^3.1.25",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-bootstrap-floating-label": "^1.6.0",

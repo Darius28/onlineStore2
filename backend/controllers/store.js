@@ -1,4 +1,5 @@
 import Shop from "../models/shop";
+import User from "../models/user";
 import Item from "../models/item";
 var mongoose = require("mongoose");
 
@@ -48,6 +49,35 @@ export const getStoreItems = async (req, res) => {
   try {
     const allItems = await Item.find({});
     res.send({ items: allItems });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addToCart = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const userId = req.user.id;
+    const { itemId } = req.params;
+
+    const itemIdObj = mongoose.Types.ObjectId(itemId);
+    const userIdObj = mongoose.Types.ObjectId(userId);
+
+    const user = await User.findOneAndUpdate(
+      { _id: userIdObj },
+      {
+        cart: {
+          _id: mongoose.Types.ObjectId("6131114b34d20b5c807ad6f3"),
+          item_id: itemIdObj,
+          qty: 2,
+        },
+      },
+      { upsert: true }
+    );
+    // console.log(user);
+    res.send({ ok: true });
+    // console.log(user);
   } catch (err) {
     console.log(err);
   }
