@@ -87,35 +87,41 @@ export default function Item() {
         />
       ) : null}
       <div className="item-container">
-        <div className="item-image-container">
-          <div className="item-preview-container">
-            {itemData
-              ? itemData.pictures.map((pic) => {
-                  return (
-                    <img
-                      id={pic.Location}
-                      width={108}
-                      height={54}
-                      src={pic.Location}
-                      onMouseOver={selectedImageHandler.bind(
-                        null,
-                        pic.Location
-                      )}
-                      onMouseLeave={removeBorderHandler}
-                    />
-                  );
-                })
-              : null}
+        <div className="item-image-container-1">
+          <div className="item-image-container-2">
+            <div className="item-preview-container">
+              {itemData
+                ? itemData.pictures.map((pic) => {
+                    return (
+                      <img
+                        id={pic.Location}
+                        width={108}
+                        height={54}
+                        src={pic.Location}
+                        onMouseOver={selectedImageHandler.bind(
+                          null,
+                          pic.Location
+                        )}
+                        onMouseLeave={removeBorderHandler}
+                      />
+                    );
+                  })
+                : null}
+            </div>
+            <div className="item-images-container">
+              {selectedImage ? (
+                <img
+                  className="item-image"
+                  width={486}
+                  height={243}
+                  src={selectedImage}
+                />
+              ) : null}
+            </div>
           </div>
-          <div className="item-images-container">
-            {selectedImage ? (
-              <img
-                className="item-image"
-                width={486}
-                height={243}
-                src={selectedImage}
-              />
-            ) : null}
+          <div className="item-image-container-3">
+            <Button variant="info" size="lg">Add to Cart</Button>
+            <Button variant="success" size="lg">Buy Now</Button>
           </div>
         </div>
         <div className="item-data-container">
@@ -144,7 +150,7 @@ export default function Item() {
             </div>
             <div>
               <h4>
-                Nil <StarFill />
+                {amtRatings ? amtRatings : null} <StarFill />
               </h4>
             </div>
             <hr />

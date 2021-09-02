@@ -3,12 +3,21 @@
   display: flex;
 }
 
-.item-image-container {
-  display: flex;
-  gap: 2rem;
+.item-image-container-1 {
   border: 1px solid #878787;
   border-radius: 0.5rem;
+  height: fit-content;
   padding: 1rem;
+}
+
+.item-image-container-2 {
+  display: flex;
+  gap: 2rem;
+}
+
+.item-images-container {
+  display: flex;
+  align-items: center;
 }
 
 .item-preview-container {
@@ -23,6 +32,13 @@
 
 .image-border {
   border: 2px solid black;
+}
+
+.item-image-container-3 {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .item-data-container {
