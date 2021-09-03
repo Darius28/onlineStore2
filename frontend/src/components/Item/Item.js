@@ -88,16 +88,20 @@ export default function Item() {
 
   const addToCartHandler = async () => {
     try {
-      const cartItemExists = state.user.cart.findIndex((item) => {
-        item.item_id === itemData._id;
-      });
+      const cartItemExists = state.user.cart.findIndex(
+        (item) => item.item_id === itemData._id
+      );
       console.log(cartItemExists);
+      // return;
       if (cartItemExists === -1) {
         const oldLS = JSON.parse(localStorage.getItem("user"));
         const cartObjId = nanoid();
         const newLS = {
           ...oldLS,
-          cart: [...oldLS.cart, { _id: cartObjId, qty: 1 }],
+          cart: [
+            ...oldLS.cart,
+            { _id: cartObjId, item_id: itemData._id, qty: 1 },
+          ],
         };
         // console.log(newLS);
         localStorage.setItem("user", JSON.stringify(newLS));
@@ -105,8 +109,28 @@ export default function Item() {
           type: "ADD_CART_ITEM",
           payload: newLS,
         });
+      } else {
+        const oldLS = JSON.parse(localStorage.getItem("user"));
+        console.log("old LS: ", oldLS);
+        const addedCartItem = oldLS.cart[cartItemExists];
+        const updatedCartItem = {
+          ...addedCartItem,
+          qty: +addedCartItem.qty + 1,
+        };
+        const updatedCartItems = [...oldLS.cart];
+        updatedCartItems[cartItemExists] = updatedCartItem;
+        console.log("updated cart items: ", updatedCartItems);
+        const newLS = {
+          ...oldLS,
+          cart: [...updatedCartItems],
+        };
+        console.log("newLS: ", newLS);
+        localStorage.setItem("user", JSON.stringify(newLS));
+        dispatch({
+          type: "ADD_CART_ITEM",
+          payload: newLS,
+        });
       }
-      return;
       const { data } = await axios.post(
         `${BackendUrl}/${itemData._id}/add-to-cart`,
         {},
@@ -118,8 +142,8 @@ export default function Item() {
   };
 
   const buyNowHandler = () => {
-    console.log(state)
-  }
+    console.log(state);
+  };
 
   return (
     <>
