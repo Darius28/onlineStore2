@@ -99,18 +99,21 @@ export default function Item() {
           item_id: itemData._id,
           qty: 1,
         };
-
+        const oldLS = JSON.parse(localStorage.getItem("user"));
+        const totalItems = oldLS.total_cart_items;
+        console.log("totalItrems: ", totalItems);
         const { data } = await axios.post(
           `${BackendUrl}/${itemData._id}/add-to-cart`,
-          { updatedCartItem, newItem: true },
+          { updatedCartItem, newItem: true, totalItems },
           { withCredentials: true }
         );
-        const oldLS = JSON.parse(localStorage.getItem("user"));
+
         const newLS = {
           ...oldLS,
+          total_cart_items: totalItems + 1,
           cart: [...oldLS.cart, updatedCartItem],
         };
-        // console.log(newLS);
+        console.log(newLS);
         localStorage.setItem("user", JSON.stringify(newLS));
         dispatch({
           type: "ADD_CART_ITEM",
@@ -119,14 +122,17 @@ export default function Item() {
       } else {
         const oldLS = JSON.parse(localStorage.getItem("user"));
         console.log("old LS: ", oldLS);
+        const totalItems = oldLS.total_cart_items;
+        console.log("totalItrems: ", totalItems);
         const addedCartItem = oldLS.cart[cartItemExists];
         updatedCartItem = {
           ...addedCartItem,
           qty: +addedCartItem.qty + 1,
         };
+
         const { data } = await axios.post(
           `${BackendUrl}/${itemData._id}/add-to-cart`,
-          { updatedCartItem, newItem: false },
+          { updatedCartItem, newItem: false, totalItems },
           { withCredentials: true }
         );
 
@@ -135,6 +141,7 @@ export default function Item() {
         console.log("updated cart items: ", updatedCartItems);
         const newLS = {
           ...oldLS,
+          total_cart_items: totalItems + 1,
           cart: [...updatedCartItems],
         };
         console.log("newLS: ", newLS);

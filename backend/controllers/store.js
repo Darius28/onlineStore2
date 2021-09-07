@@ -60,9 +60,11 @@ export const addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const { itemId } = req.params;
-    const { updatedCartItem, newItem } = req.body;
+    const { updatedCartItem, newItem, totalItems } = req.body;
 
-    console.log(updatedCartItem, newItem);
+    console.log("REQ.BODY: =============> ", req.body);
+
+    console.log("updated cart item: ", updatedCartItem, totalItems);
     const userIdObj = mongoose.Types.ObjectId(userId);
 
     if (newItem) {
@@ -70,6 +72,7 @@ export const addToCart = async (req, res) => {
       const user = await User.findOneAndUpdate(
         { _id: userIdObj },
         {
+          total_cart_items: totalItems + 1,
           $push: {
             cart: {
               item_id: updatedCartItem.item_id,
@@ -78,12 +81,12 @@ export const addToCart = async (req, res) => {
           },
         }
       );
-      console.log("user: ", user);
     } else {
       console.log("FLASEEEEEEEEEEEE");
       const user = await User.findOneAndUpdate(
         { _id: userIdObj, "cart.item_id": updatedCartItem.item_id },
         {
+          total_cart_items: totalItems + 1,
           $set: {
             "cart.$": {
               item_id: updatedCartItem.item_id,
