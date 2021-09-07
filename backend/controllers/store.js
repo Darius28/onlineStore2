@@ -60,24 +60,40 @@ export const addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const { itemId } = req.params;
+    const { updatedCartItem, newItem } = req.body;
 
-    const itemIdObj = mongoose.Types.ObjectId(itemId);
+    console.log(updatedCartItem, newItem);
     const userIdObj = mongoose.Types.ObjectId(userId);
 
-    const user = await User.findOneAndUpdate(
-      { _id: userIdObj },
-      {
-        cart: {
-          _id: mongoose.Types.ObjectId("6131114b34d20b5c807ad6f3"),
-          item_id: itemIdObj,
-          qty: 2,
-        },
-      },
-      { upsert: true }
-    );
-    // console.log(user);
-    res.send({ ok: true });
-    // console.log(user);
+    if (newItem) {
+      console.log("TRUEEEEEEEEEE");
+      const user = await User.findOneAndUpdate(
+        { _id: userIdObj },
+        {
+          $push: {
+            cart: {
+              item_id: updatedCartItem.item_id,
+              qty: updatedCartItem.qty,
+            },
+          },
+        }
+      );
+      console.log("user: ", user);
+    } else {
+      console.log("FLASEEEEEEEEEEEE");
+      const user = await User.findOneAndUpdate(
+        { _id: userIdObj, "cart.item_id": updatedCartItem.item_id },
+        {
+          $set: {
+            "cart.$": {
+              item_id: updatedCartItem.item_id,
+              qty: updatedCartItem.qty,
+            },
+          },
+        }
+      );
+    }
+    res.json({ ok: true });
   } catch (err) {
     console.log(err);
   }

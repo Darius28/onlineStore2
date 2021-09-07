@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 export const cartSchema = new Schema({
   item_id: {
-    type: ObjectId,
+    type: String,
   },
   qty: {
-    type: String,
+    type: Number,
   },
 });
 

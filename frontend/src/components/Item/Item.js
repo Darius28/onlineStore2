@@ -93,15 +93,22 @@ export default function Item() {
       );
       console.log(cartItemExists);
       // return;
+      let updatedCartItem;
       if (cartItemExists === -1) {
+        updatedCartItem = {
+          item_id: itemData._id,
+          qty: 1,
+        };
+
+        const { data } = await axios.post(
+          `${BackendUrl}/${itemData._id}/add-to-cart`,
+          { updatedCartItem, newItem: true },
+          { withCredentials: true }
+        );
         const oldLS = JSON.parse(localStorage.getItem("user"));
-        const cartObjId = nanoid();
         const newLS = {
           ...oldLS,
-          cart: [
-            ...oldLS.cart,
-            { _id: cartObjId, item_id: itemData._id, qty: 1 },
-          ],
+          cart: [...oldLS.cart, updatedCartItem],
         };
         // console.log(newLS);
         localStorage.setItem("user", JSON.stringify(newLS));
@@ -113,10 +120,16 @@ export default function Item() {
         const oldLS = JSON.parse(localStorage.getItem("user"));
         console.log("old LS: ", oldLS);
         const addedCartItem = oldLS.cart[cartItemExists];
-        const updatedCartItem = {
+        updatedCartItem = {
           ...addedCartItem,
           qty: +addedCartItem.qty + 1,
         };
+        const { data } = await axios.post(
+          `${BackendUrl}/${itemData._id}/add-to-cart`,
+          { updatedCartItem, newItem: false },
+          { withCredentials: true }
+        );
+
         const updatedCartItems = [...oldLS.cart];
         updatedCartItems[cartItemExists] = updatedCartItem;
         console.log("updated cart items: ", updatedCartItems);
@@ -131,11 +144,6 @@ export default function Item() {
           payload: newLS,
         });
       }
-      const { data } = await axios.post(
-        `${BackendUrl}/${itemData._id}/add-to-cart`,
-        {},
-        { withCredentials: true }
-      );
     } catch (err) {
       console.log(err);
     }
