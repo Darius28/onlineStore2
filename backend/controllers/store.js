@@ -101,3 +101,13 @@ export const addToCart = async (req, res) => {
     console.log(err);
   }
 };
+
+export const getCartItems = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    console.log(req.body);
+  } catch (err) {
+    console.log(err);
+  }
+};

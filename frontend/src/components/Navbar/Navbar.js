@@ -54,6 +54,8 @@ const HeaderBar = () => {
     }
   };
 
+  console.log("USER: ", user);
+
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -80,7 +82,9 @@ const HeaderBar = () => {
                 <Link to="/cart" className="text-decoration-none navbar-cart">
                   <Cart3 size={24} /> Cart
                   <div className="navbar-cart-items-amt">
-                    <span style={{ color: "white" }}>1</span>
+                    <span style={{ color: "white" }}>
+                      {user ? user.total_cart_items : null}
+                    </span>
                   </div>
                 </Link>
               </Nav.Link>

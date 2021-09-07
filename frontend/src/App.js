@@ -10,6 +10,7 @@ import PageNotFound from "./components/UI/PageNotFound/PageNotFound";
 import AddItems from "./components/Seller/AddItems";
 import { Context } from "./context";
 import Item from "./components/Item/Item";
+import Cart from "./components/Cart/Cart";
 
 function App() {
   const { state } = useContext(Context);
@@ -24,6 +25,7 @@ function App() {
           <>
             <Route path="/become-seller" component={BecomeSeller} exact />
             <Route path="/add-items" component={AddItems} exact />
+            <Route path="/cart" exact component={Cart} />
           </>
         ) : null}
         <Route path="*" component={PageNotFound} exact />
