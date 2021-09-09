@@ -1,0 +1,70 @@
+.cart-container {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+
+.cart-body-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.green {
+  color: green;
+}
+
+.cart-body-container-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.cart-qty-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.qty-handler {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1rem;
+  color: black;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+}
+
+.test {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(#fff, #f9f9f9);
+  display: inline-block;
+  border: 1px solid #c2c2c2;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 50%;
+  padding-top: 1px;
+  line-height: 1;
+}
+
+.cart-qty-container-2 {
+  display: inline-block;
+  padding: 3px 6px;
+  width: calc(100% - 60px);
+  height: 100%;
+  width: 46px;
+  /* height: 28px;  */
+  border-radius: 2px;
+  background-color: #fff;
+  border: 1px solid #c2c2c2;
+  margin: 0 5px;
+}
+
+.cart-qty-input {
+  border: none;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 500;
+  vertical-align: middle;
+  text-align: center;
+}

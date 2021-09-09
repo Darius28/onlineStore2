@@ -91,8 +91,9 @@ export default function Item() {
       const cartItemExists = state.user.cart.findIndex(
         (item) => item.item_id === itemData._id
       );
-      console.log(cartItemExists);
-      // return;
+      console.log("cartItemExists: ", cartItemExists);
+      console.log(itemData)
+      return;
       let updatedCartItem;
       if (cartItemExists === -1) {
         updatedCartItem = {
@@ -107,7 +108,6 @@ export default function Item() {
           { updatedCartItem, newItem: true, totalItems },
           { withCredentials: true }
         );
-
         const newLS = {
           ...oldLS,
           total_cart_items: totalItems + 1,

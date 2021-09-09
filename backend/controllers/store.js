@@ -106,7 +106,61 @@ export const getCartItems = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    console.log(req.body);
+    const { cart } = req.body;
+    console.log("CART: ====> ", cart);
+    console.log(cart[0]);
+    let totalCartItems = [];
+
+    for (let i = 0; i < cart.length; i++) {
+      const cartItems = await Item.find({
+        _id: mongoose.Types.ObjectId(cart[i].item_id),
+      });
+      totalCartItems.push({ cartItem: cartItems[0], qty: cart[i].qty });
+    }
+    console.log(
+      "totalcartitems ==================>>>>>>>>>>>>>>>>>>>>>>",
+      totalCartItems
+    );
+
+    res.send({ totalCartItems });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addCartItem = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const { cartId } = req.params;
+    const { totalCartItems, itemQty } = req.body;
+    const userId = req.user.id;
+    console.log(totalCartItems);
+    const updateQty = await User.findOneAndUpdate(
+      {
+        _id: userId,
+        "cart.item_id": cartId,
+      },
+      {
+        total_cart_items: totalCartItems + 1,
+        $set: {
+          "cart.$": {
+            item_id: cartId,
+            qty: itemQty + 1,
+          },
+        },
+      }
+    );
+    // console.log("UPDATEQTY: =======> ", updateQty);
+    // let totalCartItems2 = [];
+
+    // for (let i = 0; i < cart.length; i++) {
+    //   const cartItems = await Item.find({
+    //     _id: mongoose.Types.ObjectId(cart[i].item_id),
+    //   });
+    //   totalCartItems2.push({ cartItem: cartItems[0], qty: cart[i].qty });
+    // }
+    res.send({ totalCartItems: totalCartItems2 });
   } catch (err) {
     console.log(err);
   }
