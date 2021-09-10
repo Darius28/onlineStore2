@@ -88,11 +88,20 @@ export default function Item() {
 
   const addToCartHandler = async () => {
     try {
+      const data2 = await axios.get(`${BackendUrl}/get-cart-items`, {
+        withCredentials: true,
+      });
+
+      console.log("data2: ", data2.data.cartData);
+      let existingCartData = data2.data.cartData;
+      
+      return;
+
       const cartItemExists = state.user.cart.findIndex(
         (item) => item.item_id === itemData._id
       );
       console.log("cartItemExists: ", cartItemExists);
-      console.log(itemData)
+      console.log(itemData);
       return;
       let updatedCartItem;
       if (cartItemExists === -1) {

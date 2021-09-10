@@ -12,7 +12,7 @@ export default function Cart() {
 
   const getCartItems = async () => {
     const { data } = await axios.post(
-      `${BackendUrl}/get-cart-items`,
+      `${BackendUrl}/get-checkout-cart-items`,
       { cart: state.user.cart },
       { withCredentials: true }
     );
@@ -29,6 +29,8 @@ export default function Cart() {
 
   const addCartItemHandler = async (item) => {
     try {
+      
+
       console.log("item: ", item);
       // return;
       const { data } = await axios.post(
@@ -39,8 +41,8 @@ export default function Cart() {
         },
         { withCredentials: true }
       );
-      console.log("dataaaaaaaa", data)
-      setCartItems(data.totalCartItems)
+      console.log("dataaaaaaaa", data);
+      setCartItems(data.totalCartItems);
       const oldLS = JSON.parse(localStorage.getItem("user"));
       const totalItems = oldLS.total_cart_items;
       const cartItemExists = state.user.cart.findIndex(
@@ -64,7 +66,6 @@ export default function Cart() {
         type: "ADD_CART_ITEM",
         payload: newLS,
       });
-      
     } catch (err) {
       console.log(err);
     }

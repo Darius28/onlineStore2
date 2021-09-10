@@ -11,7 +11,8 @@ export default function AllItems() {
     const getItems = async () => {
       const { data } = await axios.get(`${BackendUrl}/get-store-items`, {
         withCredentials: true,
-      });
+      }
+      );
       // console.log(data.items);
       setItemsData(data.items);
     };
