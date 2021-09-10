@@ -13,10 +13,10 @@ export default function Cart() {
   const getCartItems = async () => {
     const { data } = await axios.post(
       `${BackendUrl}/get-checkout-cart-items`,
-      { cart: state.user.cart },
+      {},
       { withCredentials: true }
     );
-    console.log(data.totalCartItems);
+    console.log("totalCartItems: ", data.totalCartItems);
     setCartItems(data.totalCartItems);
   };
 
@@ -29,8 +29,6 @@ export default function Cart() {
 
   const addCartItemHandler = async (item) => {
     try {
-      
-
       console.log("item: ", item);
       // return;
       const { data } = await axios.post(

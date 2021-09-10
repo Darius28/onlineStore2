@@ -39,11 +39,11 @@ export const addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const { itemId } = req.params;
-    const { updatedCartItem, newItem, totalItems } = req.body;
+    const { updatedCartItem, totalCartItems, newItem } = req.body;
 
     console.log("REQ.BODY: =============> ", req.body);
 
-    console.log("updated cart item: ", updatedCartItem, totalItems);
+    console.log("updated cart item: ", updatedCartItem);
     const userIdObj = mongoose.Types.ObjectId(userId);
 
     if (newItem) {
@@ -51,7 +51,7 @@ export const addToCart = async (req, res) => {
       const user = await User.findOneAndUpdate(
         { _id: userIdObj },
         {
-          total_cart_items: totalItems + 1,
+          total_cart_items: totalCartItems + 1,
           $push: {
             cart: {
               item_id: updatedCartItem.item_id,
@@ -65,11 +65,11 @@ export const addToCart = async (req, res) => {
       const user = await User.findOneAndUpdate(
         { _id: userIdObj, "cart.item_id": updatedCartItem.item_id },
         {
-          total_cart_items: totalItems + 1,
+          total_cart_items: totalCartItems + 1,
           $set: {
             "cart.$": {
               item_id: updatedCartItem.item_id,
-              qty: updatedCartItem.qty,
+              qty: updatedCartItem.qty + 1,
             },
           },
         }
@@ -85,21 +85,26 @@ export const getCheckoutCartItems = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { cart } = req.body;
-    console.log("CART: ====> ", cart);
-    console.log(cart[0]);
     let totalCartItems = [];
+    const userId = req.user.id;
 
-    for (let i = 0; i < cart.length; i++) {
-      const cartItems = await Item.find({
-        _id: mongoose.Types.ObjectId(cart[i].item_id),
+    const cartItems = await User.find({ _id: userId }, { cart: 1 });
+    // console.log(
+    //   "totalcartitems ==================>>>>>>>>>>>>>>>>>>>>>>",
+    //   cartItems[0].cart
+    // );
+    console.log(cartItems[0]);
+    for (let i in cartItems[0].cart) {
+      // console.log(cartItems[0].cart[i]);
+      const itemData = await Item.findOne({
+        _id: cartItems[0].cart[i].item_id,
       });
-      totalCartItems.push({ cartItem: cartItems[0], qty: cart[i].qty });
+      // console.log("itemDATAAAAAAAAAAAAAA: ", itemData);
+      totalCartItems.push({
+        cartItem: itemData,
+        qty: cartItems[0].cart[i].qty,
+      });
     }
-    console.log(
-      "totalcartitems ==================>>>>>>>>>>>>>>>>>>>>>>",
-      totalCartItems
-    );
 
     res.send({ totalCartItems });
   } catch (err) {
@@ -150,10 +155,15 @@ export const getCartItems = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const userId = req.user.id;
-    const cartData = await User.findOne({ _id: userId }, {cart: 1});
-    console.log(cartData.cart)
-    res.send({ cartData: cartData.cart });
-    
+    const cartData = await User.findOne(
+      { _id: userId },
+      { cart: 1, total_cart_items: 1 }
+    );
+    console.log(cartData);
+    res.send({
+      cartData: cartData.cart,
+      totalCartItems: cartData.total_cart_items,
+    });
   } catch (err) {
     console.log(err);
   }

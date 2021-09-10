@@ -92,74 +92,43 @@ export default function Item() {
         withCredentials: true,
       });
 
-      console.log("data2: ", data2.data.cartData);
+      console.log("data2: ", data2.data);
+      // return;
       let existingCartData = data2.data.cartData;
-      
-      return;
+      const totalCartItems = data2.data.totalCartItems;
 
-      const cartItemExists = state.user.cart.findIndex(
+      const cartItemExists = existingCartData.findIndex(
         (item) => item.item_id === itemData._id
       );
       console.log("cartItemExists: ", cartItemExists);
-      console.log(itemData);
-      return;
-      let updatedCartItem;
+      console.log("ecd: ", existingCartData[cartItemExists]);
+      console.log("itemData: ", itemData);
+
       if (cartItemExists === -1) {
-        updatedCartItem = {
-          item_id: itemData._id,
-          qty: 1,
-        };
-        const oldLS = JSON.parse(localStorage.getItem("user"));
-        const totalItems = oldLS.total_cart_items;
-        console.log("totalItrems: ", totalItems);
         const { data } = await axios.post(
           `${BackendUrl}/${itemData._id}/add-to-cart`,
-          { updatedCartItem, newItem: true, totalItems },
+          {
+            updatedCartItem: { item_id: itemData._id, qty: 1 },
+            newItem: true,
+            totalCartItems,
+          },
           { withCredentials: true }
         );
-        const newLS = {
-          ...oldLS,
-          total_cart_items: totalItems + 1,
-          cart: [...oldLS.cart, updatedCartItem],
-        };
-        console.log(newLS);
-        localStorage.setItem("user", JSON.stringify(newLS));
-        dispatch({
-          type: "ADD_CART_ITEM",
-          payload: newLS,
-        });
       } else {
-        const oldLS = JSON.parse(localStorage.getItem("user"));
-        console.log("old LS: ", oldLS);
-        const totalItems = oldLS.total_cart_items;
-        console.log("totalItrems: ", totalItems);
-        const addedCartItem = oldLS.cart[cartItemExists];
-        updatedCartItem = {
-          ...addedCartItem,
-          qty: +addedCartItem.qty + 1,
-        };
-
         const { data } = await axios.post(
           `${BackendUrl}/${itemData._id}/add-to-cart`,
-          { updatedCartItem, newItem: false, totalItems },
+          {
+            updatedCartItem: existingCartData[cartItemExists],
+            newItem: false,
+            totalCartItems,
+          },
           { withCredentials: true }
         );
-
-        const updatedCartItems = [...oldLS.cart];
-        updatedCartItems[cartItemExists] = updatedCartItem;
-        console.log("updated cart items: ", updatedCartItems);
-        const newLS = {
-          ...oldLS,
-          total_cart_items: totalItems + 1,
-          cart: [...updatedCartItems],
-        };
-        console.log("newLS: ", newLS);
-        localStorage.setItem("user", JSON.stringify(newLS));
-        dispatch({
-          type: "ADD_CART_ITEM",
-          payload: newLS,
-        });
       }
+      dispatch({
+        type: "ADD_CART_ITEM_TOTAL",
+        payload: totalCartItems + 1,
+      });
     } catch (err) {
       console.log(err);
     }
