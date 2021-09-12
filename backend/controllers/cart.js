@@ -117,34 +117,33 @@ export const addCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const { cartId } = req.params;
-    const { totalCartItems, itemQty } = req.body;
+    const { addedItemId, qty, totalCartItems } = req.body;
     const userId = req.user.id;
-    console.log(totalCartItems);
+    console.log("addedItem: ", addedItemId, totalCartItems, qty);
+    // return;
     const updateQty = await User.findOneAndUpdate(
       {
         _id: userId,
-        "cart.item_id": cartId,
+        "cart.item_id": addedItemId,
       },
       {
         total_cart_items: totalCartItems + 1,
         $set: {
           "cart.$": {
             item_id: cartId,
-            qty: itemQty + 1,
+            qty: qty + 1,
           },
         },
       }
     );
-    // console.log("UPDATEQTY: =======> ", updateQty);
-    // let totalCartItems2 = [];
 
-    // for (let i = 0; i < cart.length; i++) {
-    //   const cartItems = await Item.find({
-    //     _id: mongoose.Types.ObjectId(cart[i].item_id),
-    //   });
-    //   totalCartItems2.push({ cartItem: cartItems[0], qty: cart[i].qty });
-    // }
-    res.send({ totalCartItems: totalCartItems2 });
+    const updatedData = await Item.findOne({ _id: addedItemId });
+    console.log(updatedData);
+    res.send({
+      updatedCart: updatedData,
+      updatedCartQty: qty + 1,
+      newTotalCartItems: totalCartItems + 1,
+    });
   } catch (err) {
     console.log(err);
   }

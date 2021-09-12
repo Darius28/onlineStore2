@@ -8,6 +8,8 @@ import Badge from "../UI/Badge/Badge";
 
 export default function Cart() {
   const { state, dispatch } = useContext(Context);
+  console.log("strate: ", state);
+  console.log(state.user.total_cart_items);
   const [cartItems, setCartItems] = useState();
 
   const getCartItems = async () => {
@@ -30,39 +32,32 @@ export default function Cart() {
   const addCartItemHandler = async (item) => {
     try {
       console.log("item: ", item);
-      // return;
+      const cartItemIndex = cartItems.findIndex(
+        (item2) => item2.cartItem._id === item.cartItem._id
+      );
+      console.log(cartItemIndex);
+      return;
+
       const { data } = await axios.post(
         `${BackendUrl}/${item.cartItem._id}/add-cart-item`,
         {
+          addedItemId: item.cartItem._id,
+          qty: item.qty,
           totalCartItems: state.user.total_cart_items,
-          itemQty: item.qty,
         },
         { withCredentials: true }
       );
-      console.log("dataaaaaaaa", data);
-      setCartItems(data.totalCartItems);
+      console.log("datadatadata: ", data);
       const oldLS = JSON.parse(localStorage.getItem("user"));
-      const totalItems = oldLS.total_cart_items;
-      const cartItemExists = state.user.cart.findIndex(
-        (item_a) => item_a.item_id === item.cartItem._id
-      );
-      const addedCartItem = oldLS.cart[cartItemExists];
-      const updatedCartItem = {
-        ...addedCartItem,
-        qty: +addedCartItem.qty + 1,
-      };
-      const updatedCartItems = [...oldLS.cart];
-      updatedCartItems[cartItemExists] = updatedCartItem;
+      console.log(oldLS);
       const newLS = {
         ...oldLS,
-        total_cart_items: totalItems + 1,
-        cart: [...updatedCartItems],
+        total_cart_items: state.user.total_cart_items + 1,
       };
-      console.log("newLS: ", newLS);
       localStorage.setItem("user", JSON.stringify(newLS));
       dispatch({
-        type: "ADD_CART_ITEM",
-        payload: newLS,
+        type: "ADD_CART_ITEM_TOTAL",
+        payload: state.user.total_cart_items,
       });
     } catch (err) {
       console.log(err);
