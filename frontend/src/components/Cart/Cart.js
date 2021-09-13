@@ -32,14 +32,8 @@ export default function Cart() {
   const addCartItemHandler = async (item) => {
     try {
       console.log("item: ", item);
-      const cartItemIndex = cartItems.findIndex(
-        (item2) => item2.cartItem._id === item.cartItem._id
-      );
-      console.log(cartItemIndex);
-      return;
-
       const { data } = await axios.post(
-        `${BackendUrl}/${item.cartItem._id}/add-cart-item`,
+        `${BackendUrl}/add-cart-item`,
         {
           addedItemId: item.cartItem._id,
           qty: item.qty,
@@ -48,24 +42,60 @@ export default function Cart() {
         { withCredentials: true }
       );
       console.log("datadatadata: ", data);
+      let newCartItems = cartItems;
+      const cartItemIndex = cartItems.findIndex(
+        (item2) => item2.cartItem._id === item.cartItem._id
+      );
+      newCartItems[cartItemIndex].cartItem = data.updatedCart;
+      newCartItems[cartItemIndex].qty = data.updatedCartQty;
+      setCartItems(() => newCartItems);
       const oldLS = JSON.parse(localStorage.getItem("user"));
       console.log(oldLS);
       const newLS = {
         ...oldLS,
-        total_cart_items: state.user.total_cart_items + 1,
+        total_cart_items: data.newTotalCartItems,
       };
       localStorage.setItem("user", JSON.stringify(newLS));
       dispatch({
         type: "ADD_CART_ITEM_TOTAL",
-        payload: state.user.total_cart_items,
+        payload: data.newTotalCartItems,
       });
     } catch (err) {
       console.log(err);
     }
   };
 
-  const removeCartItemHandler = async () => {
+  const removeCartItemHandler = async (item) => {
     try {
+      console.log("item: ", item);
+      const { data } = await axios.post(
+        `${BackendUrl}/remove-cart-item`,
+        {
+          removedItemId: item.cartItem._id,
+          qty: item.qty,
+          totalCartItems: state.user.total_cart_items,
+        },
+        { withCredentials: true }
+      );
+      console.log("datadatadata: ", data);
+      let newCartItems = cartItems;
+      const cartItemIndex = cartItems.findIndex(
+        (item2) => item2.cartItem._id === item.cartItem._id
+      );
+      newCartItems[cartItemIndex].cartItem = data.updatedCart;
+      newCartItems[cartItemIndex].qty = data.updatedCartQty;
+      setCartItems(() => newCartItems);
+      const oldLS = JSON.parse(localStorage.getItem("user"));
+      console.log(oldLS);
+      const newLS = {
+        ...oldLS,
+        total_cart_items: data.newTotalCartItems,
+      };
+      localStorage.setItem("user", JSON.stringify(newLS));
+      dispatch({
+        type: "NEW_CART_ITEM_TOTAL",
+        payload: data.newTotalCartItems,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -94,7 +124,7 @@ export default function Cart() {
                         <div className="cart-qty-container">
                           <button
                             className="test"
-                            onClick={removeCartItemHandler}
+                            onClick={removeCartItemHandler.bind(null, item)}
                           >
                             -
                           </button>

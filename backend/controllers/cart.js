@@ -116,7 +116,6 @@ export const addCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { cartId } = req.params;
     const { addedItemId, qty, totalCartItems } = req.body;
     const userId = req.user.id;
     console.log("addedItem: ", addedItemId, totalCartItems, qty);
@@ -130,7 +129,7 @@ export const addCartItem = async (req, res) => {
         total_cart_items: totalCartItems + 1,
         $set: {
           "cart.$": {
-            item_id: cartId,
+            item_id: addedItemId,
             qty: qty + 1,
           },
         },
@@ -143,6 +142,42 @@ export const addCartItem = async (req, res) => {
       updatedCart: updatedData,
       updatedCartQty: qty + 1,
       newTotalCartItems: totalCartItems + 1,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const removeCartItem = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const { removedItemId, qty, totalCartItems } = req.body;
+    const userId = req.user.id;
+    console.log("addedItem: ", removedItemId, totalCartItems, qty);
+    // return;
+    const updateQty = await User.findOneAndUpdate(
+      {
+        _id: userId,
+        "cart.item_id": removedItemId,
+      },
+      {
+        total_cart_items: totalCartItems - 1,
+        $set: {
+          "cart.$": {
+            item_id: removedItemId,
+            qty: qty - 1,
+          },
+        },
+      }
+    );
+
+    const updatedData = await Item.findOne({ _id: removedItemId });
+    console.log(updatedData);
+    res.send({
+      updatedCart: updatedData,
+      updatedCartQty: qty - 1,
+      newTotalCartItems: totalCartItems - 1,
     });
   } catch (err) {
     console.log(err);

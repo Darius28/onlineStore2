@@ -26,7 +26,7 @@ const rootReducer = (state, action) => {
     case "BECOME_SELLER": {
       return { ...state, user: { ...state.user, seller: true } };
     }
-    case "ADD_CART_ITEM_TOTAL": {
+    case "NEW_CART_ITEM_TOTAL": {
       return {
         ...state,
         user: { ...state.user, total_cart_items: action.payload },
