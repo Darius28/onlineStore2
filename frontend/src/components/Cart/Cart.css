@@ -47,6 +47,10 @@
   line-height: 1;
 }
 
+.test-no-cursor {
+  cursor: default;
+}
+
 .cart-qty-container-2 {
   display: inline-block;
   padding: 3px 6px;

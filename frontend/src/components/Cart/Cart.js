@@ -11,6 +11,7 @@ export default function Cart() {
   console.log("strate: ", state);
   console.log(state.user.total_cart_items);
   const [cartItems, setCartItems] = useState();
+  const [disableRemoveItem, setDisableRemoveItem] = useState(false);
 
   const getCartItems = async () => {
     const { data } = await axios.post(
@@ -123,7 +124,10 @@ export default function Cart() {
                         </div>
                         <div className="cart-qty-container">
                           <button
-                            className="test"
+                            disabled={item.qty === 1}
+                            className={`test ${
+                              item.qty === 1 ? "test-no-cursor" : null
+                            }`}
                             onClick={removeCartItemHandler.bind(null, item)}
                           >
                             -
