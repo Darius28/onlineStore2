@@ -57,7 +57,7 @@ export default function Cart() {
       };
       localStorage.setItem("user", JSON.stringify(newLS));
       dispatch({
-        type: "ADD_CART_ITEM_TOTAL",
+        type: "NEW_CART_ITEM_TOTAL",
         payload: data.newTotalCartItems,
       });
     } catch (err) {
