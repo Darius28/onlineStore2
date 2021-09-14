@@ -102,6 +102,35 @@ export default function Cart() {
     }
   };
 
+  const removeItemHandler = async (itemId, itemQty) => {
+    try {
+      console.log(itemId, itemQty);
+      const totalItems = state.user.total_cart_items;
+      const { data } = await axios.post(
+        `${BackendUrl}/remove-entire-cart-item`,
+        { itemId, itemQty, totalItems },
+        { withCredentials: true }
+      );
+      const filteredCartItems = cartItems.filter((item) => {
+        return item.cartItem._id !== itemId;
+      });
+      setCartItems(() => filteredCartItems);
+      const oldLS = JSON.parse(localStorage.getItem("user"));
+      const newLS = {
+        ...oldLS,
+        total_cart_items: totalItems - itemQty,
+      };
+      localStorage.setItem("user", JSON.stringify(newLS));
+      dispatch({
+        type: "NEW_CART_ITEM_TOTAL",
+        payload: totalItems - itemQty,
+      });
+      console.log("remove full item data: ", data.updateTotalItems.cart);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="container mt-3">
       <h1 className="center">
@@ -122,6 +151,21 @@ export default function Cart() {
                             height={108}
                           />
                         </div>
+
+                        <div>
+                          <Card.Title>{item.cartItem.name}</Card.Title>
+                          <Card.Subtitle className="mb-2 text-muted">
+                            Seller:
+                          </Card.Subtitle>
+                          <Card.Text>
+                            Price:{" "}
+                            <span className="green">
+                              &#x20B9; {item.cartItem.price}
+                            </span>
+                          </Card.Text>
+                        </div>
+                      </div>
+                      <div className="cart-body-container-3">
                         <div className="cart-qty-container">
                           <button
                             disabled={item.qty === 1}
@@ -147,18 +191,17 @@ export default function Cart() {
                             +
                           </button>
                         </div>
-                      </div>
-                      <div>
-                        <Card.Title>{item.cartItem.name}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">
-                          Seller:
-                        </Card.Subtitle>
-                        <Card.Text>
-                          Price:{" "}
-                          <span className="green">
-                            &#x20B9; {item.cartItem.price}
+                        <div className="cart-remove-item-container">
+                          <span
+                            onClick={removeItemHandler.bind(
+                              null,
+                              item.cartItem._id,
+                              item.qty
+                            )}
+                          >
+                            REMOVE ITEM
                           </span>
-                        </Card.Text>
+                        </div>
                       </div>
                     </Card.Body>
                   </Card>

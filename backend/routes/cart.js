@@ -7,7 +7,8 @@ import {
   getCheckoutCartItems,
   addCartItem,
   removeCartItem,
-  getCartItems
+  getCartItems,
+  removeEntireCartItem
 } from "../controllers/cart";
 
 router.post("/item/:itemId/review-item", validJwt, reviewItem);
@@ -16,5 +17,6 @@ router.post("/get-checkout-cart-items", validJwt, getCheckoutCartItems);
 router.post("/add-cart-item", validJwt, addCartItem);
 router.post("/remove-cart-item", validJwt, removeCartItem);
 router.get("/get-cart-items", validJwt, getCartItems)
+router.post("/remove-entire-cart-item", validJwt, removeEntireCartItem)
 
 module.exports = router;

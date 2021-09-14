@@ -202,3 +202,26 @@ export const getCartItems = async (req, res) => {
     console.log(err);
   }
 };
+
+export const removeEntireCartItem = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const { itemId, itemQty, totalItems } = req.body;
+    console.log(itemQty, totalItems);
+    // return;
+    const userId = req.user.id;
+    const deleteItem = await User.updateOne(
+      { _id: userId },
+      { $pull: { cart: { item_id: itemId } } }
+    );
+    const updateTotalItems = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { total_cart_items: totalItems - itemQty } }
+    );
+    console.log(updateTotalItems);
+    res.send({ updateTotalItems });
+  } catch (err) {
+    console.log(err);
+  }
+};
