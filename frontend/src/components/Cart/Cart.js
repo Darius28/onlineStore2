@@ -4,7 +4,6 @@ import "./Cart.css";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
 import { Card, Button } from "react-bootstrap";
-import Badge from "../UI/Badge/Badge";
 
 export default function Cart() {
   const { state, dispatch } = useContext(Context);
@@ -13,18 +12,44 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState();
   const [totalAmt, setTotalAmt] = useState(0);
 
-  const calculateTotalAmount = (init) => {
+  const calculateTotalAmount = (init, price, added, removedItem, qty) => {
     console.log(cartItems);
-    if (!init) {
-      console.log("amt set to 0");
+    if (init === true) {
       setTotalAmt(0);
-    }
-    cartItems.map((item) => {
-      console.log("new amt calc");
-      setTotalAmt((prevAmt) => {
-        return prevAmt + item.qty * item.cartItem.price;
+      cartItems.map((item) => {
+        console.log("init === true");
+        setTotalAmt((prevAmt) => {
+          const totalAmt = item.qty * item.cartItem.price;
+          return prevAmt + totalAmt;
+        });
       });
-    });
+    }
+    if (init === false) {
+      console.log("init === false");
+      if (removedItem === true) {
+        console.log("removedItem === true");
+        setTotalAmt((prevAmt) => {
+          const removeQty = price * qty;
+          console.log(prevAmt, removeQty, prevAmt - removeQty);
+          return prevAmt - removeQty;
+        });
+      }
+      if (removedItem === false) {
+        console.log("removedItem === false");
+        if (added === true) {
+          console.log("added === true");
+          setTotalAmt((prevAmt) => {
+            return prevAmt + price;
+          });
+        }
+        if (added === false) {
+          console.log("added === false");
+          setTotalAmt((prevAmt) => {
+            return prevAmt - price;
+          });
+        }
+      }
+    }
   };
 
   const getCartItems = async () => {
@@ -43,7 +68,7 @@ export default function Cart() {
 
   useEffect(() => {
     if (cartItems) {
-      calculateTotalAmount(true);
+      calculateTotalAmount(true, null, null, null, null);
     }
   }, [cartItems]);
 
@@ -53,6 +78,7 @@ export default function Cart() {
   const addCartItemHandler = async (item) => {
     try {
       // console.log("item: ", item);
+      // return;
       const { data } = await axios.post(
         `${BackendUrl}/add-cart-item`,
         {
@@ -81,7 +107,7 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: data.newTotalCartItems,
       });
-      calculateTotalAmount(false);
+      calculateTotalAmount(false, item.cartItem.price, true, false, null);
     } catch (err) {
       console.log(err);
     }
@@ -118,13 +144,13 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: data.newTotalCartItems,
       });
-      calculateTotalAmount(false);
+      calculateTotalAmount(false, item.cartItem.price, false, false, null);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const removeItemHandler = async (itemId, itemQty) => {
+  const removeItemHandler = async (itemId, itemQty, itemPrice) => {
     try {
       console.log(itemId, itemQty);
       const totalItems = state.user.total_cart_items;
@@ -148,7 +174,7 @@ export default function Cart() {
         payload: totalItems - itemQty,
       });
       // console.log("remove full item data: ", data.updateTotalItems.cart);
-      calculateTotalAmount(false);
+      // calculateTotalAmount(false, itemPrice, null, true, itemQty);
     } catch (err) {
       console.log(err);
     }
@@ -219,7 +245,8 @@ export default function Cart() {
                             onClick={removeItemHandler.bind(
                               null,
                               item.cartItem._id,
-                              item.qty
+                              item.qty,
+                              item.cartItem.price
                             )}
                           >
                             REMOVE ITEM
@@ -247,7 +274,7 @@ export default function Cart() {
                     : null}
                   ){" "}
                 </span>
-                <span>&#x20B9; 29999</span>
+                <span>&#x20B9; {totalAmt ? totalAmt : "0"}</span>
               </div>
               <div className="cart-price-container">
                 <span>Discount </span>
@@ -260,7 +287,7 @@ export default function Cart() {
               <hr />
               <div className="cart-price-container">
                 <h4>Total Amount</h4>
-                <h4>&#x20B9; {totalAmt ? totalAmt : null}</h4>
+                <h4>&#x20B9; {totalAmt ? totalAmt : "0"}</h4>
               </div>
               <hr />
               <div className="cart-price-container green">
