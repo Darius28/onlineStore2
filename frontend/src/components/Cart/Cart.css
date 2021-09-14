@@ -1,6 +1,7 @@
 .cart-container {
   display: grid;
   grid-template-columns: 70% 30%;
+  gap: 1rem;
 }
 
 .cart-body-container {
@@ -85,4 +86,13 @@
 
 .cart-remove-item-container:hover {
   color: red;
+}
+
+.cart-price-header {
+  color: #878787;
+}
+
+.cart-price-container {
+  display: flex;
+  justify-content: space-between;
 }

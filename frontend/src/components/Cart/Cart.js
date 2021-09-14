@@ -8,10 +8,24 @@ import Badge from "../UI/Badge/Badge";
 
 export default function Cart() {
   const { state, dispatch } = useContext(Context);
-  console.log("strate: ", state);
-  console.log(state.user.total_cart_items);
+  // console.log("strate: ", state);
+  // console.log(state.user.total_cart_items);
   const [cartItems, setCartItems] = useState();
-  const [disableRemoveItem, setDisableRemoveItem] = useState(false);
+  const [totalAmt, setTotalAmt] = useState(0);
+
+  const calculateTotalAmount = (init) => {
+    console.log(cartItems);
+    if (!init) {
+      console.log("amt set to 0");
+      setTotalAmt(0);
+    }
+    cartItems.map((item) => {
+      console.log("new amt calc");
+      setTotalAmt((prevAmt) => {
+        return prevAmt + item.qty * item.cartItem.price;
+      });
+    });
+  };
 
   const getCartItems = async () => {
     const { data } = await axios.post(
@@ -19,7 +33,7 @@ export default function Cart() {
       {},
       { withCredentials: true }
     );
-    console.log("totalCartItems: ", data.totalCartItems);
+    // console.log("totalCartItems: ", data.totalCartItems);
     setCartItems(data.totalCartItems);
   };
 
@@ -27,12 +41,18 @@ export default function Cart() {
     getCartItems();
   }, []);
 
-  console.log("cart items : ", cartItems);
-  console.log("state", state.user);
+  useEffect(() => {
+    if (cartItems) {
+      calculateTotalAmount(true);
+    }
+  }, [cartItems]);
+
+  // console.log("cart items : ", cartItems);
+  // console.log("state", state.user);
 
   const addCartItemHandler = async (item) => {
     try {
-      console.log("item: ", item);
+      // console.log("item: ", item);
       const { data } = await axios.post(
         `${BackendUrl}/add-cart-item`,
         {
@@ -42,7 +62,7 @@ export default function Cart() {
         },
         { withCredentials: true }
       );
-      console.log("datadatadata: ", data);
+      // console.log("datadatadata: ", data);
       let newCartItems = cartItems;
       const cartItemIndex = cartItems.findIndex(
         (item2) => item2.cartItem._id === item.cartItem._id
@@ -51,7 +71,7 @@ export default function Cart() {
       newCartItems[cartItemIndex].qty = data.updatedCartQty;
       setCartItems(() => newCartItems);
       const oldLS = JSON.parse(localStorage.getItem("user"));
-      console.log(oldLS);
+      // console.log(oldLS);
       const newLS = {
         ...oldLS,
         total_cart_items: data.newTotalCartItems,
@@ -61,6 +81,7 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: data.newTotalCartItems,
       });
+      calculateTotalAmount(false);
     } catch (err) {
       console.log(err);
     }
@@ -68,7 +89,7 @@ export default function Cart() {
 
   const removeCartItemHandler = async (item) => {
     try {
-      console.log("item: ", item);
+      // console.log("item: ", item);
       const { data } = await axios.post(
         `${BackendUrl}/remove-cart-item`,
         {
@@ -78,7 +99,7 @@ export default function Cart() {
         },
         { withCredentials: true }
       );
-      console.log("datadatadata: ", data);
+      // console.log("datadatadata: ", data);
       let newCartItems = cartItems;
       const cartItemIndex = cartItems.findIndex(
         (item2) => item2.cartItem._id === item.cartItem._id
@@ -87,7 +108,7 @@ export default function Cart() {
       newCartItems[cartItemIndex].qty = data.updatedCartQty;
       setCartItems(() => newCartItems);
       const oldLS = JSON.parse(localStorage.getItem("user"));
-      console.log(oldLS);
+      // console.log(oldLS);
       const newLS = {
         ...oldLS,
         total_cart_items: data.newTotalCartItems,
@@ -97,6 +118,7 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: data.newTotalCartItems,
       });
+      calculateTotalAmount(false);
     } catch (err) {
       console.log(err);
     }
@@ -125,7 +147,8 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: totalItems - itemQty,
       });
-      console.log("remove full item data: ", data.updateTotalItems.cart);
+      // console.log("remove full item data: ", data.updateTotalItems.cart);
+      calculateTotalAmount(false);
     } catch (err) {
       console.log(err);
     }
@@ -160,7 +183,7 @@ export default function Cart() {
                           <Card.Text>
                             Price:{" "}
                             <span className="green">
-                              &#x20B9; {item.cartItem.price}
+                              &#x20B9; {item.cartItem.price * item.qty}
                             </span>
                           </Card.Text>
                         </div>
@@ -210,7 +233,42 @@ export default function Cart() {
             : null}
         </div>
         <div className="cart-container__total">
-          <h1>hi</h1>
+          <Card>
+            <Card.Body>
+              <h6 className="cart-price-header">PRICE DETAILS: </h6>
+              <hr />
+              <div className="cart-price-container">
+                <span>
+                  Price ({cartItems ? cartItems.length : null}{" "}
+                  {cartItems
+                    ? cartItems.length === 1
+                      ? "item"
+                      : "items"
+                    : null}
+                  ){" "}
+                </span>
+                <span>&#x20B9; 29999</span>
+              </div>
+              <div className="cart-price-container">
+                <span>Discount </span>
+                <span>- &#x20B9; 0</span>
+              </div>
+              <div className="cart-price-container">
+                <span>Delivery Charges </span>
+                <span>&#x20B9; 0</span>
+              </div>
+              <hr />
+              <div className="cart-price-container">
+                <h4>Total Amount</h4>
+                <h4>&#x20B9; {totalAmt ? totalAmt : null}</h4>
+              </div>
+              <hr />
+              <div className="cart-price-container green">
+                <h6>Total Savings</h6>
+                <h6>&#x20B9; 0</h6>
+              </div>
+            </Card.Body>
+          </Card>
         </div>
       </div>
     </div>

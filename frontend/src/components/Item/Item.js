@@ -125,8 +125,14 @@ export default function Item() {
           { withCredentials: true }
         );
       }
+      const oldLS = JSON.parse(localStorage.getItem("user"));
+      const newLS = {
+        ...oldLS,
+        total_cart_items: totalCartItems + 1,
+      };
+      localStorage.setItem("user", JSON.stringify(newLS));
       dispatch({
-        type: "ADD_CART_ITEM_TOTAL",
+        type: "NEW_CART_ITEM_TOTAL",
         payload: totalCartItems + 1,
       });
     } catch (err) {
