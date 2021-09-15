@@ -5,7 +5,16 @@ import { BackendUrl } from "../utils/BackendUrl";
 const initialState = {
   showModal: null,
   user: null,
+  cartLength: null,
 };
+
+// const getCartData = async () => {
+//   const { data } = await axios.get(`${BackendUrl}/get-cart-length`, {
+//     withCredentials: true,
+//   });
+//   console.log("data.cl", data.cartLength);
+//   return data.cartLength;
+// };
 
 const Context = createContext();
 
@@ -22,6 +31,10 @@ const rootReducer = (state, action) => {
     }
     case "LOGIN": {
       return { ...state, user: action.payload };
+    }
+    case "SET_CART_LENGTH": {
+      console.log("set cart length");
+      return { ...state, cartLength: action.payload };
     }
     case "BECOME_SELLER": {
       return { ...state, user: { ...state.user, seller: true } };
@@ -46,7 +59,26 @@ const Provider = (props) => {
       type: "LOGIN",
       payload: JSON.parse(localStorage.getItem("user")),
     });
+
+    const getCartData = async () => {
+      const { data } = await axios.get(`${BackendUrl}/get-cart-length`, {
+        withCredentials: true,
+      });
+      console.log("data.cl", data.cartLength);
+      dispatch({
+        type: "SET_CART_LENGTH",
+        payload: data.cartLength,
+      });
+    };
+
+    getCartData();
   }, []);
+
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "SET_CART_LENGTH",
+  //   });
+  // }, [state.user]);
 
   // useEffect(() => {
   //   const getCsrfToken = async () => {

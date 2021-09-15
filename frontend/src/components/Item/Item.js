@@ -114,6 +114,15 @@ export default function Item() {
           },
           { withCredentials: true }
         );
+        const {
+          data: { cartLength },
+        } = await axios.get(`${BackendUrl}/get-cart-length`, {
+          withCredentials: true,
+        });
+        dispatch({
+          type: "SET_CART_LENGTH",
+          payload: cartLength,
+        });
       } else {
         const { data } = await axios.post(
           `${BackendUrl}/${itemData._id}/add-to-cart`,

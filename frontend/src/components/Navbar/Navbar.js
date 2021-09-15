@@ -22,7 +22,7 @@ import { Cart3 } from "react-bootstrap-icons";
 
 const HeaderBar = () => {
   const { state, dispatch } = useContext(Context);
-  const { user, showModal } = state;
+  const { user, showModal, cartLength } = state;
   const history = useHistory();
 
   const showLoginModalHandler = () => {
@@ -83,7 +83,7 @@ const HeaderBar = () => {
                   <Cart3 size={24} /> Cart
                   <div className="navbar-cart-items-amt">
                     <span style={{ color: "white" }}>
-                      {user ? user.total_cart_items : null}
+                      {cartLength ? cartLength : null}
                     </span>
                   </div>
                 </Link>

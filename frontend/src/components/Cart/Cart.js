@@ -173,6 +173,15 @@ export default function Cart() {
         type: "NEW_CART_ITEM_TOTAL",
         payload: totalItems - itemQty,
       });
+      const {
+        data: { cartLength },
+      } = await axios.get(`${BackendUrl}/get-cart-length`, {
+        withCredentials: true,
+      });
+      dispatch({
+        type: "SET_CART_LENGTH",
+        payload: cartLength,
+      });
       // console.log("remove full item data: ", data.updateTotalItems.cart);
       // calculateTotalAmount(false, itemPrice, null, true, itemQty);
     } catch (err) {
