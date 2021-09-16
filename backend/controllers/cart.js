@@ -33,48 +33,29 @@ export const reviewItem = async (req, res) => {
   }
 };
 
-export const addToCart = async (req, res) => {
+export const addNewCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const userId = req.user.id;
-    const { itemId } = req.params;
-    const { updatedCartItem, totalCartItems, newItem } = req.body;
+    const { updatedCartItem } = req.body;
 
     console.log("REQ.BODY: =============> ", req.body);
 
     console.log("updated cart item: ", updatedCartItem);
     const userIdObj = mongoose.Types.ObjectId(userId);
+    const user = await User.findOneAndUpdate(
+      { _id: userIdObj },
+      {
+        $push: {
+          cart: {
+            item_id: updatedCartItem.item_id,
+            qty: updatedCartItem.qty,
+          },
+        },
+      }
+    );
 
-    if (newItem) {
-      console.log("TRUEEEEEEEEEE");
-      const user = await User.findOneAndUpdate(
-        { _id: userIdObj },
-        {
-          total_cart_items: totalCartItems + 1,
-          $push: {
-            cart: {
-              item_id: updatedCartItem.item_id,
-              qty: updatedCartItem.qty,
-            },
-          },
-        }
-      );
-    } else {
-      console.log("FLASEEEEEEEEEEEE");
-      const user = await User.findOneAndUpdate(
-        { _id: userIdObj, "cart.item_id": updatedCartItem.item_id },
-        {
-          total_cart_items: totalCartItems + 1,
-          $set: {
-            "cart.$": {
-              item_id: updatedCartItem.item_id,
-              qty: updatedCartItem.qty + 1,
-            },
-          },
-        }
-      );
-    }
     res.json({ ok: true });
   } catch (err) {
     console.log(err);
@@ -234,6 +215,27 @@ export const getCartLength = async (req, res) => {
     const userData = await User.findOne({ _id: userId }, { cart: 1 });
     console.log(userData.cart.length);
     res.send({ cartLength: userData.cart.length });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const isCartItemAdded = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    const userId = req.user.id;
+    const { itemId } = req.body;
+    const userData = await User.findOne({ _id: userId }, { cart: 1 });
+    // console.log(userData.cart);
+    let exists = false;
+    for (var i in userData.cart) {
+      if (userData.cart[i].item_id === itemId) {
+        exists = true;
+        break;
+      }
+    }
+    res.send({ cartItem: exists });
   } catch (err) {
     console.log(err);
   }

@@ -20,6 +20,7 @@ export default function Item() {
   const [hoverImg, setHoverImg] = useState();
   const [reviewModal, setReviewModal] = useState(false);
   const [amtRatings, setAmtRatings] = useState();
+  const [cartItemExists, setCartItemExists] = useState();
 
   useEffect(() => {
     const getItemData = async () => {
@@ -28,7 +29,6 @@ export default function Item() {
       );
       console.log("itemData", data.item);
       setItemData(data.item);
-
       let amtReviews = data.item.reviews.length;
       if (amtReviews === 0) {
         setAmtRatings("Nil");
@@ -48,6 +48,17 @@ export default function Item() {
       setPrevHoverImg(() => {
         return firstImg;
       });
+      console.log(history);
+      const {
+        data: { cartItem },
+      } = await axios.post(
+        `${BackendUrl}/is-cart-item-added`,
+        { itemId: data.item._id },
+        {
+          withCredentials: true,
+        }
+      );
+      setCartItemExists(cartItem);
     };
     getItemData();
   }, [history]);
@@ -88,29 +99,12 @@ export default function Item() {
 
   const addToCartHandler = async () => {
     try {
-      const data2 = await axios.get(`${BackendUrl}/get-cart-items`, {
-        withCredentials: true,
-      });
-
-      console.log("data2: ", data2.data);
-      // return;
-      let existingCartData = data2.data.cartData;
-      const totalCartItems = data2.data.totalCartItems;
-
-      const cartItemExists = existingCartData.findIndex(
-        (item) => item.item_id === itemData._id
-      );
-      console.log("cartItemExists: ", cartItemExists);
-      console.log("ecd: ", existingCartData[cartItemExists]);
-      console.log("itemData: ", itemData);
-
-      if (cartItemExists === -1) {
+      if (!cartItemExists) {
+        console.log("cart item doesnt exist");
         const { data } = await axios.post(
-          `${BackendUrl}/${itemData._id}/add-to-cart`,
+          `${BackendUrl}/add-new-cart-item`,
           {
             updatedCartItem: { item_id: itemData._id, qty: 1 },
-            newItem: true,
-            totalCartItems,
           },
           { withCredentials: true }
         );
@@ -123,27 +117,10 @@ export default function Item() {
           type: "SET_CART_LENGTH",
           payload: cartLength,
         });
+        history.push("/cart");
       } else {
-        const { data } = await axios.post(
-          `${BackendUrl}/${itemData._id}/add-to-cart`,
-          {
-            updatedCartItem: existingCartData[cartItemExists],
-            newItem: false,
-            totalCartItems,
-          },
-          { withCredentials: true }
-        );
+        history.push("/cart");
       }
-      const oldLS = JSON.parse(localStorage.getItem("user"));
-      const newLS = {
-        ...oldLS,
-        total_cart_items: totalCartItems + 1,
-      };
-      localStorage.setItem("user", JSON.stringify(newLS));
-      dispatch({
-        type: "NEW_CART_ITEM_TOTAL",
-        payload: totalCartItems + 1,
-      });
     } catch (err) {
       console.log(err);
     }
@@ -197,7 +174,7 @@ export default function Item() {
           </div>
           <div className="item-image-container-3">
             <Button variant="info" size="lg" onClick={addToCartHandler}>
-              Add to Cart
+              {cartItemExists ? "Go to Cart" : "Add to Cart"}
             </Button>
             <Button variant="success" size="lg" onClick={buyNowHandler}>
               Buy Now
