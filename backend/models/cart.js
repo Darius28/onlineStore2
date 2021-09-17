@@ -9,6 +9,9 @@ export const cartSchema = new Schema({
   qty: {
     type: Number,
   },
+  price: {
+    type: Number,
+  },
 });
 
 export default mongoose.model("Cart", cartSchema);

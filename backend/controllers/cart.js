@@ -51,6 +51,7 @@ export const addNewCartItem = async (req, res) => {
           cart: {
             item_id: updatedCartItem.item_id,
             qty: updatedCartItem.qty,
+            price: updatedCartItem.price,
           },
         },
       }
@@ -97,9 +98,9 @@ export const addCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { addedItemId, qty, totalCartItems } = req.body;
+    const { addedItemId, qty, price } = req.body;
     const userId = req.user.id;
-    console.log("addedItem: ", addedItemId, totalCartItems, qty);
+    console.log("addedItem: ", addedItemId, qty);
     // return;
     const updateQty = await User.findOneAndUpdate(
       {
@@ -107,11 +108,11 @@ export const addCartItem = async (req, res) => {
         "cart.item_id": addedItemId,
       },
       {
-        total_cart_items: totalCartItems + 1,
         $set: {
           "cart.$": {
             item_id: addedItemId,
             qty: qty + 1,
+            price: price
           },
         },
       }
@@ -122,7 +123,6 @@ export const addCartItem = async (req, res) => {
     res.send({
       updatedCart: updatedData,
       updatedCartQty: qty + 1,
-      newTotalCartItems: totalCartItems + 1,
     });
   } catch (err) {
     console.log(err);
@@ -133,9 +133,9 @@ export const removeCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { removedItemId, qty, totalCartItems } = req.body;
+    const { removedItemId, qty, price } = req.body;
     const userId = req.user.id;
-    console.log("addedItem: ", removedItemId, totalCartItems, qty);
+    console.log("addedItem: ", removedItemId,  qty);
     // return;
     const updateQty = await User.findOneAndUpdate(
       {
@@ -143,11 +143,11 @@ export const removeCartItem = async (req, res) => {
         "cart.item_id": removedItemId,
       },
       {
-        total_cart_items: totalCartItems - 1,
         $set: {
           "cart.$": {
             item_id: removedItemId,
             qty: qty - 1,
+            price: price
           },
         },
       }
@@ -158,7 +158,6 @@ export const removeCartItem = async (req, res) => {
     res.send({
       updatedCart: updatedData,
       updatedCartQty: qty - 1,
-      newTotalCartItems: totalCartItems - 1,
     });
   } catch (err) {
     console.log(err);

@@ -5,7 +5,6 @@ import { BackendUrl } from "../utils/BackendUrl";
 const initialState = {
   showModal: null,
   user: null,
-  cartLength: null,
 };
 
 // const getCartData = async () => {

@@ -39,10 +39,6 @@ const userSchema = new Schema(
       type: [cartSchema],
       default: [],
     },
-    total_cart_items: {
-      type: Number,
-      default: 0,
-    },
   },
   { timestamps: true }
 );

@@ -41,7 +41,6 @@ export const login = async (req, res) => {
         dob: 1,
         gender: 1,
         seller: 1,
-        total_cart_items: 1,
       }
     );
     if (!user) {

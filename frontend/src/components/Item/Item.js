@@ -104,7 +104,7 @@ export default function Item() {
         const { data } = await axios.post(
           `${BackendUrl}/add-new-cart-item`,
           {
-            updatedCartItem: { item_id: itemData._id, qty: 1 },
+            updatedCartItem: { item_id: itemData._id, qty: 1, price: itemData.price },
           },
           { withCredentials: true }
         );

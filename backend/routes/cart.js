@@ -10,7 +10,7 @@ import {
   getCartItems,
   removeEntireCartItem,
   getCartLength,
-  isCartItemAdded
+  isCartItemAdded,
 } from "../controllers/cart";
 
 router.post("/item/:itemId/review-item", validJwt, reviewItem);
@@ -22,5 +22,6 @@ router.get("/get-cart-items", validJwt, getCartItems);
 router.post("/remove-entire-cart-item", validJwt, removeEntireCartItem);
 router.get("/get-cart-length", validJwt, getCartLength);
 router.post("/is-cart-item-added", validJwt, isCartItemAdded)
+
 
 module.exports = router;
