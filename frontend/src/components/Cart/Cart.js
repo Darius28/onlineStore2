@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Context } from "../../context";
 import "./Cart.css";
 import axios from "axios";
@@ -18,12 +19,12 @@ const loadRazorpayScript = async (src) => {
 };
 
 export default function Cart() {
+  const history = useHistory();
   const { state, dispatch } = useContext(Context);
   console.log("strate: ", state);
   // console.log(state.user.total_cart_items);
   const [cartItems, setCartItems] = useState();
   const [totalAmt, setTotalAmt] = useState(0);
-  const [checkout, setCheckout] = useState(false);
 
   const calculateTotalAmount = (init, price, added, removedItem, qty) => {
     console.log(cartItems);
@@ -216,8 +217,15 @@ export default function Cart() {
           } else {
             console.log("payment verification failed!");
           }
+
+          await axios.post(
+            `${BackendUrl}/update-orders`,
+            {},
+            { withCredentials: true }
+          );
+          history.push("/order-success");
         },
-        // callback_url: `${BackendUrl}/payment-callback`,
+        // callback_url: "http://localhost:3000/payment-callback",
         prefill: {
           name: state.user.name,
           email: "gaurav.kumar@example.com",
@@ -261,10 +269,7 @@ export default function Cart() {
                               Seller:
                             </Card.Subtitle>
                             <Card.Text>
-                              Price:{" "}
-                              <span className="green">
-                                &#x20B9; {item.cartItem.price * item.qty}
-                              </span>
+                              <h4>&#x20B9; {item.cartItem.price * item.qty}</h4>
                             </Card.Text>
                           </div>
                         </div>
@@ -353,7 +358,7 @@ export default function Cart() {
           </Card>
           <div className="center mt-3">
             <Button variant="primary" size="lg" onClick={placeOrderHandler}>
-              Place Order
+              Place Order and Pay
             </Button>
           </div>
         </div>

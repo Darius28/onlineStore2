@@ -112,7 +112,7 @@ export const addCartItem = async (req, res) => {
           "cart.$": {
             item_id: addedItemId,
             qty: qty + 1,
-            price: price
+            price: price,
           },
         },
       }
@@ -135,7 +135,7 @@ export const removeCartItem = async (req, res) => {
   try {
     const { removedItemId, qty, price } = req.body;
     const userId = req.user.id;
-    console.log("addedItem: ", removedItemId,  qty);
+    console.log("addedItem: ", removedItemId, qty);
     // return;
     const updateQty = await User.findOneAndUpdate(
       {
@@ -147,7 +147,7 @@ export const removeCartItem = async (req, res) => {
           "cart.$": {
             item_id: removedItemId,
             qty: qty - 1,
-            price: price
+            price: price,
           },
         },
       }
@@ -235,6 +235,30 @@ export const isCartItemAdded = async (req, res) => {
       }
     }
     res.send({ cartItem: exists });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateOrders = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const existingCart = await User.findOne({ _id: userId }, { cart: 1 });
+    console.log("EC==================>", existingCart.cart);
+    const oldCart = existingCart.cart;
+    const addOrder = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $push: {
+          orders: {
+            order: oldCart,
+          },
+        },
+        cart: [],
+      }
+    );
+    console.log(addOrder);
+    res.json({ ok: true });
   } catch (err) {
     console.log(err);
   }

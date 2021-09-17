@@ -81,11 +81,13 @@ const HeaderBar = () => {
               <Nav.Link className="navbar-cart-posn">
                 <Link to="/cart" className="text-decoration-none navbar-cart">
                   <Cart3 size={24} /> Cart
-                  <div className="navbar-cart-items-amt">
-                    <span style={{ color: "white" }}>
-                      {cartLength ? cartLength : null}
-                    </span>
-                  </div>
+                  {cartLength ? (
+                    <div className="navbar-cart-items-amt">
+                      <span style={{ color: "white" }}>
+                        {cartLength}
+                      </span>
+                    </div>
+                  ) : null}
                 </Link>
               </Nav.Link>
               <Nav.Link>Link</Nav.Link>

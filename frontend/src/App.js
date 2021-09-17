@@ -11,6 +11,7 @@ import AddItems from "./components/Seller/AddItems";
 import { Context } from "./context";
 import Item from "./components/Item/Item";
 import Cart from "./components/Cart/Cart";
+import OrderSuccess from "./components/UI/OrderSuccess/OrderSuccess";
 
 function App() {
   const { state } = useContext(Context);
@@ -26,6 +27,7 @@ function App() {
             <Route path="/become-seller" component={BecomeSeller} exact />
             <Route path="/add-items" component={AddItems} exact />
             <Route path="/cart" exact component={Cart} />
+            <Route path="/order-success" exact component={OrderSuccess} />
           </>
         ) : null}
         <Route path="*" component={PageNotFound} exact />

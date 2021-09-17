@@ -39,6 +39,7 @@ const userSchema = new Schema(
       type: [cartSchema],
       default: [],
     },
+    orders: [],
   },
   { timestamps: true }
 );
