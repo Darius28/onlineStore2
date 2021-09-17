@@ -1,7 +1,16 @@
-import Shop from "../models/shop";
 import User from "../models/user";
 import Item from "../models/item";
 var mongoose = require("mongoose");
+import AWS from "aws-sdk";
+
+const awsConfig = {
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_ID,
+  region: process.env.AWS_REGION,
+  apiVersion: process.env.AWS_API_VERSION,
+};
+
+const SES = new AWS.SES(awsConfig);
 
 export const reviewItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
@@ -52,6 +61,7 @@ export const addNewCartItem = async (req, res) => {
             item_id: updatedCartItem.item_id,
             qty: updatedCartItem.qty,
             price: updatedCartItem.price,
+            name: updatedCartItem.name,
           },
         },
       }
@@ -98,7 +108,7 @@ export const addCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { addedItemId, qty, price } = req.body;
+    const { addedItemId, qty, price, name } = req.body;
     const userId = req.user.id;
     console.log("addedItem: ", addedItemId, qty);
     // return;
@@ -113,6 +123,7 @@ export const addCartItem = async (req, res) => {
             item_id: addedItemId,
             qty: qty + 1,
             price: price,
+            name: name,
           },
         },
       }
@@ -133,7 +144,7 @@ export const removeCartItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { removedItemId, qty, price } = req.body;
+    const { removedItemId, qty, price, name } = req.body;
     const userId = req.user.id;
     console.log("addedItem: ", removedItemId, qty);
     // return;
@@ -148,6 +159,7 @@ export const removeCartItem = async (req, res) => {
             item_id: removedItemId,
             qty: qty - 1,
             price: price,
+            name: name,
           },
         },
       }
@@ -243,9 +255,13 @@ export const isCartItemAdded = async (req, res) => {
 export const updateOrders = async (req, res) => {
   try {
     const userId = req.user.id;
+    const { email, total } = req.body;
+
     const existingCart = await User.findOne({ _id: userId }, { cart: 1 });
+
     console.log("EC==================>", existingCart.cart);
     const oldCart = existingCart.cart;
+
     const addOrder = await User.findOneAndUpdate(
       { _id: userId },
       {
@@ -257,7 +273,47 @@ export const updateOrders = async (req, res) => {
         cart: [],
       }
     );
-    console.log(addOrder);
+
+    const params = {
+      Source: process.env.EMAIL_FROM,
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Body: {
+          Html: {
+            Charset: "UTF-8",
+            Data: `
+                <html>
+                  <h1>Your order has been placed sucessfully!</h1>
+                  <h3>Here is the list of items you've ordered: </h3>
+                  <ol>
+                    ${oldCart.map(
+                      (item) => `<li>${item.name} - ${item.price}</li>`
+                    )}
+                  </ol>
+                  <h3 style="color: green;">Total Amount Paid: &#x20B9; ${total}</h3>
+                </html>
+              `,
+          },
+        },
+        Subject: {
+          Charset: "UTF-8",
+          Data: "Order Confirmation and Details",
+        },
+      },
+    };
+
+    const emailSent = SES.sendEmail(params).promise();
+    emailSent
+      .then((data) => {
+        console.log(data);
+        res.json({ ok: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     res.json({ ok: true });
   } catch (err) {
     console.log(err);

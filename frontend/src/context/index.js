@@ -5,15 +5,8 @@ import { BackendUrl } from "../utils/BackendUrl";
 const initialState = {
   showModal: null,
   user: null,
+  cartLength: null,
 };
-
-// const getCartData = async () => {
-//   const { data } = await axios.get(`${BackendUrl}/get-cart-length`, {
-//     withCredentials: true,
-//   });
-//   console.log("data.cl", data.cartLength);
-//   return data.cartLength;
-// };
 
 const Context = createContext();
 

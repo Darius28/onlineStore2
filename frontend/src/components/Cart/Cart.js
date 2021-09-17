@@ -99,6 +99,7 @@ export default function Cart() {
           addedItemId: item.cartItem._id,
           qty: item.qty,
           price: item.cartItem.price,
+          name: item.cartItem.name,
         },
         { withCredentials: true }
       );
@@ -126,6 +127,7 @@ export default function Cart() {
           removedItemId: item.cartItem._id,
           qty: item.qty,
           price: item.cartItem.price,
+          name: item.cartItem.name,
         },
         { withCredentials: true }
       );
@@ -220,9 +222,13 @@ export default function Cart() {
 
           await axios.post(
             `${BackendUrl}/update-orders`,
-            {},
+            { email: state.user.email, total: totalAmt },
             { withCredentials: true }
           );
+          dispatch({
+            type: "SET_CART_LENGTH",
+            payload: null,
+          });
           history.push("/order-success");
         },
         // callback_url: "http://localhost:3000/payment-callback",

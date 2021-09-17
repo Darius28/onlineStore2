@@ -100,11 +100,17 @@ export default function Item() {
   const addToCartHandler = async () => {
     try {
       if (!cartItemExists) {
-        console.log("cart item doesnt exist");
+        // console.log(itemData);
+        // return;
         const { data } = await axios.post(
           `${BackendUrl}/add-new-cart-item`,
           {
-            updatedCartItem: { item_id: itemData._id, qty: 1, price: itemData.price },
+            updatedCartItem: {
+              item_id: itemData._id,
+              qty: 1,
+              price: itemData.price,
+              name: itemData.name,
+            },
           },
           { withCredentials: true }
         );
@@ -117,10 +123,8 @@ export default function Item() {
           type: "SET_CART_LENGTH",
           payload: cartLength,
         });
-        history.push("/cart");
-      } else {
-        history.push("/cart");
       }
+      history.push("/cart");
     } catch (err) {
       console.log(err);
     }

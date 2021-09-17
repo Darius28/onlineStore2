@@ -12,6 +12,9 @@ export const cartSchema = new Schema({
   price: {
     type: Number,
   },
+  name: {
+    type: String
+  }
 });
 
 export default mongoose.model("Cart", cartSchema);
