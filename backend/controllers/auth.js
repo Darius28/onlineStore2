@@ -42,6 +42,7 @@ export const login = async (req, res) => {
         gender: 1,
         seller: 1,
         email: 1,
+        shop_name: 1,
       }
     );
     if (!user) {

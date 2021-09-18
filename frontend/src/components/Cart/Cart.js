@@ -72,7 +72,7 @@ export default function Cart() {
       {},
       { withCredentials: true }
     );
-    // console.log("totalCartItems: ", data.totalCartItems);
+    console.log("totalCartItems: ", data.totalCartItems);
     setCartItems(data.totalCartItems);
   };
 
@@ -272,7 +272,7 @@ export default function Cart() {
                           <div>
                             <Card.Title>{item.cartItem.name}</Card.Title>
                             <Card.Subtitle className="mb-2 text-muted">
-                              Seller:
+                              Seller: {item.shopName}
                             </Card.Subtitle>
                             <Card.Text>
                               <h4>&#x20B9; {item.cartItem.price * item.qty}</h4>

@@ -34,6 +34,9 @@ export const itemSchema = new Schema({
   },
   pictures: [],
   reviews: [reviewSchema],
+  shop_name: {
+    type: String,
+  },
 });
 
 export default mongoose.model("Item", itemSchema);

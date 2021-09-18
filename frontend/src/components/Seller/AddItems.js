@@ -75,7 +75,9 @@ export default function AddItems() {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const email = JSON.parse(localStorage.getItem("user")).email;
+      const lsData = JSON.parse(localStorage.getItem("user"));
+      // const email = lsData.email;
+      const shop_name = lsData.shop_name;
       const name = nameRef.current.value;
       const price = priceRef.current.value;
       const description = descriptionRef.current.value;
@@ -87,6 +89,7 @@ export default function AddItems() {
           description,
           imagesBase64: itemImgB64,
           itemCategory,
+          shopName: shop_name,
         },
         {
           withCredentials: true,

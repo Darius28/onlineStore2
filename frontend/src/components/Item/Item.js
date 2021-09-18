@@ -194,6 +194,11 @@ export default function Item() {
             <Badge className="bg-green">{amtRatings ? amtRatings : null}</Badge>
             <p>{itemData ? itemData.reviews.length : null} ratings</p>
           </div>
+          <div>
+            <span className="item-seller-name">
+              Seller: {itemData ? itemData.shop_name : null}
+            </span>
+          </div>
           <h1 className="item-price">
             &#x20B9; {itemData ? itemData.price : null}
           </h1>

@@ -27,7 +27,7 @@ export const becomeSeller = async (req, res) => {
     const shopId = shopName._id;
     const user = await User.findOneAndUpdate(
       { _id: userId },
-      { $set: { seller: true, shop_id: shopId } }
+      { $set: { seller: true, shop_id: shopId, shop_name: shop } }
     ).exec();
     console.log(user);
     return res.json({ ok: true });
@@ -43,7 +43,8 @@ export const addItem = async (req, res) => {
   try {
     const userId = req.user.id;
     console.log(userId);
-    const { name, price, description, itemCategory, imagesBase64 } = req.body;
+    const { name, price, description, itemCategory, imagesBase64, shopName } =
+      req.body;
 
     let awsImageObj = [];
 
@@ -94,6 +95,7 @@ export const addItem = async (req, res) => {
           description: description,
           pictures: awsImageObj,
           shop_owner_id: uploaderObjectId,
+          shop_name: shopName,
         }).save();
 
         var newItemObjectId = mongoose.Types.ObjectId(newItem._id);

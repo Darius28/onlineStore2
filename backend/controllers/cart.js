@@ -80,21 +80,27 @@ export const getCheckoutCartItems = async (req, res) => {
     let totalCartItems = [];
     const userId = req.user.id;
 
-    const cartItems = await User.find({ _id: userId }, { cart: 1 });
+    const cartItems = await User.findOne(
+      { _id: userId },
+      { cart: 1, shop_name: 1 }
+    );
+    console.log(cartItems.cart);
+
     // console.log(
     //   "totalcartitems ==================>>>>>>>>>>>>>>>>>>>>>>",
     //   cartItems[0].cart
     // );
-    console.log(cartItems[0]);
-    for (let i in cartItems[0].cart) {
+    console.log(cartItems);
+    for (let i in cartItems.cart) {
       // console.log(cartItems[0].cart[i]);
       const itemData = await Item.findOne({
-        _id: cartItems[0].cart[i].item_id,
+        _id: cartItems.cart[i].item_id,
       });
       // console.log("itemDATAAAAAAAAAAAAAA: ", itemData);
       totalCartItems.push({
         cartItem: itemData,
-        qty: cartItems[0].cart[i].qty,
+        qty: cartItems.cart[i].qty,
+        shopName: itemData.shop_name,
       });
     }
 
@@ -313,8 +319,6 @@ export const updateOrders = async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-
-    res.json({ ok: true });
   } catch (err) {
     console.log(err);
   }
