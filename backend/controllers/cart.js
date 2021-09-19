@@ -229,6 +229,7 @@ export const getCartLength = async (req, res) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const userId = req.user.id;
+    console.log(userId);
     const userData = await User.findOne({ _id: userId }, { cart: 1 });
     console.log(userData.cart.length);
     res.send({ cartLength: userData.cart.length });

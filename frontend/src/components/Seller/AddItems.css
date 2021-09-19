@@ -47,3 +47,19 @@
 .link:hover {
   text-decoration: underline;
 }
+
+.store-name-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.store-change-name-link {
+  color: rgb(13, 110, 253);
+  cursor: pointer;
+}
+
+.store-change-name-link:hover {
+  text-decoration: underline;
+}

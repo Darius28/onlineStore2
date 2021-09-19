@@ -38,7 +38,7 @@ const rootReducer = (state, action) => {
       };
     }
     case "LOGOUT":
-      return { ...state, user: null };
+      return { ...state, user: null, cartLength: null };
     default:
       return state;
   }
@@ -62,7 +62,6 @@ const Provider = (props) => {
         payload: data.cartLength,
       });
     };
-
     getCartData();
   }, []);
 

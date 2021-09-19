@@ -23,3 +23,31 @@ export const getStoreItems = async (req, res) => {
     console.log(err);
   }
 };
+
+export const editStoreName = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  try {
+    console.log("req.sent");
+    const { newStoreName } = req.body;
+    const shopOwnerId = req.user.id;
+    const editShopName = await Shop.findOneAndUpdate(
+      { shop_owner: shopOwnerId },
+      { shop_name: newStoreName }
+    );
+    const editShopNameUser = await User.findOneAndUpdate(
+      { _id: shopOwnerId },
+      { shop_name: newStoreName }
+    );
+    const itemIdArray = editShopName.items;
+    for (var i in itemIdArray) {
+      const editItems = await Item.findOneAndUpdate(
+        { _id: itemIdArray[i] },
+        { shop_name: newStoreName }
+      );
+    }
+    res.send({ ok: true });
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -1,8 +1,14 @@
 import express from "express";
 const router = express.Router();
-import { selectedItem, getStoreItems } from "../controllers/store";
+import { validJwt } from "../middleware";
+import {
+  selectedItem,
+  getStoreItems,
+  editStoreName,
+} from "../controllers/store";
 
 router.get("/item/:itemId", selectedItem);
 router.get("/get-store-items", getStoreItems);
+router.post("/edit-store-name", validJwt, editStoreName);
 
 module.exports = router;

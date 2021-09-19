@@ -9,6 +9,7 @@ import { BackendUrl } from "../../utils/BackendUrl";
 import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import Inventory from "./Inventory";
+import ChangeStoreName from "../UI/ChangeStoreNameModal/ChangeStoreName";
 
 export default function AddItems() {
   const [addItem, setAddItem] = useState(false);
@@ -22,6 +23,7 @@ export default function AddItems() {
   const priceRef = useRef();
   const descriptionRef = useRef();
   const [itemsData, setItemsData] = useState();
+  const [showShopNameChange, setShowShopNameChange] = useState(false);
 
   const optionsList = CATEGORIES.map((category) => (
     <option value={category}>{category}</option>
@@ -174,11 +176,34 @@ export default function AddItems() {
     getData();
   }, []);
 
+  const changeStoreNameHandler = () => {
+    setShowShopNameChange(true);
+  };
+
+  const closeChangeShopModalHandler = () => {
+    setShowShopNameChange(false);
+  };
+
   return (
     <div>
-      <h1 className="center mt-3 mb-3">
-        {JSON.parse(localStorage.getItem("user")).shop_name}
-      </h1>
+      {showShopNameChange ? (
+        <ChangeStoreName
+          oldShopName={JSON.parse(localStorage.getItem("user")).shop_name}
+          onCloseModal={closeChangeShopModalHandler}
+          setShowShopNameChange={setShowShopNameChange}
+        />
+      ) : null}
+      <div className="store-name-container">
+        <h1 className="center mt-3 mb-3">
+          {JSON.parse(localStorage.getItem("user")).shop_name}
+        </h1>
+        <span
+          className="store-change-name-link"
+          onClick={changeStoreNameHandler}
+        >
+          Change Name
+        </span>
+      </div>
       <div className="center">
         <Button variant="success" className="mb-3" onClick={showAddItemHandler}>
           {addItem ? "Hide Add Items" : "Click to Add Items"}
