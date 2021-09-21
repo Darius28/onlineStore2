@@ -4,12 +4,26 @@ import Item from "../models/item";
 var mongoose = require("mongoose");
 
 export const selectedItem = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    console.log(req.params.itemId);
+    const userId = req.user.id;
+    const user = await User.findOne({ _id: userId }, { wishlist: 1 });
+    var inWishlist = false;
+    console.log("selected item user: ", user);
+    for (var i in user.wishlist) {
+      if (user.wishlist[i].item_id === req.params.itemId) {
+        inWishlist = true;
+        break;
+      }
+    }
+
+    console.log("item in wishlist status: ", inWishlist);
+
     var objectId = mongoose.Types.ObjectId(req.params.itemId);
     const item = await Item.findOne({ _id: objectId });
     console.log(item);
-    res.send({ item });
+    res.send({ item, inWishlist });
   } catch (err) {
     console.log(err);
   }

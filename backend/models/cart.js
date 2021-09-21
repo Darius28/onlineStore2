@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const { ObjectId } = mongoose;
 const { Schema } = mongoose;
 
 export const cartSchema = new Schema({

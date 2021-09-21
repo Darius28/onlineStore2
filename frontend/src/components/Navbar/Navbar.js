@@ -47,9 +47,13 @@ const HeaderBar = () => {
         type: "LOGOUT",
       });
       localStorage.removeItem("user");
-      const { data } = await axios.post(`${BackendUrl}/logout`, {
-        userId,
-      });
+      const { data } = await axios.post(
+        `${BackendUrl}/logout`,
+        {
+          userId,
+        },
+        { withCredentials: true }
+      );
       history.replace("/");
       toast.success("Logout Successful.");
     } catch (err) {

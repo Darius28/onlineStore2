@@ -86,6 +86,8 @@ export const login = async (req, res) => {
 };
 
 export const logout = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     const { userId } = req.body;
     console.log(userId);

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { cartSchema } from "./cart";
+import { wishlistSchema } from "./wishlist";
 const { ObjectId } = mongoose;
 const { Schema } = mongoose;
 
@@ -40,6 +41,7 @@ const userSchema = new Schema(
       default: [],
     },
     orders: [],
+    wishlist: [wishlistSchema],
     shop_name: {
       type: String,
     },

@@ -21,14 +21,17 @@ export default function Item() {
   const [reviewModal, setReviewModal] = useState(false);
   const [amtRatings, setAmtRatings] = useState();
   const [cartItemExists, setCartItemExists] = useState();
+  const [itemInWishlist, setItemInWishlist] = useState();
 
   useEffect(() => {
     const getItemData = async () => {
       const { data } = await axios.get(
-        `${BackendUrl}${history.location.pathname}`
+        `${BackendUrl}${history.location.pathname}`,
+        { withCredentials: true }
       );
       console.log("itemData", data.item);
       setItemData(data.item);
+      setItemInWishlist(data.inWishlist);
       let amtReviews = data.item.reviews.length;
       if (amtReviews === 0) {
         setAmtRatings("Nil");
@@ -134,6 +137,28 @@ export default function Item() {
     console.log(state);
   };
 
+  const wishlistHandler = async (itemId, inWl) => {
+    try {
+      if (inWl === true) {
+        const { data } = await axios.post(
+          `${BackendUrl}/remove-item-from-wishlist`,
+          { itemId },
+          { withCredentials: true }
+        );
+        setItemInWishlist(false);
+      } else {
+        const { data } = await axios.post(
+          `${BackendUrl}/add-item-to-wishlist`,
+          { itemId },
+          { withCredentials: true }
+        );
+        setItemInWishlist(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {reviewModal ? (
@@ -184,8 +209,15 @@ export default function Item() {
               Buy Now
             </Button>
           </div>
-          <div className="add-to-wishlist-container">
-            <StarFill color="#878787" />
+          <div
+            className="add-to-wishlist-container"
+            onClick={
+              itemData
+                ? wishlistHandler.bind(null, itemData._id, itemInWishlist)
+                : null
+            }
+          >
+            <StarFill color={itemInWishlist === true ? "red" : "#878787"} />
           </div>
         </div>
         <div className="item-data-container">
