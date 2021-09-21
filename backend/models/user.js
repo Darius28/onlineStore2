@@ -43,6 +43,10 @@ const userSchema = new Schema(
     shop_name: {
       type: String,
     },
+    log_in_time: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

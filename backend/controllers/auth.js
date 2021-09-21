@@ -43,8 +43,22 @@ export const login = async (req, res) => {
         seller: 1,
         email: 1,
         shop_name: 1,
+        log_in_time: 1,
+        cart: 1,
       }
     );
+    console.log("user: =================>", user);
+    const logInTime = Date.now();
+
+    const userLoginTimestamp = await User.findOneAndUpdate(
+      {
+        email,
+      },
+      {
+        log_in_time: logInTime,
+      }
+    );
+
     if (!user) {
       return res.status(400).send("User not found!");
     }
@@ -60,7 +74,7 @@ export const login = async (req, res) => {
     res.cookie("token", token, { httpOnly: true });
     console.log(token);
     user.password = undefined;
-    res.send({ user });
+    res.send({ user, cartLength: user.cart.length });
   } catch (err) {
     console.log(err);
   }
@@ -68,8 +82,27 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
+    const { userId } = req.body;
+    console.log(userId);
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      { log_in_time: 0 }
+    );
     res.clearCookie("token");
     res.json({ ok: true });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSessionStatus = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const userData = await User.findOne({ _id: userId });
+    console.log("get session status: ", userData);
+    if (userData.log_in_time + 8640000 < Date.now()) {
+      return res.json({ ok: false });
+    }
   } catch (err) {
     console.log(err);
   }

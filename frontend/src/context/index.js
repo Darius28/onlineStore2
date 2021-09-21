@@ -46,6 +46,7 @@ const rootReducer = (state, action) => {
 
 const Provider = (props) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
+
   useEffect(() => {
     dispatch({
       type: "LOGIN",
@@ -57,6 +58,7 @@ const Provider = (props) => {
         withCredentials: true,
       });
       console.log("data.cl", data.cartLength);
+      console.log("data.lit", data.loginTime);
       dispatch({
         type: "SET_CART_LENGTH",
         payload: data.cartLength,

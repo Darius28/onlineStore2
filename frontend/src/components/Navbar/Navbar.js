@@ -41,11 +41,15 @@ const HeaderBar = () => {
 
   const logoutHandler = async () => {
     try {
+      const LS = JSON.parse(localStorage.getItem("user"));
+      const userId = LS._id;
       dispatch({
         type: "LOGOUT",
       });
       localStorage.removeItem("user");
-      const { data } = await axios.post(`${BackendUrl}/logout`);
+      const { data } = await axios.post(`${BackendUrl}/logout`, {
+        userId,
+      });
       history.replace("/");
       toast.success("Logout Successful.");
     } catch (err) {
@@ -83,9 +87,7 @@ const HeaderBar = () => {
                   <Cart3 size={24} /> Cart
                   {cartLength ? (
                     <div className="navbar-cart-items-amt">
-                      <span style={{ color: "white" }}>
-                        {cartLength}
-                      </span>
+                      <span style={{ color: "white" }}>{cartLength}</span>
                     </div>
                   ) : null}
                 </Link>

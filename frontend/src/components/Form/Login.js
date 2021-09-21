@@ -46,6 +46,10 @@ export default function Login() {
         type: "LOGIN",
         payload: data.user,
       });
+      dispatch({
+        type: "SET_CART_LENGTH",
+        payload: data.cartLength,
+      });
       localStorage.setItem("user", JSON.stringify(data.user));
       toast.success("Welcome to Store!");
     } catch (err) {

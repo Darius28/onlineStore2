@@ -1,4 +1,7 @@
 import { useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import HeaderBar from "./components/Navbar/Navbar";
 import { Route, Switch, useParams, useLocation } from "react-router-dom";
@@ -12,9 +15,41 @@ import { Context } from "./context";
 import Item from "./components/Item/Item";
 import Cart from "./components/Cart/Cart";
 import OrderSuccess from "./components/UI/OrderSuccess/OrderSuccess";
+import { BackendUrl } from "./utils/BackendUrl";
 
 function App() {
-  const { state } = useContext(Context);
+  const { state, dispatch } = useContext(Context);
+  const history = useHistory();
+
+  const getSessionStatus = async (uid) => {
+    console.log("get session status in app.js");
+    const { data } = await axios.post(`${BackendUrl}/get-session-status`, {
+      userId: uid,
+    });
+
+    if (data.ok === false) {
+      console.log("session expired");
+
+      dispatch({
+        type: "LOGOUT",
+      });
+      localStorage.removeItem("user");
+      const { data } = await axios.post(`${BackendUrl}/logout`, {
+        userId: uid,
+      });
+      history.replace("/");
+    }
+  };
+
+  useEffect(() => {
+    const LS = JSON.parse(localStorage.getItem("user"));
+    console.log("app.js ue ");
+    if (LS) {
+      console.log("yuserkjshdak");
+      const userId = LS._id;
+      getSessionStatus(userId);
+    }
+  }, []);
   return (
     <>
       <ToastContainer position="top-center" />
