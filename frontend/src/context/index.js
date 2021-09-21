@@ -58,7 +58,6 @@ const Provider = (props) => {
         withCredentials: true,
       });
       console.log("data.cl", data.cartLength);
-      console.log("data.lit", data.loginTime);
       dispatch({
         type: "SET_CART_LENGTH",
         payload: data.cartLength,
