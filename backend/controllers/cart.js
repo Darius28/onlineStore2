@@ -280,12 +280,20 @@ export const updateOrders = async (req, res) => {
     console.log("EC==================>", existingCart.cart);
     const oldCart = existingCart.cart;
 
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1;
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    const newdate = day + "/" + month + "/" + year;
+
     const addOrder = await User.findOneAndUpdate(
       { _id: userId },
       {
         $push: {
           orders: {
             order: oldCart,
+            date: newdate,
           },
         },
         cart: [],

@@ -1,0 +1,10 @@
+.order-container {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.order-container-2 {
+  display: flex;
+  gap: 1rem;
+}

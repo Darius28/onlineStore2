@@ -75,7 +75,9 @@ const HeaderBar = () => {
       <Navbar bg="dark" variant="dark" expand="lg">
         <Container className="justify-content-space-between">
           <div className="d-flex">
-            <Navbar.Brand href="#home">Online Store</Navbar.Brand>
+            <Link className="navbar-link-2" to="/">
+              <Navbar.Brand href="#home">Online Store</Navbar.Brand>
+            </Link>
           </div>
           <Form className="d-flex">
             <FormControl

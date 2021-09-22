@@ -47,7 +47,26 @@ export const getOrdersData = async (req, res) => {
   try {
     const userId = req.user.id;
     const orders = await User.findOne({ _id: userId }, { orders: 1 });
-    res.send({ orders });
+    const ordersArray = orders.orders;
+
+    var totalOrdersArray = [];
+    for (var i in ordersArray) {
+      console.log("OA i: ", ordersArray[i]);
+      var itemsArray = [];
+      for (var j in ordersArray[i].order) {
+        console.log("OA j: ", ordersArray[i].order[j]);
+        const item = await Item.findOne({
+          _id: ordersArray[i].order[j].item_id,
+        });
+        itemsArray.push({
+          item,
+          price: ordersArray[i].order[j].price,
+          qty: ordersArray[i].order[j].qty,
+        });
+      }
+      totalOrdersArray.push({ itemsArray, orderDate: ordersArray[i].date });
+    }
+    res.send(totalOrdersArray);
   } catch (err) {
     console.log(err);
   }
