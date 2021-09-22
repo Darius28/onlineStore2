@@ -1,0 +1,38 @@
+.wishlist-link-container {
+  color: black;
+  text-decoration: none;
+}
+
+.wishlist-link-container:hover {
+  color: black;
+}
+
+.wishlist-container {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.wishlist-container-2 {
+  display: flex;
+  gap: 1rem;
+}
+
+.wishlist-gap-container {
+  width: 216px;
+}
+
+.category-container {
+  display: flex;
+  gap: 0.2rem;
+  align-items: flex-start;
+}
+
+.wishlist-container-3 {
+  display: flex;
+  gap: 1rem;
+}
+
+.out {
+  z-index: 100;
+}

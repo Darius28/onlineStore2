@@ -62,7 +62,13 @@ const HeaderBar = () => {
     }
   };
 
-  console.log("USER: ", user);
+  const showOrdersHandler = () => {
+    history.push("/orders");
+  };
+
+  const showWishlistHandler = () => {
+    history.push("/wishlist");
+  };
 
   return (
     <div>
@@ -124,8 +130,12 @@ const HeaderBar = () => {
                         </Link>
                       )}
                     </NavDropdown.Item>
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                    <NavDropdown.Item>Wishlist</NavDropdown.Item>
+                    <NavDropdown.Item onClick={showOrdersHandler}>
+                      Orders
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={showWishlistHandler}>
+                      Wishlist
+                    </NavDropdown.Item>
                   </>
                 ) : (
                   <>

@@ -107,7 +107,7 @@ export const getSessionStatus = async (req, res) => {
     const { userId } = req.body;
     const userData = await User.findOne({ _id: userId }, { log_in_time: 1 });
     console.log("get session status: ", userData);
-    if (userData.log_in_time + 8640000 < Date.now()) {
+    if (userData.log_in_time + 86400000 < Date.now()) {
       return res.json({ ok: false });
     }
   } catch (err) {

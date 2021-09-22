@@ -16,6 +16,8 @@ import Item from "./components/Item/Item";
 import Cart from "./components/Cart/Cart";
 import OrderSuccess from "./components/UI/OrderSuccess/OrderSuccess";
 import { BackendUrl } from "./utils/BackendUrl";
+import Wishlist from "./components/Wishlist/Wishlist";
+import Order from "./components/Order/Order";
 
 function App() {
   const { state, dispatch } = useContext(Context);
@@ -63,6 +65,8 @@ function App() {
             <Route path="/add-items" component={AddItems} exact />
             <Route path="/cart" exact component={Cart} />
             <Route path="/order-success" exact component={OrderSuccess} />
+            <Route path="/orders" exact component={Order} />
+            <Route path="/wishlist" exact component={Wishlist} />
           </>
         ) : null}
         <Route path="*" component={PageNotFound} exact />
