@@ -26,8 +26,7 @@ export default function Item() {
   useEffect(() => {
     const getItemData = async () => {
       const { data } = await axios.get(
-        `${BackendUrl}${history.location.pathname}`,
-        { withCredentials: true }
+        `${BackendUrl}${history.location.pathname}`
       );
       console.log("itemData", data.item);
       setItemData(data.item);
@@ -54,13 +53,9 @@ export default function Item() {
       console.log(history);
       const {
         data: { cartItem },
-      } = await axios.post(
-        `${BackendUrl}/is-cart-item-added`,
-        { itemId: data.item._id },
-        {
-          withCredentials: true,
-        }
-      );
+      } = await axios.post(`${BackendUrl}/is-cart-item-added`, {
+        itemId: data.item._id,
+      });
       setCartItemExists(cartItem);
     };
     getItemData();

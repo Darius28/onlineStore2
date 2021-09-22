@@ -7,7 +7,7 @@ import {
   editStoreName,
 } from "../controllers/store";
 
-router.get("/item/:itemId", validJwt, selectedItem);
+router.get("/item/:itemId",  selectedItem);
 router.get("/get-store-items", getStoreItems);
 router.post("/edit-store-name", validJwt, editStoreName);
 

@@ -225,9 +225,12 @@ export const removeEntireCartItem = async (req, res) => {
 };
 
 export const getCartLength = async (req, res) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
+    if (!req.user) {
+      return res.send({
+        cartLength: null,
+      });
+    }
     const userId = req.user.id;
     console.log(userId);
     const userData = await User.findOne(
@@ -250,20 +253,23 @@ export const getCartLength = async (req, res) => {
 };
 
 export const isCartItemAdded = async (req, res) => {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const userId = req.user.id;
-    const { itemId } = req.body;
-    const userData = await User.findOne({ _id: userId }, { cart: 1 });
-    // console.log(userData.cart);
     let exists = false;
-    for (var i in userData.cart) {
-      if (userData.cart[i].item_id === itemId) {
-        exists = true;
-        break;
+    if (req.user) {
+      const userId = req.user.id;
+      console.log(userId);
+      const { itemId } = req.body;
+      const userData = await User.findOne({ _id: userId }, { cart: 1 });
+      // console.log(userData.cart);
+
+      for (var i in userData.cart) {
+        if (userData.cart[i].item_id === itemId) {
+          exists = true;
+          break;
+        }
       }
     }
+
     res.send({ cartItem: exists });
   } catch (err) {
     console.log(err);

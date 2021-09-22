@@ -55,7 +55,7 @@ const Provider = (props) => {
 
     const getCartData = async () => {
       const { data } = await axios.get(`${BackendUrl}/get-cart-length`, {
-        withCredentials: true,
+      
       });
       console.log("data.cl", data.cartLength);
       dispatch({
