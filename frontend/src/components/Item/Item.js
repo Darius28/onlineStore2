@@ -10,6 +10,7 @@ import ReviewModal from "../Form/ReviewModal";
 import ReviewContainer from "../UI/ReviewContainer/ReviewContainer";
 import { Context } from "../../context/index";
 import { nanoid } from "nanoid";
+import NotLoggedIn from "../UI/NotLoggedIn/NotLoggedIn";
 
 export default function Item() {
   const { state, dispatch } = useContext(Context);
@@ -22,10 +23,12 @@ export default function Item() {
   const [amtRatings, setAmtRatings] = useState();
   const [cartItemExists, setCartItemExists] = useState();
   const [itemInWishlist, setItemInWishlist] = useState();
+  const [showNotLoggedIn, setShowNotLoggedIn] = useState(false);
 
-  const getItemData = async () => {
-    const { data } = await axios.get(
-      `${BackendUrl}${history.location.pathname}`
+  const getItemData = async (userId) => {
+    const { data } = await axios.post(
+      `${BackendUrl}${history.location.pathname}`,
+      { userId }
     );
     console.log("itemData", data.item);
     setItemData(data.item);
@@ -59,8 +62,12 @@ export default function Item() {
   };
 
   useEffect(() => {
-    getItemData();
-  }, [history]);
+    if (state.user) {
+      getItemData(state.user._id);
+    } else {
+      getItemData(null);
+    }
+  }, [history, state]);
 
   useEffect(() => {
     if (state) {
@@ -89,6 +96,10 @@ export default function Item() {
   };
 
   const showReviewModalHandler = () => {
+    if (!state.user) {
+      setShowNotLoggedIn(true);
+      return;
+    }
     setReviewModal(true);
   };
 
@@ -101,6 +112,10 @@ export default function Item() {
 
   const addToCartHandler = async () => {
     try {
+      if (!state.user) {
+        setShowNotLoggedIn(true);
+        return;
+      }
       if (!cartItemExists) {
         // console.log(itemData);
         // return;
@@ -118,8 +133,8 @@ export default function Item() {
         );
         const {
           data: { cartLength },
-        } = await axios.get(`${BackendUrl}/get-cart-length`, {
-          withCredentials: true,
+        } = await axios.post(`${BackendUrl}/get-cart-length`, {
+          userId: state.user._id,
         });
         dispatch({
           type: "SET_CART_LENGTH",
@@ -133,11 +148,19 @@ export default function Item() {
   };
 
   const buyNowHandler = () => {
+    if (!state.user) {
+      setShowNotLoggedIn(true);
+      return;
+    }
     console.log(state);
   };
 
   const wishlistHandler = async (itemId, inWl) => {
     try {
+      if (!state.user) {
+        setShowNotLoggedIn(true);
+        return;
+      }
       if (inWl === true) {
         const { data } = await axios.post(
           `${BackendUrl}/remove-item-from-wishlist`,
@@ -158,8 +181,15 @@ export default function Item() {
     }
   };
 
+  const closeNotLoggedInModalHandler = () => {
+    setShowNotLoggedIn(false);
+  };
+
   return (
     <>
+      {showNotLoggedIn ? (
+        <NotLoggedIn onCloseModal={closeNotLoggedInModalHandler} />
+      ) : null}
       {reviewModal ? (
         <ReviewModal
           onCloseModal={closeReviewModalHandler}

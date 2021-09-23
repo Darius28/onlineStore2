@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Context } from "../../context";
 import "./Cart.css";
 import axios from "axios";
@@ -73,6 +73,7 @@ export default function Cart() {
       { withCredentials: true }
     );
     console.log("totalCartItems: ", data.totalCartItems);
+    console.log(data.totalCartItems.length);
     setCartItems(data.totalCartItems);
   };
 
@@ -160,8 +161,8 @@ export default function Cart() {
       setCartItems(() => filteredCartItems);
       const {
         data: { cartLength },
-      } = await axios.get(`${BackendUrl}/get-cart-length`, {
-        withCredentials: true,
+      } = await axios.post(`${BackendUrl}/get-cart-length`, {
+        userId: state.user._id,
       });
       dispatch({
         type: "SET_CART_LENGTH",
@@ -253,122 +254,136 @@ export default function Cart() {
       <h1 className="center">
         Your Cart ({cartItems ? cartItems.length : null})
       </h1>
-      <div className="cart-container">
-        <div className="cart-container__items">
-          {cartItems
-            ? cartItems.map((item) => {
-                return (
-                  <>
-                    <Card>
-                      <Card.Body className="cart-body-container">
-                        <div className="cart-body-container-2">
-                          <div>
-                            <img
-                              src={item.cartItem.pictures[0].Location}
-                              width={216}
-                              height={108}
-                            />
-                          </div>
-                          <div>
-                            <Card.Title>{item.cartItem.name}</Card.Title>
-                            <Card.Subtitle className="mb-2 text-muted">
-                              Seller: {item.shopName}
-                            </Card.Subtitle>
-                            <Card.Text>
-                              <h4>&#x20B9; {item.cartItem.price * item.qty}</h4>
-                            </Card.Text>
-                          </div>
-                        </div>
-                        <div className="cart-body-container-3">
-                          <div className="cart-qty-container">
-                            <button
-                              disabled={item.qty === 1}
-                              className={`test ${
-                                item.qty === 1 ? "test-no-cursor" : null
-                              }`}
-                              onClick={removeCartItemHandler.bind(null, item)}
-                            >
-                              -
-                            </button>
-                            <div className="cart-qty-container-2">
-                              <input
-                                type="text"
-                                disabled
-                                className="cart-qty-input"
-                                value={item.qty}
+      {cartItems && cartItems.length > 0 ? (
+        <div className="cart-container">
+          <div className="cart-container__items">
+            {cartItems
+              ? cartItems.map((item) => {
+                  return (
+                    <>
+                      <Card>
+                        <Card.Body className="cart-body-container">
+                          <div className="cart-body-container-2">
+                            <div>
+                              <img
+                                src={item.cartItem.pictures[0].Location}
+                                width={216}
+                                height={108}
                               />
                             </div>
-                            <button
-                              className="test"
-                              onClick={addCartItemHandler.bind(null, item)}
-                            >
-                              +
-                            </button>
+                            <div>
+                              <Card.Title>{item.cartItem.name}</Card.Title>
+                              <Card.Subtitle className="mb-2 text-muted">
+                                Seller: {item.shopName}
+                              </Card.Subtitle>
+                              <Card.Text>
+                                <h4>
+                                  &#x20B9; {item.cartItem.price * item.qty}
+                                </h4>
+                              </Card.Text>
+                            </div>
                           </div>
-                          <div className="cart-remove-item-container">
-                            <span
-                              onClick={removeItemHandler.bind(
-                                null,
-                                item.cartItem._id,
-                                item.qty,
-                                item.cartItem.price
-                              )}
-                            >
-                              REMOVE ITEM
-                            </span>
+                          <div className="cart-body-container-3">
+                            <div className="cart-qty-container">
+                              <button
+                                disabled={item.qty === 1}
+                                className={`test ${
+                                  item.qty === 1 ? "test-no-cursor" : null
+                                }`}
+                                onClick={removeCartItemHandler.bind(null, item)}
+                              >
+                                -
+                              </button>
+                              <div className="cart-qty-container-2">
+                                <input
+                                  type="text"
+                                  disabled
+                                  className="cart-qty-input"
+                                  value={item.qty}
+                                />
+                              </div>
+                              <button
+                                className="test"
+                                onClick={addCartItemHandler.bind(null, item)}
+                              >
+                                +
+                              </button>
+                            </div>
+                            <div className="cart-remove-item-container">
+                              <span
+                                onClick={removeItemHandler.bind(
+                                  null,
+                                  item.cartItem._id,
+                                  item.qty,
+                                  item.cartItem.price
+                                )}
+                              >
+                                REMOVE ITEM
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </>
-                );
-              })
-            : null}
-        </div>
-        <div className="cart-container__total">
-          <Card>
-            <Card.Body>
-              <h6 className="cart-price-header">PRICE DETAILS: </h6>
-              <hr />
-              <div className="cart-price-container">
-                <span>
-                  Price ({cartItems ? cartItems.length : null}{" "}
-                  {cartItems
-                    ? cartItems.length === 1
-                      ? "item"
-                      : "items"
-                    : null}
-                  ){" "}
-                </span>
-                <span>&#x20B9; {totalAmt ? totalAmt : "0"}</span>
-              </div>
-              <div className="cart-price-container">
-                <span>Discount </span>
-                <span>- &#x20B9; 0</span>
-              </div>
-              <div className="cart-price-container">
-                <span>Delivery Charges </span>
-                <span>&#x20B9; 0</span>
-              </div>
-              <hr />
-              <div className="cart-price-container">
-                <h4>Total Amount</h4>
-                <h4>&#x20B9; {totalAmt ? totalAmt : "0"}</h4>
-              </div>
-              <hr />
-              <div className="cart-price-container green">
-                <h6>Total Savings</h6>
-                <h6>&#x20B9; 0</h6>
-              </div>
-            </Card.Body>
-          </Card>
-          <div className="center mt-3">
-            <Button variant="primary" size="lg" onClick={placeOrderHandler}>
-              Place Order and Pay
-            </Button>
+                        </Card.Body>
+                      </Card>
+                    </>
+                  );
+                })
+              : null}
+          </div>
+          <div className="cart-container__total">
+            <Card>
+              <Card.Body>
+                <h6 className="cart-price-header">PRICE DETAILS: </h6>
+                <hr />
+                <div className="cart-price-container">
+                  <span>
+                    Price ({cartItems ? cartItems.length : null}{" "}
+                    {cartItems
+                      ? cartItems.length === 1
+                        ? "item"
+                        : "items"
+                      : null}
+                    ){" "}
+                  </span>
+                  <span>&#x20B9; {totalAmt ? totalAmt : "0"}</span>
+                </div>
+                <div className="cart-price-container">
+                  <span>Discount </span>
+                  <span>- &#x20B9; 0</span>
+                </div>
+                <div className="cart-price-container">
+                  <span>Delivery Charges </span>
+                  <span>&#x20B9; 0</span>
+                </div>
+                <hr />
+                <div className="cart-price-container">
+                  <h4>Total Amount</h4>
+                  <h4>&#x20B9; {totalAmt ? totalAmt : "0"}</h4>
+                </div>
+                <hr />
+                <div className="cart-price-container green">
+                  <h6>Total Savings</h6>
+                  <h6>&#x20B9; 0</h6>
+                </div>
+              </Card.Body>
+            </Card>
+            <div className="center mt-3">
+              <Button variant="primary" size="lg" onClick={placeOrderHandler}>
+                Place Order and Pay
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="container center empty-container">
+          <h1 className="mb-3">Your cart is empty.</h1>
+          <h5 className="mb-3">
+            Go to the homepage to start building your cart
+          </h5>
+          <Link className="mb-3" to="/">
+            <Button variant="primary">See Items</Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

@@ -109,6 +109,8 @@ export const getSessionStatus = async (req, res) => {
     console.log("get session status: ", userData);
     if (userData.log_in_time + 86400000 < Date.now()) {
       return res.json({ ok: false });
+    } else {
+      return res.json({ ok: true });
     }
   } catch (err) {
     console.log(err);

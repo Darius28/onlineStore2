@@ -47,23 +47,26 @@ const rootReducer = (state, action) => {
 const Provider = (props) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
 
+  const getCartData = async (userId) => {
+    const { data } = await axios.post(`${BackendUrl}/get-cart-length`, {
+      userId,
+    });
+    console.log("data.cl", data.cartLength);
+    dispatch({
+      type: "SET_CART_LENGTH",
+      payload: data.cartLength,
+    });
+  };
+
   useEffect(() => {
+    const LS = JSON.parse(localStorage.getItem("user"));
+    const userId = LS._id;
     dispatch({
       type: "LOGIN",
-      payload: JSON.parse(localStorage.getItem("user")),
+      payload: LS,
     });
 
-    const getCartData = async () => {
-      const { data } = await axios.get(`${BackendUrl}/get-cart-length`, {
-      
-      });
-      console.log("data.cl", data.cartLength);
-      dispatch({
-        type: "SET_CART_LENGTH",
-        payload: data.cartLength,
-      });
-    };
-    getCartData();
+    getCartData(userId);
   }, []);
 
   // useEffect(() => {

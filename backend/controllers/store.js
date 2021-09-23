@@ -6,8 +6,10 @@ var mongoose = require("mongoose");
 export const selectedItem = async (req, res) => {
   try {
     var inWishlist = false;
-    if (req.user) {
-      const userId = req.user.id;
+    const { userId } = req.body;
+    console.log("uid", userId);
+    if (userId) {
+      console.log("selecteditem: ", userId);
       const user = await User.findOne({ _id: userId }, { wishlist: 1 });
 
       console.log("selected item user: ", user);

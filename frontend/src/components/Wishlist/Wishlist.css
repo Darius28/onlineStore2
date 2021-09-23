@@ -36,3 +36,9 @@
 .out {
   z-index: 100;
 }
+
+.empty-container {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

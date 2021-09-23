@@ -8,3 +8,9 @@
   display: flex;
   gap: 1rem;
 }
+
+.empty-container {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}

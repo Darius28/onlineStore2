@@ -25,6 +25,8 @@ const HeaderBar = () => {
   const { user, showModal, cartLength } = state;
   const history = useHistory();
 
+  console.log(cartLength);
+
   const showLoginModalHandler = () => {
     dispatch({
       type: "MODAL_STATUS",
@@ -62,14 +64,6 @@ const HeaderBar = () => {
     }
   };
 
-  const showOrdersHandler = () => {
-    history.push("/orders");
-  };
-
-  const showWishlistHandler = () => {
-    history.push("/wishlist");
-  };
-
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">
@@ -94,17 +88,19 @@ const HeaderBar = () => {
             className="justify-content-center flex-grow-0"
           >
             <Nav className="d-flex navbar-right-nav-container">
-              <Nav.Link className="navbar-cart-posn">
-                <Link to="/cart" className="text-decoration-none navbar-cart">
-                  <Cart3 size={24} /> Cart
-                  {cartLength ? (
-                    <div className="navbar-cart-items-amt">
-                      <span style={{ color: "white" }}>{cartLength}</span>
-                    </div>
-                  ) : null}
-                </Link>
-              </Nav.Link>
-              <Nav.Link>Link</Nav.Link>
+              {user ? (
+                <Nav.Link className="navbar-cart-posn">
+                  <Link to="/cart" className="text-decoration-none navbar-cart">
+                    <Cart3 size={24} /> Cart
+                    {cartLength ? (
+                      <div className="navbar-cart-items-amt">
+                        <span style={{ color: "white" }}>{cartLength}</span>
+                      </div>
+                    ) : null}
+                  </Link>
+                </Nav.Link>
+              ) : null}
+
               <NavDropdown
                 title={<PersonCircle size={32} />}
                 id="basic-nav-dropdown"
@@ -132,11 +128,11 @@ const HeaderBar = () => {
                         </Link>
                       )}
                     </NavDropdown.Item>
-                    <NavDropdown.Item onClick={showOrdersHandler}>
-                      Orders
+                    <NavDropdown.Item>
+                      <Link className="navbar-link" to="/orders">Orders</Link>
                     </NavDropdown.Item>
-                    <NavDropdown.Item onClick={showWishlistHandler}>
-                      Wishlist
+                    <NavDropdown.Item>
+                      <Link className="navbar-link" to="/wishlist">Wishlist</Link>
                     </NavDropdown.Item>
                   </>
                 ) : (

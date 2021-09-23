@@ -45,60 +45,67 @@ export default function Wishlist() {
     <div>
       <h1 className="center mt-4 mb-4">Your Wishlist</h1>
       <div className="container">
-        {wishlist
-          ? wishlist.map((item) => (
-              <>
-                <Link className="wishlist-link-container">
-                  <Card className="wishlist-container">
-                    <div className="wishlist-container-2">
-                      <div>
-                        <img
-                          src={item.pictures[0].Location}
-                          width={216}
-                          height={108}
-                        />
-                      </div>
-                      <div>
-                        <Card.Title>{item.name}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">
-                          Seller: {item.shop_name}
-                        </Card.Subtitle>
-                        <Card.Text>
-                          <h4>&#x20B9; {item.price}</h4>
-                        </Card.Text>
-                      </div>
-                      <div className="category-container">
-                        <Card.Title>Category </Card.Title>
-                        {item.category.map((cat) => (
-                          <Badge className="category">{cat}</Badge>
-                        ))}
-                      </div>
+        {wishlist && wishlist.length > 0 ? (
+          wishlist.map((item) => (
+            <>
+              <Link className="wishlist-link-container">
+                <Card className="wishlist-container">
+                  <div className="wishlist-container-2">
+                    <div>
+                      <img
+                        src={item.pictures[0].Location}
+                        width={216}
+                        height={108}
+                      />
                     </div>
-                    <div className="wishlist-container-3">
-                      <div className="wishlist-gap-container"></div>
-                      <div className="out">
-                        <Button onClick={buyNowHandler} variant="success">
-                          Buy Now
-                        </Button>
-                      </div>
-                      <div className="out">
-                        <Button
-                          onClick={removeFromWishlistHandler.bind(
-                            null,
-                            item._id
-                          )}
-                          variant="outline-danger"
-                        >
-                          Remove from Wishlist
-                        </Button>
-                      </div>
+                    <div>
+                      <Card.Title>{item.name}</Card.Title>
+                      <Card.Subtitle className="mb-2 text-muted">
+                        Seller: {item.shop_name}
+                      </Card.Subtitle>
+                      <Card.Text>
+                        <h4>&#x20B9; {item.price}</h4>
+                      </Card.Text>
                     </div>
-                  </Card>
-                </Link>
-                <br />
-              </>
-            ))
-          : null}
+                    <div className="category-container">
+                      <Card.Title>Category </Card.Title>
+                      {item.category.map((cat) => (
+                        <Badge className="category">{cat}</Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="wishlist-container-3">
+                    <div className="wishlist-gap-container"></div>
+                    <div className="out">
+                      <Button onClick={buyNowHandler} variant="success">
+                        Buy Now
+                      </Button>
+                    </div>
+                    <div className="out">
+                      <Button
+                        onClick={removeFromWishlistHandler.bind(null, item._id)}
+                        variant="outline-danger"
+                      >
+                        Remove from Wishlist
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+              <br />
+            </>
+          ))
+        ) : (
+          <div className="container center empty-container">
+            <h1 className="mb-3">Your wishlist is empty.</h1>
+            <h5 className="mb-3">
+              Go to the homepage to start adding items to your wishlist!
+            </h5>
+            <Link className="mb-3" to="/">
+              <Button variant="primary">See Items</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

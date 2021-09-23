@@ -21,7 +21,7 @@ router.post("/add-cart-item", validJwt, addCartItem);
 router.post("/remove-cart-item", validJwt, removeCartItem);
 router.get("/get-cart-items", validJwt, getCartItems);
 router.post("/remove-entire-cart-item", validJwt, removeEntireCartItem);
-router.get("/get-cart-length",  getCartLength);
+router.post("/get-cart-length",  getCartLength);
 router.post("/is-cart-item-added", isCartItemAdded);
 router.post("/update-orders", validJwt, updateOrders);
 

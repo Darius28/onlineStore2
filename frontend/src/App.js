@@ -22,7 +22,7 @@ import Order from "./components/Order/Order";
 function App() {
   const { state, dispatch } = useContext(Context);
   const history = useHistory();
-
+  console.log("styate in app.js: ", state.user);
   const getSessionStatus = async (uid) => {
     console.log("get session status in app.js");
     const { data } = await axios.post(`${BackendUrl}/get-session-status`, {
@@ -49,7 +49,9 @@ function App() {
     if (LS) {
       console.log("yuserkjshdak");
       const userId = LS._id;
-      getSessionStatus(userId);
+      if (!state.user) {
+        getSessionStatus(userId);
+      }
     }
   }, []);
   return (

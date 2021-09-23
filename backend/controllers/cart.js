@@ -228,23 +228,21 @@ export const removeEntireCartItem = async (req, res) => {
 
 export const getCartLength = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.send({
-        cartLength: null,
-      });
-    }
-    const userId = req.user.id;
-    console.log(userId);
-    const userData = await User.findOne(
-      { _id: userId },
-      { cart: 1, log_in_time: 1 }
-    );
-    console.log(userData.cart.length, userData.log_in_time);
-    if (userData.log_in_time === 0) {
+    const { userId } = req.body;
+    if (!userId) {
       return res.send({
         cartLength: null,
       });
     } else {
+      console.log("GET CART LENGTH =================>");
+      console.log("USERID: ", userId);
+      const userData = await User.findOne(
+        { _id: userId },
+        { cart: 1, log_in_time: 1 }
+      );
+      console.log("userdata: ", userData);
+      console.log(userData.cart.length, userData.log_in_time);
+
       return res.send({
         cartLength: userData.cart.length,
       });
