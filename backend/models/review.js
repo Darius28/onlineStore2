@@ -8,6 +8,10 @@ export const reviewSchema = new Schema(
       type: ObjectId,
       required: true,
     },
+    reviewer_name: {
+      type: String,
+      required: true,
+    },
     rating: {
       type: Number,
       required: true,

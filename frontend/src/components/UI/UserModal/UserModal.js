@@ -33,7 +33,7 @@ const Modal = () => {
     );
 
   return (
-    <Card className="modal">
+    <Card className="modal card-sm">
       <div className="modal-container">
         {DisplayModalHeading}
         {DisplayModal}

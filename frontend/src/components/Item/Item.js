@@ -23,41 +23,42 @@ export default function Item() {
   const [cartItemExists, setCartItemExists] = useState();
   const [itemInWishlist, setItemInWishlist] = useState();
 
-  useEffect(() => {
-    const getItemData = async () => {
-      const { data } = await axios.get(
-        `${BackendUrl}${history.location.pathname}`
-      );
-      console.log("itemData", data.item);
-      setItemData(data.item);
-      setItemInWishlist(data.inWishlist);
-      let amtReviews = data.item.reviews.length;
-      if (amtReviews === 0) {
-        setAmtRatings("Nil");
-      } else {
-        let score = 0;
-        for (let i in data.item.reviews) {
-          score += data.item.reviews[i].rating;
-        }
-        setAmtRatings(score / amtReviews);
+  const getItemData = async () => {
+    const { data } = await axios.get(
+      `${BackendUrl}${history.location.pathname}`
+    );
+    console.log("itemData", data.item);
+    setItemData(data.item);
+    setItemInWishlist(data.inWishlist);
+    let amtReviews = data.item.reviews.length;
+    if (amtReviews === 0) {
+      setAmtRatings("Nil");
+    } else {
+      let score = 0;
+      for (let i in data.item.reviews) {
+        score += data.item.reviews[i].rating;
       }
+      setAmtRatings(score / amtReviews);
+    }
 
-      setSelectedImage(data.item.pictures[0].Location);
-      const firstImg = document.getElementById(
-        `${data.item.pictures[0].Location}`
-      );
-      firstImg.classList.add("image-border");
-      setPrevHoverImg(() => {
-        return firstImg;
-      });
-      console.log(history);
-      const {
-        data: { cartItem },
-      } = await axios.post(`${BackendUrl}/is-cart-item-added`, {
-        itemId: data.item._id,
-      });
-      setCartItemExists(cartItem);
-    };
+    setSelectedImage(data.item.pictures[0].Location);
+    const firstImg = document.getElementById(
+      `${data.item.pictures[0].Location}`
+    );
+    firstImg.classList.add("image-border");
+    setPrevHoverImg(() => {
+      return firstImg;
+    });
+    console.log(history);
+    const {
+      data: { cartItem },
+    } = await axios.post(`${BackendUrl}/is-cart-item-added`, {
+      itemId: data.item._id,
+    });
+    setCartItemExists(cartItem);
+  };
+
+  useEffect(() => {
     getItemData();
   }, [history]);
 
@@ -91,7 +92,10 @@ export default function Item() {
     setReviewModal(true);
   };
 
-  const closeReviewModalHandler = () => {
+  const closeReviewModalHandler = async (refresh) => {
+    if (refresh !== false) {
+      await getItemData();
+    }
     setReviewModal(false);
   };
 

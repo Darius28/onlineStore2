@@ -16,7 +16,8 @@ export const reviewItem = async (req, res) => {
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
-    const { review, rating } = req.body;
+    const { review, rating, name } = req.body;
+    console.log("rev-name", name);
     const userId = req.user.id;
     const { itemId } = req.params;
 
@@ -29,6 +30,7 @@ export const reviewItem = async (req, res) => {
         $push: {
           reviews: {
             reviewer_id: userObjectId,
+            reviewer_name: name,
             rating: rating,
             description: review,
           },

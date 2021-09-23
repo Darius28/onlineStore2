@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import ReactDOM from "react-dom";
 import "./ReviewModal.css";
 import Card from "../UI/Card/Card";
@@ -6,14 +6,21 @@ import ReactStars from "react-rating-stars-component";
 import { Form, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { BackendUrl } from "../../utils/BackendUrl";
+import { Context } from "../../context";
 
 const Backdrop = (props) => {
-  return <div className="backdrop" onClick={props.onCloseModal}></div>;
+  return (
+    <div
+      className="backdrop"
+      onClick={props.onCloseModal.bind(null, false)}
+    ></div>
+  );
 };
 
 const Modal = (props) => {
   const [rating, setRating] = useState();
   const reviewRef = useRef();
+  const { state } = useContext(Context);
 
   const ratingHandler = (newRating) => {
     setRating(newRating);
@@ -23,23 +30,25 @@ const Modal = (props) => {
     e.preventDefault();
     try {
       const review = reviewRef.current.value;
-      console.log(review, rating);
+      const userName = state.user.name;
       const { data } = await axios.post(
         `${BackendUrl}/item/${props.itemId}/review-item`,
         {
           review,
           rating,
+          name: userName,
         },
         { withCredentials: true }
       );
-      props.onCloseModal();
+      console.log("rev posting done");
+      props.onCloseModal(null);
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <Card className="modal">
+    <Card className="modal card-sm">
       <h3 className="center mt-3 mb-3">Review {props.name}</h3>
       <Form onSubmit={submitRatingHandler} className="form-container">
         <Form.Group as={Col} className="mb-3 rating-star-container">
