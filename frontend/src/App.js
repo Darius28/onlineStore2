@@ -18,9 +18,11 @@ import OrderSuccess from "./components/UI/OrderSuccess/OrderSuccess";
 import { BackendUrl } from "./utils/BackendUrl";
 import Wishlist from "./components/Wishlist/Wishlist";
 import Order from "./components/Order/Order";
+import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen";
 
 function App() {
   const { state, dispatch } = useContext(Context);
+  const { isLoading } = state;
   const history = useHistory();
   console.log("styate in app.js: ", state.user);
   const getSessionStatus = async (uid) => {
@@ -45,9 +47,7 @@ function App() {
 
   useEffect(() => {
     const LS = JSON.parse(localStorage.getItem("user"));
-    console.log("app.js ue ");
     if (LS) {
-      console.log("yuserkjshdak");
       const userId = LS._id;
       if (!state.user) {
         getSessionStatus(userId);
@@ -58,6 +58,7 @@ function App() {
     <>
       <ToastContainer position="top-center" />
       <HeaderBar />
+      {isLoading ? <LoadingScreen /> : null}
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/item/:itemId" component={Item} exact />

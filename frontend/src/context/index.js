@@ -6,6 +6,7 @@ const initialState = {
   showModal: null,
   user: null,
   cartLength: null,
+  isLoading: true,
 };
 
 const Context = createContext();
@@ -37,6 +38,12 @@ const rootReducer = (state, action) => {
         user: { ...state.user, total_cart_items: action.payload },
       };
     }
+    case "START_LOADING": {
+      return { ...state, isLoading: true };
+    }
+    case "STOP_LOADING": {
+      return { ...state, isLoading: false };
+    }
     case "LOGOUT":
       return { ...state, user: null, cartLength: null };
     default:
@@ -60,13 +67,14 @@ const Provider = (props) => {
 
   useEffect(() => {
     const LS = JSON.parse(localStorage.getItem("user"));
-    const userId = LS._id;
-    dispatch({
-      type: "LOGIN",
-      payload: LS,
-    });
-
-    getCartData(userId);
+    if (LS) {
+      const userId = LS._id;
+      dispatch({
+        type: "LOGIN",
+        payload: LS,
+      });
+      getCartData(userId);
+    }
   }, []);
 
   // useEffect(() => {
