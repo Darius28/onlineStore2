@@ -18,7 +18,6 @@ import OrderSuccess from "./components/UI/OrderSuccess/OrderSuccess";
 import { BackendUrl } from "./utils/BackendUrl";
 import Wishlist from "./components/Wishlist/Wishlist";
 import Order from "./components/Order/Order";
-import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen";
 
 function App() {
   const { state, dispatch } = useContext(Context);

@@ -6,7 +6,6 @@ const initialState = {
   showModal: null,
   user: null,
   cartLength: null,
-  isLoading: true,
 };
 
 const Context = createContext();
@@ -37,12 +36,6 @@ const rootReducer = (state, action) => {
         ...state,
         user: { ...state.user, total_cart_items: action.payload },
       };
-    }
-    case "START_LOADING": {
-      return { ...state, isLoading: true };
-    }
-    case "STOP_LOADING": {
-      return { ...state, isLoading: false };
     }
     case "LOGOUT":
       return { ...state, user: null, cartLength: null };
