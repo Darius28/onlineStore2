@@ -253,8 +253,11 @@ export const getCartLength = async (req, res) => {
 };
 
 export const isCartItemAdded = async (req, res) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   try {
     let exists = false;
+    console.log("iscartitem added req.user: ", req.user);
     if (req.user) {
       const userId = req.user.id;
       console.log(userId);
@@ -263,7 +266,10 @@ export const isCartItemAdded = async (req, res) => {
       // console.log(userData.cart);
 
       for (var i in userData.cart) {
+        console.log("userData.cart: ==========> ", userData.cart[i]);
+        console.log("check params: ", itemId, userData.cart[i].item_id);
         if (userData.cart[i].item_id === itemId) {
+          console.log("cart item exists!!!");
           exists = true;
           break;
         }

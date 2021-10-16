@@ -59,11 +59,14 @@ export default function Item() {
     console.log(history);
     const {
       data: { cartItem },
-    } = await axios.post(`${BackendUrl}/is-cart-item-added`, {
-      itemId: data.item._id,
-    });
+    } = await axios.post(
+      `${BackendUrl}/is-cart-item-added`,
+      {
+        itemId: data.item._id,
+      },
+      { withCredentials: true }
+    );
     setCartItemExists(cartItem);
-    
   };
 
   useEffect(() => {
