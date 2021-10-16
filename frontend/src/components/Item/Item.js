@@ -34,9 +34,9 @@ export default function Item() {
       { userId }
     );
     console.log("itemData", data.item);
-    setIsLoading(false);
     setItemData(data.item);
     setItemInWishlist(data.inWishlist);
+    setIsLoading(false);
     let amtReviews = data.item.reviews.length;
     if (amtReviews === 0) {
       setAmtRatings("Nil");
