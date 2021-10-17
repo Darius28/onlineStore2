@@ -5,6 +5,11 @@
   padding: 1.5rem;
   justify-items: center;
 }
+@media (max-width: 992px) {
+  .items-container {
+    grid-template-columns: 1fr;
+  }
+}
 
 .item-link-edit {
   position: absolute;
