@@ -28,3 +28,13 @@
   text-decoration: none;
   color: black;
 }
+
+.card-size {
+  width: 18rem;
+}
+
+@media (min-width: 992px) and  (max-width: 1284px) {
+  .card-size {
+    width: 14rem;
+  }
+}

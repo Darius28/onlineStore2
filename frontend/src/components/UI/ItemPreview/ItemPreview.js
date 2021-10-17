@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export default function ItemPreview({ data }) {
   return (
     <Link to={`/item/${data._id}`} className="item-link">
-      <Card style={{ width: "18rem" }}>
+      <Card className="card-size">
         <Card.Img
           variant="top"
           width={286}
