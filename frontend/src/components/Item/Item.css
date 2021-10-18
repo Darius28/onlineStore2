@@ -36,6 +36,8 @@
 .item-images-container {
   display: flex;
   align-items: center;
+  width: 486px;
+  height: 243px;
 }
 
 .item-preview-container {
@@ -46,6 +48,40 @@
 
 .item-image {
   border: 1px solid black;
+  width: 100%;
+  height: 100%;
+}
+
+.preview-img-container {
+  width: 108px;
+  height: 54px;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 992px) {
+  .item-images-container {
+    width: 365px;
+    height: 183px;
+  }
+  .preview-img-container {
+    width: 72px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 800px) {
+  .item-images-container {
+    width: 200px;
+    height: 100px;
+  }
+  .preview-img-container {
+    width: 40px;
+    height: 20px;
+  }
 }
 
 .image-border {

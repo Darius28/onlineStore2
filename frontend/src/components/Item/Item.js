@@ -209,37 +209,33 @@ export default function Item() {
                 {itemData
                   ? itemData.pictures.map((pic) => {
                       return (
-                        <img
-                          id={pic.Location}
-                          width={108}
-                          height={54}
-                          src={pic.Location}
-                          onMouseOver={selectedImageHandler.bind(
-                            null,
-                            pic.Location
-                          )}
-                          onMouseLeave={removeBorderHandler}
-                        />
+                        <div className="preview-img-container">
+                          <img
+                          className="preview-img"
+                            id={pic.Location}
+                            src={pic.Location}
+                            onMouseOver={selectedImageHandler.bind(
+                              null,
+                              pic.Location
+                            )}
+                            onMouseLeave={removeBorderHandler}
+                          />
+                        </div>
                       );
                     })
                   : null}
               </div>
               <div className="item-images-container">
                 {selectedImage ? (
-                  <img
-                    className="item-image"
-                    width={486}
-                    height={243}
-                    src={selectedImage}
-                  />
+                  <img className="item-image" src={selectedImage} />
                 ) : null}
               </div>
             </div>
             <div className="item-image-container-3">
-              <Button variant="info" size="lg" onClick={addToCartHandler}>
+              <Button variant="info" size="sm" onClick={addToCartHandler}>
                 {cartItemExists ? "Go to Cart" : "Add to Cart"}
               </Button>
-              <Button variant="success" size="lg" onClick={buyNowHandler}>
+              <Button variant="success" size="sm" onClick={buyNowHandler}>
                 Buy Now
               </Button>
             </div>

@@ -272,11 +272,10 @@ export default function Cart() {
                           <Card>
                             <Card.Body className="cart-body-container">
                               <div className="cart-body-container-2">
-                                <div>
+                                <div className="cart-img-container">
                                   <img
                                     src={item.cartItem.pictures[0].Location}
-                                    width={216}
-                                    height={108}
+                                    className="cart-img"
                                   />
                                 </div>
                                 <div>
