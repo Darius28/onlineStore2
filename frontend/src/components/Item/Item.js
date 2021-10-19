@@ -232,10 +232,10 @@ export default function Item() {
               </div>
             </div>
             <div className="item-image-container-3">
-              <Button variant="info" size="sm" onClick={addToCartHandler}>
+              <Button variant="info" className="item-image-container-3-button" onClick={addToCartHandler}>
                 {cartItemExists ? "Go to Cart" : "Add to Cart"}
               </Button>
-              <Button variant="success" size="sm" onClick={buyNowHandler}>
+              <Button variant="success" className="item-image-container-3-button" onClick={buyNowHandler}>
                 Buy Now
               </Button>
             </div>
