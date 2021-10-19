@@ -42,11 +42,12 @@ export default function Order() {
                           <div className="order-container-2">
                             <div>
                               <Link to={`/item/${order.item._id}`}>
-                                <img
-                                  src={order.item.pictures[0].Location}
-                                  width={216}
-                                  height={108}
-                                />
+                                <div className="order-img-container">
+                                  <img
+                                    src={order.item.pictures[0].Location}
+                                    className="order-img"
+                                  />
+                                </div>
                               </Link>
                             </div>
                             <div>

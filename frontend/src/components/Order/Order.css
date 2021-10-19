@@ -14,3 +14,20 @@
   padding: 1rem;
   border-radius: 0.5rem;
 }
+
+.order-img-container {
+  width: 216px;
+  height: 108px;
+}
+
+.order-img {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 608px) {
+  .order-img-container {
+    width: 108px;
+    height: 54px;
+  }
+}

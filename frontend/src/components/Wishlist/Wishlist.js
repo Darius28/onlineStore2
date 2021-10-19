@@ -53,7 +53,7 @@ export default function Wishlist() {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="container">
+        <div className="container main-wishlist-container">
           {wishlist && wishlist.length > 0 ? (
             wishlist.map((item) => (
               <>
@@ -64,14 +64,13 @@ export default function Wishlist() {
                   >
                     <Card className="wishlist-container">
                       <div className="wishlist-container-2">
-                        <div>
+                        <div className="wishlist-container-2-pt-1">
                           <img
                             src={item.pictures[0].Location}
-                            width={216}
-                            height={108}
+                            className="wishlist-container-2-img"
                           />
                         </div>
-                        <div>
+                        <div className="wishlist-container-2-pt-2">
                           <Card.Title>{item.name}</Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">
                             Seller: {item.shop_name}
